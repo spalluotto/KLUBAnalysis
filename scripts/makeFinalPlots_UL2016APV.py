@@ -8,6 +8,7 @@ import math
 from array import array
 import modules.ConfigReader as cfgr
 import modules.OutputManager as omng
+from ctypes import c_double, c_float
 
 def findInFolder (folder, pattern):
         ll = []
@@ -146,8 +147,8 @@ def removeHErrors (graph):
 def removeEmptyPoints (graph):
     zeroes = []
     for ipt in range (0, graph.GetN()):
-        x = Double(0.0)
-        y = Double(0.0)
+        x = c_double(0.0)
+        y = c_double(0.0)
         graph.GetPoint(ipt,x,y)
         if y == 0:
             zeroes.append(ipt)
@@ -203,10 +204,10 @@ def scaleGraphByBinWidth (graph):
 
         eyh = graph.GetErrorYhigh(ipt)
         eyl = graph.GetErrorYlow(ipt)
-        x = Double(0.0)
-        y = Double(0.0)
+        x = c_double(0.0)
+        y = c_double(0.0)
         graph.GetPoint (ipt, x, y)
-        graph.SetPoint (ipt, x, y/bw)
+        graph.SetPoint (ipt, x.value, y.value/bw)
         graph.SetPointEYlow(ipt, eyl/bw)
         graph.SetPointEYhigh(ipt, eyh/bw)
 
@@ -349,10 +350,10 @@ def makeDataOverMCRatioPlot (hData, hMC, newName, horErrs=False):
 def findMaxOfGraph (graph):
     uppers = []
     for i in range (0, graph.GetN()):
-        x = Double(0.0)
-        y = Double(0.0)
+        x = c_double(0.0)
+        y = c_double(0.0)
         graph.GetPoint(i, x, y)
-        uppers.append (y + graph.GetErrorYhigh(i))
+        uppers.append (y.value + graph.GetErrorYhigh(i))
     return max(uppers)
 
 # def makeSystUpDownStack (bkgList, systList, newNamePart):
@@ -405,8 +406,9 @@ if __name__ == "__main__" :
     #string opts
     parser.add_argument('--var', dest='var', help='variable name', default=None)
     parser.add_argument('--sel', dest='sel', help='selection name', default=None)
-    parser.add_argument('--name', dest='name', help='selection name for plot', default=None)
-    parser.add_argument('--dir', dest='dir', help='analysis output folder name', default="./")
+    parser.add_argument('--name',   help='selection name for plot', default=None)
+    parser.add_argument('--indir',  help='analysis input folder name', default="./")
+    parser.add_argument('--outdir', help='analysis output folder name', default='.')
     parser.add_argument('--tag', dest='tag', help='plots output folder name', default="./")
     parser.add_argument('--reg', dest='reg', help='region name', default=None)
     parser.add_argument('--title', dest='title', help='plot title', default=None)
@@ -470,7 +472,7 @@ if __name__ == "__main__" :
 
 
     ######################### PUT USER CONFIGURATION HERE ####################
-    cfgName  =  args.dir + "/mainCfg_"+args.channel+"_UL2016APV.cfg"
+    cfgName  =  args.indir + "/mainCfg_"+args.channel+"_UL2016APV.cfg"
     cfg        = cfgr.ConfigReader (cfgName)
     bkgList    = cfg.readListOption("general::backgrounds")
 
@@ -481,42 +483,30 @@ if __name__ == "__main__" :
     if doQCD:
         bkgList.append('QCD')
     
-    
-    sigList = cfg.readListOption("general::signals")
-    #sigList = ["GGHH_NLO_cHHH1_xs", "VBFHH_CV_1_C2V_1_C3_1_xs"]
-    sigList = ["ggHTauTau"]
+    # signal list
+    sigList = cfg.readListOption("general::signals") # extracting list from config file
+    sigList = ["GGF_Radion1000"]                        # overwriting list with radion 1000 only
 
-    sigNameList = []
-    if args.log:
-            sigNameList = ["VBF HH SM (x10)"]
-    else:
-           sigNameList = ["VBF HH SM (x10)"]
-    #sigNameList = ["ggHH SM x 20", "qqHH SM x 100"]
-    sigNameList = ["ggHTauTau SM x 20"]
-
-
+    #define colors for signals and bkgs
     sigColors = {}
-    #sigColors["GGHH_NLO_cHHH1_xs"] = kBlack
-    #sigColors["VBFHH_CV_1_C2V_1_C3_1_xs"] = kCyan
-    sigColors["ggHTauTau"] = kBlack
-
+    sigColors["GGF_Radion1000"] = kBlack
 
     # RGB/HEX colors
     col = TColor()
 
-    bkgColors = {}
-    bkgColors["DY"]      = col.GetColor("#44BA68") #(TColor(68 ,186,104)).GetNumber() #gROOT.GetColor("#44BA68")
-    bkgColors["TT"]      = col.GetColor("#F4B642") #(TColor(244,182,66 )).GetNumber() #gROOT.GetColor("#F4B642")
-    bkgColors["WJets"]  = col.GetColor("#41B4DB") #(TColor(65 ,180,219)).GetNumber() #gROOT.GetColor("#41B4DB")
-    #bkgColors["singleH"] = col.GetColor("#41B4DB") #(TColor(65 ,180,219)).GetNumber() #gROOT.GetColor("#41B4DB")
-    bkgColors["other"]    = col.GetColor("#ED635E") #(TColor(237,99 ,94 )).GetNumber() #gROOT.GetColor("#ED635E")
-
+    bkgColors = {
+            "DY": col.GetColor("#44BA68"),
+            "TT": col.GetColor("#F4B642"),
+            "WJets": col.GetColor("#41B4DB"),
+            "other": col.GetColor("#ED635E")
+    }
     bkgLineColors = {}
-    bkgLineColors["DY"]      = col.GetColor("#389956")
-    bkgLineColors["TT"]      = col.GetColor("#dea63c")
-    bkgLineColors["WJets"]  = col.GetColor("#3ca4c8")
-    #bkgLineColors["singleH"] = col.GetColor("#3ca4c8")
-    bkgLineColors["other"]   = col.GetColor("#d85a56")
+    bkgLineColors = {
+            "DY": col.GetColor("#389956"),
+            "TT": col.GetColor("#dea63c"),
+            "WJets": col.GetColor("#3ca4c8"),
+            "other": col.GetColor("#ED635E")
+    }
 
 
     #if args.sigscale:
@@ -525,32 +515,36 @@ if __name__ == "__main__" :
     sigScale = [20]
     sigScaleValue = 1000
 
-    plotTitle = ""
 
-    if args.title:
-        plotTitle = args.title
+    plotTitle = args.title if args.title else ""  
     dataList = ["data_obs"]
+    sec = "merge_plots"
 
-    if cfg.hasSection("merge"): 
-        for groupname in cfg.config['merge']:
+    if cfg.hasSection(sec): 
+        for groupname in cfg.config[sec]:
             if "data" in groupname: continue
-            mergelist = cfg.readListOption('merge::'+groupname)
+            mergelist = cfg.readListOption(sec+'::'+groupname)
             for x in mergelist:
-                bkgList.remove(x)
+                try:
+                    bkgList.remove(x)
+                except ValueError:
+                    print('The culprit is {}, in group {}, in config {}.'.format(x,groupname,cfgName))
+                    print('Backgrounds in the list: {}.'.format(bkgList))
+                    print('Merged backgrounds in the list: {}.'.format(mergelist))
+                    raise
             bkgList.append(groupname)
+    else:
+        raise ValueError('Section [{}] missing from {}.'.format(sec, cfgName))
+
 
 
     ###########################################################################
     #setPlotStyle()
 
 
-    outplotterName = findInFolder  (args.dir+"/", 'analyzedOutPlotter.root')
+    outplotterName = findInFolder  (args.indir+"/", 'combined_outPlots.root')
     
-    if not "Tau" in args.channel:
-            outplotterName = findInFolder  (args.dir+"/", 'outPlotter.root')            
-
-    rootFile = TFile.Open (args.dir+"/"+outplotterName)
-
+    rootFile = TFile.Open (args.indir+"/"+outplotterName)
     binning = None
     if (args.flat): binning = flatBinning(rootFile, sigList, args.var, args.sel,args.reg)
 
@@ -566,11 +560,9 @@ if __name__ == "__main__" :
 
     doOverflow = args.overflow
     
-
     hDY = getHisto("DY", hBkgs,doOverflow)
     hTT = getHisto("TT", hBkgs,doOverflow)
     hWJets = getHisto("WJets", hBkgs,doOverflow)
-    #hWJets = getHisto("singleH", hBkgs,doOverflow)
     hothers = getHisto("other", hBkgs,doOverflow)
 
     hBkgList = [hothers, hWJets, hTT, hDY] ## full list for stack
@@ -641,22 +633,24 @@ if __name__ == "__main__" :
     print "** INFO: removing all negative bins from bkg histos"
     makeNonNegativeHistos (hBkgList)
 
+    # Define the path to the directory
     if "class" in args.sel:
-        with open("./plots_"+args.channel+"/"+args.tag+"/scores_"+args.reg+"/yields.txt","a+") as yields_file:
-            yields_file.write("=== "+args.channel+"/"+args.tag+"/scores_"+args.reg+"/"+args.var+" ===\n")
-            for h in hBkgList: yields_file.write("Integral: "+h.GetName()+" : "+str(h.Integral())+" - "+str(h.Integral(-1,-1))+"\n")
-            for n in hDatas  : yields_file.write("Integral "+hDatas[n].GetName()+" : "+str(hDatas[n].Integral())+" - "+str(hDatas[n].Integral(-1,-1))+"\n")
-            for i, name in enumerate (sigNameList): yields_file.write("Integral "+hSigs[sigList[i]].GetName()+" : "+str(hSigs[sigList[i]].Integral())+" - "+str(hSigs[sigList[i]].Integral(-1,-1))+"\n")
+        directory_path=args.outdir+"/plots_"+args.channel+"/"+args.tag+"/scores_"+args.reg+"/"
     else:
-        with open("./plots_"+args.channel+"/"+args.tag+"/"+args.sel+"_"+args.reg+"/yields.txt","a+") as yields_file:
-            yields_file.write("=== "+args.channel+"/"+args.tag+"/"+args.sel+"_"+args.reg+"/"+args.var+" ===\n")
-            for h in hBkgList: yields_file.write("Integral: "+h.GetName()+" : "+str(h.Integral())+" - "+str(h.Integral(-1,-1))+"\n")
-            for n in hDatas  : yields_file.write("Integral "+hDatas[n].GetName()+" : "+str(hDatas[n].Integral())+" - "+str(hDatas[n].Integral(-1,-1))+"\n")
-            for i, name in enumerate (sigNameList): yields_file.write("Integral "+hSigs[sigList[i]].GetName()+" : "+str(hSigs[sigList[i]].Integral())+" - "+str(hSigs[sigList[i]].Integral(-1,-1))+"\n")
+        directory_path = args.outdir+"/plots_" + args.channel + "/" + args.tag+"/"+args.sel+"_"+args.reg+"/"
+
+    if not os.path.exists(directory_path):
+        os.makedirs(directory_path)
+
+    with open(directory_path + "yields.txt", "a+") as yields_file:
+        yields_file.write("=== "+directory_path+args.var+" ===\n")
+        for h in hBkgList: yields_file.write("Integral: "+h.GetName()+" : "+str(h.Integral())+" - "+str(h.Integral(-1,-1))+"\n")
+        for n in hDatas  : yields_file.write("Integral "+hDatas[n].GetName()+" : "+str(hDatas[n].Integral())+" - "+str(hDatas[n].Integral(-1,-1))+"\n")
+        for i, name in enumerate (sigList): yields_file.write("Integral "+hSigs[sigList[i]].GetName()+" : "+str(hSigs[sigList[i]].Integral())+" - "+str(hSigs[sigList[i]].Integral(-1,-1))+"\n")
 
     for h in hBkgList: print "Integral ", h.GetName(), " : ", h.Integral(), " - ", h.Integral(-1,-1)
     for n in hDatas: print "Integral ", hDatas[n].GetName(), " : ", hDatas[n].Integral(), " - ", hDatas[n].Integral(-1,-1)
-    for i, name in enumerate (sigNameList): print "Integral ", hSigs[sigList[i]].GetName(), " : ", hSigs[sigList[i]].Integral(), " - ", hSigs[sigList[i]].Integral(-1,-1)
+    for i, name in enumerate (sigList): print "Integral ", hSigs[sigList[i]].GetName(), " : ", hSigs[sigList[i]].Integral(), " - ", hSigs[sigList[i]].Integral(-1,-1)
     #################### PERFORM DIVISION BY BIN WIDTH #######################
     #clones non scaled (else problems with graph ratio because I pass data evt hist)
     bkgStackNS = makeStack ("bkgStackNS", hBkgList)
@@ -666,10 +660,9 @@ if __name__ == "__main__" :
         scaleGraphByBinWidth (gData)
         for h in hBkgList:
             h.Scale(1., "width")
-        for i, name in enumerate (sigNameList):
+        for i, name in enumerate (sigList):
             histo = hSigs[sigList[i]]
             histo.Scale(1., "width")
-
 
     #################### DO STACK AND PLOT #######################
 
@@ -722,9 +715,6 @@ if __name__ == "__main__" :
     for i, scale in enumerate (sigScale):
         histo = hSigs[sigList[i]]
         histo.Scale(scale)
-    #for i, name in enumerate (sigNameList):
-    #    histo = hSigs[sigList[i]]
-    #    histo.Scale(sigScaleValue)
 
     ################## LEGEND ######################################
 
@@ -742,8 +732,7 @@ if __name__ == "__main__" :
 
     # add element in same order as stack --> top-bottom
     if args.dosig:
-        #for i, name in enumerate (sigNameList):
-        for i, name in reversed(list(enumerate (sigNameList))):
+        for i, name in reversed(list(enumerate (sigList))):
             histo = hSigs[sigList[i]]
             leg.AddEntry (histo, name, "l")
         # null entry to complete signal Xsection
@@ -886,29 +875,31 @@ if __name__ == "__main__" :
     if not args.name:
         if "baseline" in args.sel:
             selName = "baseline"
-        if "1b1j" in args.sel:
+        elif "1b1j" in args.sel:
             selName = "1b1j"
-        if "2b0j" in args.sel:
+        elif "2b0j" in args.sel:
             selName = "2b0j"
-        if "boosted" in args.sel:
-            selName = "boosted"
-        if "antiB" in args.sel:
+        elif "sboostedM_pnet" in args.sel or 'sboostedL_pnet' in args.sel:
+            selName = "boosted pnet"
+        elif "sboostedLLMcut_semi" in args.sel:
+            selName = "semi-boosted"
+        elif "antiB" in args.sel:
             selName = "antiB"
-        if "DYreg" in args.sel:
+        elif "DYreg" in args.sel:
             selName = "DYreg"
-        if "VBFloose" in args.sel:
+        elif "VBFloose" in args.sel:
             selName = "VBFloose"
-        if "GGFclass" in args.sel:
+        elif "GGFclass" in args.sel:
             selName = "GGFclass"
-        if "VBFclass" in args.sel:
+        elif "VBFclass" in args.sel:
             selName = "VBFclass"
-        if "DYclass" in args.sel:
+        elif "DYclass" in args.sel:
             selName = "DYclass"
-        if "ttHclass" in args.sel:
+        elif "ttHclass" in args.sel:
             selName = "ttHclass"
-        if "TTlepclass" in args.sel:
+        elif "TTlepclass" in args.sel:
             selName = "TTlepclass"
-        if "TThadclass" in args.sel:
+        elif "TThadclass" in args.sel:
             selName = "TThadclass"
     else:
         selName = args.name
@@ -1085,11 +1076,8 @@ if __name__ == "__main__" :
         if args.channel:
             tagch = "_" + args.channel
         if not args.binwidth:
-            tagch += "_noBinWidt"
-        if "class" in args.sel:
-            saveName = "./plots_"+args.channel+"/"+args.tag+"/scores_"+args.reg+"/plot_" + args.var + "_" + args.sel +"_" + args.reg+ tagch
-        else:
-            saveName = "./plots_"+args.channel+"/"+args.tag+"/"+args.sel+"_"+args.reg+"/plot_" + args.var + "_" + args.sel +"_" + args.reg+ tagch
+            tagch += "_noBinWidth"
+        saveName = directory_path+"plot_" + args.var + "_" + args.sel +"_" + args.reg+ tagch
         if args.log:
             saveName = saveName+"_log"
         if args.flat:

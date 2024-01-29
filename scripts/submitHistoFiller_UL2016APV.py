@@ -64,7 +64,7 @@ for nj in range(0, args.njobs):
     scriptFile.write ('cd %s\n' % here)
     scriptFile.write ('eval `scram r -sh`\n')
     scriptFile.write ('source scripts/setup.sh\n')
-    command = program + ' ' + args.cfg + ' ' + str(nj) + ' ' + str(args.njobs) + ' 2>&1 | tee ' + outDir + '/' + logName
+    command = program + ' ' + args.cfg + ' ' + str(nj) + ' ' + str(args.njobs) + ' ' + outDir + ' 2>&1 | tee ' + outDir + '/' + logName
     scriptFile.write(command)
     scriptFile.close()
     os.system ('chmod u+rwx ' + outDir + '/' + scriptName)
@@ -75,12 +75,10 @@ for nj in range(0, args.njobs):
     condorFile.write ('Log         = condor_filler_$(ProcId).log\n')
     condorFile.write ('Output      = condor_filler_$(ProcId).out\n')
     condorFile.write ('Error       = condor_filler_$(ProcId).error\n')
-    condorFile.write ('Requirements = ((machine != "hercules.hcms.it")&&(machine != "pcmaster01.hcms.it")&&(machine != "catalina.hcms.it"))\n')
+    condorFile.write ('Requirements = ((machine != "hercules.hcms.it")&&(machine != "pccms08.hcms.it")&&(machine != "pccms01.hcms.it")&&(machine != "pccms02.hcms.it")&&(machine != "pccms03.hcms.it")&&(machine != "pccms04.hcms.it"))\n')
     condorFile.write ('queue 1\n')
     condorFile.close ()
 
-    #launchcommand = ('/usr/bin/qsub -q  longcms ' + outDir + '/' + scriptName)
-    #launchcommand = ('/usr/bin/qsub -q  longcms ' + outDir + '/' + scriptName)
     launchcommand = ('condor_submit '+ outDir + '/condorLauncher_' + str (nj) + '.sh')
 
     print launchcommand

@@ -218,15 +218,28 @@ shared_ptr<Sample> AnalysisHelper::openSample(string sampleName)
 {
     if (DEBUG) cout << " ..........DEBUG: entering AnalysisHelper::openSample for sample " << sampleName << endl;
 
-    string filename = sampleCfg_->readStringOpt(Form("samples::%s",sampleName.c_str()));
-	std::vector<std::string> filenames = {{
-		filename + std::string("/goodfiles.txt"),
-		filename + std::string("/goodfiles_resub1.txt"), filename + std::string("/goodfiles_resub2.txt"),
-		filename + std::string("/goodfiles_resub3.txt"), filename + std::string("/goodfiles_resub4.txt"),
-		filename + std::string("/goodfiles_resub5.txt"), filename + std::string("/goodfiles_resub6.txt"),
-		filename + std::string("/goodfiles_resub7.txt"), filename + std::string("/goodfiles_resub8.txt"),
-		filename + std::string("/goodfiles_resub9.txt")
-	  }};
+    // using the previous implementation
+    string filename = sampleCfg_->readStringOpt(Form("samples::%s",sampleName.c_str()));   
+    string sampleCfgName = mainCfg_->readStringOpt("configs::sampleCfg");
+    string list_pattern = "goodfiles";
+    if (mainCfg_->hasOpt("configs::pattern")){
+      list_pattern = mainCfg_->readStringOpt("configs::pattern");
+    }
+    std::vector<std::string> filenames = {{
+	filename+"/"+list_pattern+".txt" ,
+      }};
+
+    // not using the same submitter
+    // 	std::vector<std::string> filenames = {{
+    // 		filename + std::string("/goodfiles.txt"),
+    // 		filename + std::string("/goodfiles_resub1.txt"), filename + std::string("/goodfiles_resub2.txt"),
+    // 		filename + std::string("/goodfiles_resub3.txt"), filename + std::string("/goodfiles_resub4.txt"),
+    // 		filename + std::string("/goodfiles_resub5.txt"), filename + std::string("/goodfiles_resub6.txt"),
+    // 		filename + std::string("/goodfiles_resub7.txt"), filename + std::string("/goodfiles_resub8.txt"),
+    // 		filename + std::string("/goodfiles_resub9.txt")
+    // 	  }};
+    
+
     shared_ptr<Sample> sample (new Sample(sampleName, filenames));
     if (sampleCfg_->hasOpt(Form("userEffBin::%s",sampleName.c_str())))
     {
