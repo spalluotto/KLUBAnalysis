@@ -238,7 +238,7 @@ std::shared_ptr<Sample> AnalysisHelper::openSample(std::string sampleName)
 											sampleCfg_->readStringOpt(Form("evaluation::base")),
 											"h_eff", 1));
 
-  if (sampleCfg_->hasOpt(Form("userEffBin::%s", sampleName.c_str())))
+  if (sampleCfg_->hasOpt(Form("userEffBin::%s", sampleName.c_str())))    
     {
 	  int ubin = sampleCfg_->readIntOpt(Form("userEffBin::%s",sampleName.c_str()));
 	  sample->setEffBin(ubin);
