@@ -14,7 +14,6 @@ klubdir = '/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis/'
 
 # channel mapping of the considered channels
 channelsMap = ['MuTau', 'ETau', 'TauTau', 'MuMu']
-
 script = 'scripts/combineFillerOutputs.py'
 
 print("Current Directory:   ", os.getcwd())

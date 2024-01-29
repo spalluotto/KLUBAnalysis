@@ -511,7 +511,6 @@ if __name__ == "__main__" :
             "other"   : col.GetColor("#d85a56")
    }
 
-
     #if args.sigscale:
     #     for i in range(0,len(sigScale)): sigScale[i] = args.sigscale
     #sigScale = [20,100]
