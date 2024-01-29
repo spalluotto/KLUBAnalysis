@@ -64,7 +64,6 @@ bkg_map = {}
 bkg_map = {
     # --- DY ---
     # ---------->   -g:  loop on genjets to determine the number of b hadrons   --DY: if it is a DY sample
-
     "DYJetsToLL_LHEFilterPtZ-0To50_MatchEWPDG20"      : "-n 200 -x 1409.22      -g True  --DY True",
     "DYJetsToLL_LHEFilterPtZ-50To100_MatchEWPDG20"    : "-n 200 -x 377.12       -g True  --DY True",
     "DYJetsToLL_LHEFilterPtZ-100To250_MatchEWPDG20"   : "-n 150 -x 92.24        -g True  --DY True",
