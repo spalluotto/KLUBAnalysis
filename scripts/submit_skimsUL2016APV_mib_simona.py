@@ -199,10 +199,6 @@ names = {
 
 
 
-
-
-
-
 #------------------------------------------------------------------------------------------
 # ############
 # BACKGROUNDS MAP 
@@ -231,8 +227,6 @@ bkg_map = {
     "TTTo2L2Nu"                       : "-n 100 -x 84.01    -t True    -b 4",
     "TTToSemiLeptonic"                : "-n 100 -x 347.55   -t True    -b 5",
 
-
-
     # --- single Higgs ---
     # -y: scale to apply on XS for stitching
     "ZHToTauTau_M125"                     : "-n 50    -x 0.880    -y 0.0632",
@@ -240,7 +234,6 @@ bkg_map = {
     "WminusHToTauTau_M125"                : "-n 50    -x 0.527    -y 0.0632",
     "GluGluHToTauTau_M125"                : "-n 50    -x 48.61    -y 0.0632",
     "VBFHToTauTau_M125"                   : "-n 50    -x 3.766    -y 0.0632",
-
 
     # --- Wjets ---
     # -z: HT cut for stitching on inclusive      -Z: HT low cut for stitching on inclusive
@@ -286,6 +279,16 @@ bkg_map = {
     "TTWW"                            : "-n 20  -x 0.006979",
     "TTZZ"                            : "-n 20  -x 0.001386",
     "TTWZ"                            : "-n 20  -x 0.002441"
+
+    "ZH_HToBB_ZToLL_M-125"             : "-n 50    -x 0.880    -y 0.058816576 ",
+    "ZH_HToBB_ZToQQ_M-125"             : "-n 50    -x 0.880    -y 0.407161664",
+    
+    "TTZToQQ"                         : "-n 20  -x 0.5104", 
+    "TTWH"                            : "-n 20  -x 0.001143",
+    "TTZH"                            : "-n 20  -x 0.001136",
+
+    "GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_SM" : "-n 10   -x 0.01618"
+
 }
 
 
@@ -342,37 +345,37 @@ sig_map = {
 
 
 
-    # # --- GluGlu -> Graviton -> HH -> bb tautau ---
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-250"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-260"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-270"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-280"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-300"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-320"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-350"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-400"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-450"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-500"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-550"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-600"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-650"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-700"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-750"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-800"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-850"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-900"     :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-1000"    :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-1250"    :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-1500"    :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-1750"    :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-2000"    :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-2500"    :  "-n 20     -x 1.     -a True",
-    # "GluGluToBulkGravitonToHHTo2B2Tau_M-3000"    :  "-n 20     -x 1.     -a True",
+    # --- GluGlu -> Graviton -> HH -> bb tautau ---
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-250"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-260"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-270"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-280"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-300"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-320"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-350"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-400"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-450"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-500"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-550"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-600"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-650"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-700"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-750"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-800"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-850"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-900"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-1000"    :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-1250"    :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-1500"    :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-1750"    :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-2000"    :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-2500"    :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-3000"    :  "-n 20     -x 1.     -a True",
 
 
 
     # --- GluGlu -> Radion -> HH -> bb tautau ---
-    #"GluGluToRadionToHHTo2B2Tau_M-250"     :  "-n 20     -x 1.     -a True",
+    "GluGluToRadionToHHTo2B2Tau_M-250"     :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-260"     :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-270"     :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-280"     :  "-n 20     -x 1.     -a True",
@@ -381,7 +384,7 @@ sig_map = {
     "GluGluToRadionToHHTo2B2Tau_M-350"     :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-400"     :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-450"     :  "-n 20     -x 1.     -a True",
-    #"GluGluToRadionToHHTo2B2Tau_M-500"     :  "-n 20     -x 1.     -a True",
+    "GluGluToRadionToHHTo2B2Tau_M-500"     :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-550"     :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-600"     :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-650"     :  "-n 20     -x 1.     -a True",
@@ -390,13 +393,13 @@ sig_map = {
     "GluGluToRadionToHHTo2B2Tau_M-800"     :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-850"     :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-900"     :  "-n 20     -x 1.     -a True",
-    #"GluGluToRadionToHHTo2B2Tau_M-1000"    :  "-n 20     -x 1.     -a True",
+    "GluGluToRadionToHHTo2B2Tau_M-1000"    :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-1250"    :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-1500"    :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-1750"    :  "-n 20     -x 1.     -a True",
-    #"GluGluToRadionToHHTo2B2Tau_M-2000"    :  "-n 20     -x 1.     -a True",
+    "GluGluToRadionToHHTo2B2Tau_M-2000"    :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-2500"    :  "-n 20     -x 1.     -a True",
-    #"GluGluToRadionToHHTo2B2Tau_M-3000"    :  "-n 20     -x 1.     -a True"
+    "GluGluToRadionToHHTo2B2Tau_M-3000"    :  "-n 20     -x 1.     -a True"
 
 
 
