@@ -344,7 +344,6 @@ sig_map = {}
 sig_map = {
 
 
-
     # --- GluGlu -> Graviton -> HH -> bb tautau ---
     "GluGluToBulkGravitonToHHTo2B2Tau_M-250"     :  "-n 20     -x 1.     -a True",
     "GluGluToBulkGravitonToHHTo2B2Tau_M-260"     :  "-n 20     -x 1.     -a True",
@@ -371,7 +370,6 @@ sig_map = {
     "GluGluToBulkGravitonToHHTo2B2Tau_M-2000"    :  "-n 20     -x 1.     -a True",
     "GluGluToBulkGravitonToHHTo2B2Tau_M-2500"    :  "-n 20     -x 1.     -a True",
     "GluGluToBulkGravitonToHHTo2B2Tau_M-3000"    :  "-n 20     -x 1.     -a True",
-
 
 
     # --- GluGlu -> Radion -> HH -> bb tautau ---

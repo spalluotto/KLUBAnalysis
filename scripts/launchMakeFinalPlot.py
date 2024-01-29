@@ -25,8 +25,6 @@ do_signal = True   # False means that I want to add the option no-sig through wh
 log = True #
 
 no_bin_width = True # True Means that I do not want to scale graphs by the bin width
-
-
 blind = False
 if blind:
     blind_range = [0.0,1.0]
@@ -40,7 +38,6 @@ args = parser.parse_args()
 resolved_vars =     [  ("bjet1_pt",  "p_{T}(b_{1}) [GeV]")  , ("bjet2_pt", "p_{T}(b_{2}) [GeV]"), ("bjet1_eta","#eta(b_{1})"), ("bjet2_eta","#eta(b_{2})"), ("bH_mass","m_{bb} [GeV]"), ("bH_pt","p_{T,bb} [GeV]"), ("dau1_pt","p_{T}(lep_{1}) [GeV]"), ("dau2_pt","p_{T}(lep_{2}) [GeV]"), ("dau1_eta","#eta(lep_{1})"), ("dau2_eta","#eta(lep_{2})"), ("tauH_SVFIT_mass","m_{#tau#tau}(SVFit) [GeV]"), ("tauH_SVFIT_pt","p_{T,#tau#tau}(SVFit) [GeV]") ,("tauH_mass","m_{#tau#tau} (vis) [GeV]"), ("tauH_pt","p_{T,#tau#tau} (vis) [GeV]")]
 
 boosted_vars =  [('fatjet_softdropMass','m_{bb}^{SD} [GeV]'), ('fatjet_pt','p_{T, bb} [GeV]'), ('fatjet_eta','#eta(bb)'), ('fatjet_phi','#phi(bb)'), ('fatjet_particleNetMDJetTags_score','score_{pnet}(bb)'), ('fatjet_particleNetMDJetTags_mass','m_{bb}^{pnet}'),("tauH_mass","m_{#tau#tau} (vis) [GeV]"), ('bH_mass', 'm_{bb} [GeV]'), ("tauH_SVFIT_mass","m_{#tau#tau}(SVFit) [GeV]")]
-
 
 
 if 'medium' in ParticleNet_wp:
