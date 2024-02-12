@@ -5,11 +5,11 @@ import argparse
 import subprocess
 
 # ------ EDIT --------
-ParticleNet_wp = 'medium'
-#ParticleNet_wp = 'low'
+#ParticleNet_wp = 'medium'
+ParticleNet_wp = 'low'
 run = 'UL2016APV'
-date = '26Jan24_isLeptTrigger_newBoosted'
-whichChannels = [False, False, True] 
+date = '01Feb24_isLeptTrigger_newBoosted_LP'
+whichChannels = [True, True, True, False] 
 # -------------------------
 
 # settings
@@ -58,6 +58,7 @@ elif 'low' in  ParticleNet_wp:
         "baseline"            : resolved_vars,
         "baseline_boosted"    : boosted_vars
     }
+    selections = ['baseline', 'baseline_boosted', 's1b1jresolvedMcut','s2b0jresolvedMcut',  'sboostedL_pnet']
     selections = ['s1b1jresolvedMcut','s2b0jresolvedMcut','sboostedLLMcut_semi', 'sboostedL_pnet', 'baseline', 'baseline_boosted']  
 else:
     print("ParticleNet working point?")
@@ -76,7 +77,7 @@ os.chdir(klubdir)
 print 'after ', os.getcwd()
 
 # channel mapping of the considered channels
-channelsMap = ['TauTau', 'MuTau', 'ETau']
+channelsMap = ['MuTau', 'ETau', 'TauTau', 'MuMu']
 
 
 # Loop through channels and execute commands

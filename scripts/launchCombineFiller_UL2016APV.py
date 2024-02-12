@@ -6,14 +6,14 @@ import argparse
 
 # ----- EDIT HERE ----
 run = 'UL2016APV'
-date = '26Jan24_isLeptTrigger_newBoosted'
-whichChannels = [False, False, True, False]   # you may want to run one or more channels
+date = '01Feb24_isLeptTrigger_newBoosted_LP'
+whichChannels = [True, True, True, True]   # you may want to run one or more channels
 # --------------------
 
 klubdir = '/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis/'
 
 # channel mapping of the considered channels
-channelsMap = ['TauTau', 'MuTau', 'ETau', 'MuMu']
+channelsMap = ['MuTau', 'ETau', 'TauTau', 'MuMu']
 
 script = 'scripts/combineFillerOutputs.py'
 
