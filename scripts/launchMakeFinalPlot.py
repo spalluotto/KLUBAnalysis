@@ -8,9 +8,9 @@ import subprocess
 #ParticleNet_wp = 'medium'
 ParticleNet_wp = 'low'
 run = 'UL16APV'
-date = '17Mar2024_categories'
+date = ''
 
-out_tag = '_noScaleBinWidth'
+out_tag = ''
 whichChannels = [False, False, True, True] 
 
 selections = ['res1b','res2b','boosted_semi', 'boostedL_pnet', 'baseline', 'baseline_boosted']
