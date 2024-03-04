@@ -4,7 +4,7 @@ import glob
 
 
 #--------------------------
-date           = '21Jan_newMET_newBoosted'
+date           = '14Feb2024'
 
 execute_bkg    = False
 execute_sig    = False
@@ -13,7 +13,7 @@ execute_data   = True
 
 
 klubDir        = '/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis'
-configFile     = '%s/config/skim_UL2016_mib.cfg'%klubDir
+configFile     = '%s/config/skim_UL16.cfg'%klubDir
 year           = '2016preVFP'
 
 
@@ -65,47 +65,47 @@ bkg_map = {
     # --- DY ---
     # ---------->   -g:  loop on genjets to determine the number of b hadrons   --DY: if it is a DY sample
 
-    # "DYJetsToLL_LHEFilterPtZ-0To50_MatchEWPDG20"      : "-n 200 -x 1409.22      -g True  --DY True",
-    # "DYJetsToLL_LHEFilterPtZ-50To100_MatchEWPDG20"    : "-n 200 -x 377.12       -g True  --DY True",
-    # "DYJetsToLL_LHEFilterPtZ-100To250_MatchEWPDG20"   : "-n 150 -x 92.24        -g True  --DY True",
-    # "DYJetsToLL_LHEFilterPtZ-250To400_MatchEWPDG20"   : "-n 50  -x 3.512        -g True  --DY True",
-    # "DYJetsToLL_LHEFilterPtZ-400To650_MatchEWPDG20"   : "-n 20  -x 0.4826       -g True  --DY True",
-    # "DYJetsToLL_LHEFilterPtZ-650ToInf_MatchEWPDG20"   : "-n 10  -x 0.04487      -g True  --DY True",
+    "DYJetsToLL_LHEFilterPtZ-0To50_MatchEWPDG20"      : "-n 200 -x 1409.22      -g True  --DY True",
+    "DYJetsToLL_LHEFilterPtZ-50To100_MatchEWPDG20"    : "-n 200 -x 377.12       -g True  --DY True",
+    "DYJetsToLL_LHEFilterPtZ-100To250_MatchEWPDG20"   : "-n 150 -x 92.24        -g True  --DY True",
+    "DYJetsToLL_LHEFilterPtZ-250To400_MatchEWPDG20"   : "-n 50  -x 3.512        -g True  --DY True",
+    "DYJetsToLL_LHEFilterPtZ-400To650_MatchEWPDG20"   : "-n 20  -x 0.4826       -g True  --DY True",
+    "DYJetsToLL_LHEFilterPtZ-650ToInf_MatchEWPDG20"   : "-n 10  -x 0.04487      -g True  --DY True",
 
-    # "DYJetsToLL_0J"                                   : "-n 300 -x 4867.28      -g True  --DY True",
-    # "DYJetsToLL_1J"                                   : "-n 300 -x 902.95       -g True  --DY True",  
-    # "DYJetsToLL_2J"                                   : "-n 150 -x 342.96       -g True  --DY True",
+    "DYJetsToLL_0J"                                   : "-n 300 -x 4867.28      -g True  --DY True",
+    "DYJetsToLL_1J"                                   : "-n 300 -x 902.95       -g True  --DY True",  
+    "DYJetsToLL_2J"                                   : "-n 150 -x 342.96       -g True  --DY True",
 
-    # "DYJetsToLL_M-50"                                 : "-n 300 -x 6077.22      -g True  --DY True",
+    "DYJetsToLL_M-50"                                 : "-n 300 -x 6077.22      -g True  --DY True",
 
-    # # --- TT ---
-    # # -b: type of TT gen level decay pruning for stitch
-    # "TTToHadronic"                    : "-n 50  -x 359.44   -t True    -b 1",
-    # "TTTo2L2Nu"                       : "-n 100 -x 84.01    -t True    -b 4",
-    # "TTToSemiLeptonic"                : "-n 100 -x 347.55   -t True    -b 5",
-
-
-
-    # # --- single Higgs ---
-    # # -y: scale to apply on XS for stitching
-    # "ZHToTauTau_M125"                     : "-n 50    -x 0.880    -y 0.0632",
-    # "WplusHToTauTau_M125"                 : "-n 50    -x 0.831    -y 0.0632",
-    # "WminusHToTauTau_M125"                : "-n 50    -x 0.527    -y 0.0632",
-    # "GluGluHToTauTau_M125"                : "-n 50    -x 48.61    -y 0.0632",
-    # "VBFHToTauTau_M125"                   : "-n 50    -x 3.766    -y 0.0632",
+    # --- TT ---
+    # -b: type of TT gen level decay pruning for stitch
+    "TTToHadronic"                    : "-n 50  -x 359.44   -t True    -b 1",
+    "TTTo2L2Nu"                       : "-n 100 -x 84.01    -t True    -b 4",
+    "TTToSemiLeptonic"                : "-n 100 -x 347.55   -t True    -b 5",
 
 
-    # # --- Wjets ---
-    # # -z: HT cut for stitching on inclusive      -Z: HT low cut for stitching on inclusive
-    # "WJetsToLNu"                      : "-n 50  -y 1.221252481 -x 47253.172 -z 70",  # for 0 < HT < 70
-    # "WJetsToLNu_HT-70To100"           : "-n 50  -y 1.221252481 -x 1353" ,
-    # "WJetsToLNu_HT-100To200"          : "-n 50  -y 1.221252481 -x 1346" ,
-    # "WJetsToLNu_HT-200To400"          : "-n 50  -y 1.221252481 -x 360.1",
-    # "WJetsToLNu_HT-400To600"          : "-n 50  -y 1.221252481 -x 48.8",
-    # "WJetsToLNu_HT-600To800"          : "-n 50  -y 1.221252481 -x 12.07",
-    # "WJetsToLNu_HT-800To1200"         : "-n 50  -y 1.221252481 -x 5.497",
-    # "WJetsToLNu_HT-1200To2500"        : "-n 50  -y 1.221252481 -x 1.329",
-    # "WJetsToLNu_HT-2500ToInf"         : "-n 50  -y 1.221252481 -x 0.0321 -Z 2500"
+
+    # --- single Higgs ---
+    # -y: scale to apply on XS for stitching
+    "ZHToTauTau_M125"                     : "-n 50    -x 0.880    -y 0.0632",
+    "WplusHToTauTau_M125"                 : "-n 50    -x 0.831    -y 0.0632",
+    "WminusHToTauTau_M125"                : "-n 50    -x 0.527    -y 0.0632",
+    "GluGluHToTauTau_M125"                : "-n 50    -x 48.61    -y 0.0632",
+    "VBFHToTauTau_M125"                   : "-n 50    -x 3.766    -y 0.0632",
+
+
+    # --- Wjets ---
+    # -z: HT cut for stitching on inclusive      -Z: HT low cut for stitching on inclusive
+    "WJetsToLNu"                      : "-n 50  -y 1.221252481 -x 47253.172 -z 70",  # for 0 < HT < 70
+    "WJetsToLNu_HT-70To100"           : "-n 50  -y 1.221252481 -x 1353" ,
+    "WJetsToLNu_HT-100To200"          : "-n 50  -y 1.221252481 -x 1346" ,
+    "WJetsToLNu_HT-200To400"          : "-n 50  -y 1.221252481 -x 360.1",
+    "WJetsToLNu_HT-400To600"          : "-n 50  -y 1.221252481 -x 48.8",
+    "WJetsToLNu_HT-600To800"          : "-n 50  -y 1.221252481 -x 12.07",
+    "WJetsToLNu_HT-800To1200"         : "-n 50  -y 1.221252481 -x 5.497",
+    "WJetsToLNu_HT-1200To2500"        : "-n 50  -y 1.221252481 -x 1.329",
+    "WJetsToLNu_HT-2500ToInf"         : "-n 50  -y 1.221252481 -x 0.0321 -Z 2500",
 
     # --- ELECTROWEAK ---
     "EWKWPlus2Jets_WToLNu_M-50"       : "-n 50  -x 25.62",

@@ -472,7 +472,7 @@ if __name__ == "__main__" :
 
 
     ######################### PUT USER CONFIGURATION HERE ####################
-    cfgName  =  args.indir + "/mainCfg_"+args.channel+"_UL2016APV.cfg"
+    cfgName  =  args.indir + "/mainCfg_"+args.channel+"_UL16APV.cfg"
     cfg        = cfgr.ConfigReader (cfgName)
     bkgList    = cfg.readListOption("general::backgrounds")
 
@@ -495,18 +495,21 @@ if __name__ == "__main__" :
     col = TColor()
 
     bkgColors = {
-            "DY": col.GetColor("#44BA68"),
-            "TT": col.GetColor("#F4B642"),
-            "WJets": col.GetColor("#41B4DB"),
-            "other": col.GetColor("#ED635E")
+            "DY"      : col.GetColor("#7A21DD"),
+            "TT"      : col.GetColor("#9C9CA1"),
+            "W"       : col.GetColor("#964A8B"),
+            "singleH" : col.GetColor("#E42536"),
+            "other"   : col.GetColor("#F89C20")
     }
+
     bkgLineColors = {}
     bkgLineColors = {
-            "DY": col.GetColor("#389956"),
-            "TT": col.GetColor("#dea63c"),
-            "WJets": col.GetColor("#3ca4c8"),
-            "other": col.GetColor("#ED635E")
-    }
+            "DY"      : col.GetColor("#389956"),
+            "TT"      : col.GetColor("#dea63c"),
+            "W"       : col.GetColor("#3ca4c8"), 
+            "singleH" : col.GetColor("#3ca4c8"),
+            "other"   : col.GetColor("#d85a56")
+   }
 
 
     #if args.sigscale:
@@ -562,22 +565,20 @@ if __name__ == "__main__" :
     
     hDY = getHisto("DY", hBkgs,doOverflow)
     hTT = getHisto("TT", hBkgs,doOverflow)
-    hWJets = getHisto("WJets", hBkgs,doOverflow)
+    hWJets = getHisto("W", hBkgs,doOverflow)
+    hHiggs  = getHisto("singleH", hBkgs,doOverflow)
     hothers = getHisto("other", hBkgs,doOverflow)
 
-    hBkgList = [hothers, hWJets, hTT, hDY] ## full list for stack
-
-    hBkgNameList = ["Others", "W + jets", "t#bar{t}" , "DY"] # list for legend
-    #hBkgNameList = ["Others", "single H", "t#bar{t}" , "DY"] # list for legend
+    hBkgList = [hothers, hWJets, hHiggs, hTT, hDY] ## full list for stack  
+    hBkgNameList = ["Others", "W + jets", "single H", "t#bar{t}" , "DY"] # list for legend   
 
     if doQCD:
         col2 = TColor()
         hQCD    = getHisto ("QCD", hBkgs,doOverflow)
         hQCD.SetName("QCD")
-        hBkgList = [hothers, hWJets, hQCD, hDY, hTT]
-        hBkgNameList = ["others", "W + Jets", "QCD", "DY", "t#bar{t}"]
-        #hBkgNameList = ["others", "single H", "QCD", "DY", "t#bar{t}"]
-        bkgColors["QCD"] = col2.GetColor("#F29563") #(TColor(242,149,99)).GetNumber() #gROOT.GetColor("#F29563")
+        hBkgList = [hothers, hWJets, hHiggs, hQCD, hDY, hTT]
+        hBkgNameList = ["others", "W + Jets", "single H", "QCD", "DY", "t#bar{t}"]
+        bkgColors["QCD"] = col2.GetColor("#5790FC") #(TColor(242,149,99)).GetNumber() #gROOT.GetColor("#F29563")
         bkgLineColors["QCD"] = col2.GetColor("#DC885A")
 
     #PisaOrder = [0, 1, 4, 3, 2]
@@ -879,9 +880,9 @@ if __name__ == "__main__" :
             selName = "1b1j"
         elif "2b0j" in args.sel:
             selName = "2b0j"
-        elif "sboostedM_pnet" in args.sel or 'sboostedL_pnet' in args.sel:
+        elif "boostedM_pnet" in args.sel or 'boostedL_pnet' in args.sel:
             selName = "boosted pnet"
-        elif "sboostedLLMcut_semi" in args.sel:
+        elif "boosted_semi" in args.sel:
             selName = "semi-boosted"
         elif "antiB" in args.sel:
             selName = "antiB"
