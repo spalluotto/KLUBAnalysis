@@ -7,9 +7,12 @@ import subprocess
 # ------ EDIT --------
 #ParticleNet_wp = 'medium'
 ParticleNet_wp = 'low'
-run = 'UL2016APV'
-date = '01Feb24_isLeptTrigger_newBoosted_LP'
-whichChannels = [True, True, True, False] 
+run = 'UL16APV'
+date = '27Feb2024_checkSkims'
+whichChannels = [False, True, True, False] 
+
+selections =  ['baseline', 'baseline_boosted']
+#selections = ['res1b','res2b','boosted_semi', 'boostedL_pnet', 'baseline', 'baseline_boosted']
 # -------------------------
 
 # settings
@@ -30,36 +33,30 @@ args = parser.parse_args()
 
 
 # dictionary selection : [variables]
-#resolved_vars = [('DNNoutSM_kl_1', 'DNN_{out}^{SM} k_{#lambda}=1')]
-#boosted_vars = resolved_vars
-resolved_vars =     [  ("bjet1_pt",  "p_{T}(b_{1}) [GeV]")  , ("bjet2_pt", "p_{T}(b_{2}) [GeV]"), ("bjet1_eta","#eta(b_{1})"), ("bjet2_eta","#eta(b_{2})"), ("bH_mass","m_{bb} [GeV]"), ("bH_pt","p_{T,bb} [GeV]"), ("dau1_pt","p_{T}(lep_{1}) [GeV]"), ("dau2_pt","p_{T}(lep_{2}) [GeV]"), ("dau1_eta","#eta(lep_{1})"), ("dau2_eta","#eta(lep_{2})"), ("tauH_SVFIT_mass","m_{#tau#tau}(SVFit) [GeV]"), ("tauH_SVFIT_pt","p_{T,#tau#tau}(SVFit) [GeV]") ,("tauH_mass","m_{#tau#tau} (vis) [GeV]"), ("tauH_pt","p_{T,#tau#tau} (vis) [GeV]"), ('DNNoutSM_kl_1', 'DNN_{out}^{SM} k_{#lambda}=1'), ('bjet1_CvsL', 'CvsL(b_{1})'),  ('bjet1_CvsB', 'CvsB(b_{1})'), ('bjet1_HHbtag', 'HHbtag(b_{1})'), ('bjet2_CvsL', 'CvsL(b_{2})'),  ('bjet2_CvsB', 'CvsB(b_{2})'), ('bjet2_HHbtag', 'HHbtag(b_{2})')]
+
+resolved_vars =     [  ("bjet1_pt",  "p_{T}(b_{1}) [GeV]")  , ("bjet2_pt", "p_{T}(b_{2}) [GeV]"), ("bjet1_eta","#eta(b_{1})"), ("bjet2_eta","#eta(b_{2})"), ("bH_mass","m_{bb} [GeV]"), ("bH_pt","p_{T,bb} [GeV]"), ("dau1_pt","p_{T}(lep_{1}) [GeV]"), ("dau2_pt","p_{T}(lep_{2}) [GeV]"), ("dau1_eta","#eta(lep_{1})"), ("dau2_eta","#eta(lep_{2})"), ("tauH_SVFIT_mass","m_{#tau#tau}(SVFit) [GeV]"), ("tauH_SVFIT_pt","p_{T,#tau#tau}(SVFit) [GeV]") ,("tauH_mass","m_{#tau#tau} (vis) [GeV]"), ("tauH_pt","p_{T,#tau#tau} (vis) [GeV]"), ('DNNoutSM_kl_1', 'DNN_{out}^{SM} k_{#lambda}=1')]
 
 boosted_vars =  [('fatjet_softdropMass','m_{bb}^{SD} [GeV]'), ('fatjet_pt','p_{T, bb} [GeV]'), ('fatjet_eta','#eta(bb)'), ('fatjet_phi','#phi(bb)'), ('fatjet_particleNetMDJetTags_score','score_{pnet}(bb)'), ('fatjet_particleNetMDJetTags_mass','m_{bb}^{pnet}'), ('HHbregrsvfit_pt','p_{T,HH} (pnet regression) [GeV]'), ('HHbregrsvfit_eta','#eta_{HH}(pnet regression)'), ('HHbregrsvfit_phi','#phi_{HH}(pnet regression)'), ('HHbregrsvfit_m','m_{HH} (pnet regression) [GeV]'), ('DNNoutSM_kl_1', 'DNN_{out}^{SM} k_{#lambda}=1')]
 
 
 if 'medium' in ParticleNet_wp:
     dict_sel_var = {
-        "s1b1jresolvedMcut"   : resolved_vars,
-        "s2b0jresolvedMcut"   : resolved_vars,
-        "sboostedLLMcut_semi" : boosted_vars,
-        "sboostedM_pnet"      : boosted_vars,
+        "res1b"   : resolved_vars,
+        "res2b"   : resolved_vars,
+        "boosted_semi" : boosted_vars,
+        "boostedM_pnet"      : boosted_vars,
         "baseline"            : resolved_vars,
         "baseline_boosted"    : boosted_vars
     }
-    selections = ['baseline', 'baseline_boosted']
-    #    selections = ['s1b1jresolvedMcut','s2b0jresolvedMcut','sboostedLLMcut_semi', 'sboostedM_pnet', 'baseline', 'baseline_boosted']
-
 elif 'low' in  ParticleNet_wp:
     dict_sel_var = {
-        "s1b1jresolvedMcut"   : resolved_vars,
-        "s2b0jresolvedMcut"   : resolved_vars,
-        "sboostedLLMcut_semi" : boosted_vars,
-        "sboostedL_pnet"      : boosted_vars,
+        "res1b"   : resolved_vars,
+        "res2b"   : resolved_vars,
+        "boosted_semi" : boosted_vars,
+        "boostedL_pnet"      : boosted_vars,
         "baseline"            : resolved_vars,
         "baseline_boosted"    : boosted_vars
     }
-    selections = ['baseline', 'baseline_boosted', 's1b1jresolvedMcut','s2b0jresolvedMcut',  'sboostedL_pnet']
-    selections = ['s1b1jresolvedMcut','s2b0jresolvedMcut','sboostedLLMcut_semi', 'sboostedL_pnet', 'baseline', 'baseline_boosted']  
 else:
     print("ParticleNet working point?")
     sys.exit()
@@ -68,7 +65,11 @@ else:
 
 # directories
 klubdir = '/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis/'
-script = 'scripts/makeFinalPlots_'+run+'.py'
+if 'UL16APV' in run:
+    script = 'scripts/makeFinalPlots_UL2016APV.py'
+else:
+    print("RUN ?")
+    sys.exit(0)
 outdir = klubdir+'/plots/'
 indir = klubdir
 
@@ -87,6 +88,8 @@ for it,ch in enumerate(channelsMap):
         for region in regions:
             print("REGION : ", region)
             for selection,variables in dict_sel_var.items():
+                if selection not in selections:
+                    continue
                 print("SELECTION : ", selection)
                 sel = selection
 
