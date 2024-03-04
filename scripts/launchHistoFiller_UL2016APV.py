@@ -5,10 +5,10 @@ import argparse
 
 
 # ----- EDIT HERE ----
-skim_name = 'SKIMS_UL2016APV_21Jan_newMET_newBoosted'   # --- this only serves for checking bad files, but samples should be put in the sampleCfg
-run = 'UL2016APV'
-date = '01Feb24_isLeptTrigger_newBoosted_LP'
-whichChannels = [False, False, False, True]   # you may want to run one or more channels
+skim_name = 'SKIMS_UL2016APV_14Feb2024'   # --- this only serves for checking bad files, but samples should be put in the sampleCfg
+run = 'UL16APV'
+date = '27Feb2024_checkSkims'
+whichChannels = [False, True, True, False]   # you may want to run one or more channels
 nJobs = '250'
 
 checkGoodFiles = False
@@ -19,7 +19,10 @@ klubdir = '/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis/'
 # channel mapping of the considered channels
 channelsMap = ['MuTau', 'ETau', 'TauTau', 'MuMu']
 
-script = 'scripts/submitHistoFiller_'+run+'.py'
+if '16APV' in run:
+    script = 'scripts/submitHistoFiller_UL2016APV.py'
+else:
+    sys.exit(0)
 os.chdir(klubdir)
 
 # creating goodfiles
