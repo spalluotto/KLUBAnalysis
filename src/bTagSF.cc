@@ -9,15 +9,9 @@ using namespace std;
 
 #define DEBUG false
 
-bTagSF::bTagSF(std::string SFfilename, std::string effFileName, std::string effHistoTag, std::string year, std::string WPset, bool isMC):
-  m_calib("DeepCSV", SFfilename.c_str()), m_year(year), m_isMC(isMC)
-{
-  if (m_isMC) {
-	m_initialize(SFfilename, effFileName, effHistoTag, year, WPset);
-  }
-}
-	
-void bTagSF::m_initialize(std::string SFfilename, std::string effFileName, std::string effHistoTag, std::string year, std::string WPset)
+bTagSF::bTagSF(std::string SFfilename, std::string effFileName, std::string effHistoTag, std::string year, std::string WPset):
+  m_calib("DeepCSV", SFfilename.c_str()), 
+  m_year(year)
 {	
   // Fill m_readers varray with year dependent names for reshaping uncertainties
   m_readers[0] = BTagCalibrationReader(BTagEntry::OP_LOOSE,  "central", {"up", "down"});
@@ -262,9 +256,6 @@ float bTagSF::getEff (WP wpt, int jetFlavor, int channel, float pt, float eta)
 // noticed that all jets are taken into account via P_Data and P_MC
 vector<float> bTagSF::getEvtWeight (const std::vector<std::pair<float,int>>& jets_and_btag, bigTree &theBigTree, std::map<int,double> jets_and_smearFactor, int channel, SFsyst systWP)
 {
-  if (!m_isMC) {
-	return {{1., 1., 1., 1.}};
-  }
   
   vector<double> P_MC   (m_nWP, 1.); // 0 = L, 1 = M, 2 = T
   vector<double> P_Data (m_nWP, 1.); // 0 = L, 1 = M, 2 = T
@@ -366,10 +357,6 @@ std::vector<float> bTagSF::getEvtWeightShifted (const std::vector<std::pair<floa
 
   // Values of shifted SFs all initialized to 1
   std::vector<float> SFs (systNames.size(), 1.);
-
-  if (!m_isMC) {
-	return SFs;
-  }
 
   // Loop on jets
   TLorentzVector vJet (0,0,0,0);
