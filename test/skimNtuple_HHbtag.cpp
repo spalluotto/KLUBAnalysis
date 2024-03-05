@@ -3575,7 +3575,6 @@ int main (int argc, char** argv)
 		  vector<float> bTagWeight_down			= bTagSFHelper.getEvtWeight(jets_and_sortPar, theBigTree, smears_AK4, pType, bTagSF::down);
 		  vector<float> bTagWeightReshapeshifts = bTagSFHelper.getEvtWeightShifted(jets_and_sortPar, theBigTree, smears_AK4);
 
-
 		  theSmallTree.m_bTagweightL = (isMC ? bTagWeight.at(0) : 1.0);
 		  theSmallTree.m_bTagweightM = (isMC ? bTagWeight.at(1) : 1.0);
 		  theSmallTree.m_bTagweightT = (isMC ? bTagWeight.at(2) : 1.0);
