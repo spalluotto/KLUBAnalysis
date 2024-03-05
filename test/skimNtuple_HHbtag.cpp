@@ -579,7 +579,7 @@ int main (int argc, char** argv)
 	wpset_df = "106X16postVFP_DeepFlavor_V1";
 	wpyear = "2016";
   }
-  bTagSF bTagSFHelper(bTag_SFFile, bTag_effFile, "", wpyear, wpset_csv, isMC);
+  bTagSF bTagSFHelper(bTag_SFFile, bTag_effFile, "", wpyear, wpset_csv);
   if(useDeepFlavor and isMC) {
     bTagSFHelper.SetWPset(wpset_df);
   }
@@ -3762,18 +3762,19 @@ int main (int argc, char** argv)
 		  vector<float> bTagWeight_down = bTagSFHelper.getEvtWeight(jets_and_BTag, theBigTree, jets_and_smearFactor, pType, bTagSF::down);
 		  vector<float> bTagWeightReshapeshifts = bTagSFHelper.getEvtWeightShifted(jets_and_BTag, theBigTree, jets_and_smearFactor);
 
-		  theSmallTree.m_bTagweightL = bTagWeight.at(0);
-		  theSmallTree.m_bTagweightM = bTagWeight.at(1);
-		  theSmallTree.m_bTagweightT = bTagWeight.at(2);
-		  theSmallTree.m_bTagweightReshape = bTagWeight.at(3);
 
-		  theSmallTree.m_bTagweightL_up = bTagWeight_up.at(0);
-		  theSmallTree.m_bTagweightM_up = bTagWeight_up.at(1);
-		  theSmallTree.m_bTagweightT_up = bTagWeight_up.at(2);
-
-		  theSmallTree.m_bTagweightL_down = bTagWeight_down.at(0);
-		  theSmallTree.m_bTagweightM_down = bTagWeight_down.at(1);
-		  theSmallTree.m_bTagweightT_down = bTagWeight_down.at(2);
+		  theSmallTree.m_bTagweightL = (isMC ? bTagWeight.at(0) : 1.0);
+		  theSmallTree.m_bTagweightM = (isMC ? bTagWeight.at(1) : 1.0);
+		  theSmallTree.m_bTagweightT = (isMC ? bTagWeight.at(2) : 1.0);
+		  theSmallTree.m_bTagweightReshape = (isMC ? bTagWeight.at(3) : 1.0);
+		  
+		  theSmallTree.m_bTagweightL_up = (isMC ? bTagWeight_up.at(0) : 1.0);
+		  theSmallTree.m_bTagweightM_up = (isMC ? bTagWeight_up.at(1) : 1.0);
+		  theSmallTree.m_bTagweightT_up = (isMC ? bTagWeight_up.at(2) : 1.0);
+		  
+		  theSmallTree.m_bTagweightL_down = (isMC ? bTagWeight_down.at(0) : 1.0);
+		  theSmallTree.m_bTagweightM_down = (isMC ? bTagWeight_down.at(1) : 1.0);
+		  theSmallTree.m_bTagweightT_down = (isMC ? bTagWeight_down.at(2) : 1.0);
 
 		  theSmallTree.m_bTagweightReshape_jes_up        = bTagWeightReshapeshifts.at(0); 
 		  theSmallTree.m_bTagweightReshape_lf_up		 = bTagWeightReshapeshifts.at(1); 
