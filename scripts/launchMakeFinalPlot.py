@@ -8,11 +8,12 @@ import subprocess
 #ParticleNet_wp = 'medium'
 ParticleNet_wp = 'low'
 run = 'UL16APV'
-date = '27Feb2024_checkSkims'
-whichChannels = [False, True, True, False] 
+date = '17Mar2024_categories'
 
-selections =  ['baseline', 'baseline_boosted']
-#selections = ['res1b','res2b','boosted_semi', 'boostedL_pnet', 'baseline', 'baseline_boosted']
+out_tag = '_noScaleBinWidth'
+whichChannels = [False, False, True, True] 
+
+selections = ['res1b','res2b','boosted_semi', 'boostedL_pnet', 'baseline', 'baseline_boosted']
 # -------------------------
 
 # settings
@@ -22,6 +23,9 @@ lumi = '19.5'
 regions = ['SR']
 do_signal = True   # False means that I want to add the option no-sig through which I disable plotting signal
 log = True #
+
+no_bin_width = True # True Means that I do not want to scale graphs by the bin width
+
 
 blind = False
 if blind:
@@ -99,13 +103,16 @@ for it,ch in enumerate(channelsMap):
                 log_option = " --log " if log else ""
                 sig_option = ' --no-sig ' if not do_signal else ''
                 blind_option = '--blind-range '+str(blind_range[0])+' '+str(blind_range[1]) if blind else ''
+                binwidth_option = '--no-binwidth' if no_bin_width else ''
 
                 for variab in variables:
                     print("VAR : ", variab)
                     var_name = variab[0]
                     var_label = variab[1]
+                    
+                    outTag = tag + out_tag
 
-                    command = 'python '+script+' --indir '+tag+' --outdir '+outdir+' --var '+var_name+' --reg '+region+' --sel '+selection+' --channel '+ch+' --lymin '+ymin_legend+' --lumi '+lumi+log_option+' --ratio --tag '+tag+' --label "'+var_label+'"'+sig_option+' '+blind_option+' --quit'
+                    command = 'python '+script+' --indir '+tag+' --outdir '+outdir+' --var '+var_name+' --reg '+region+' --sel '+selection+' --channel '+ch+' --lymin '+ymin_legend+' --lumi '+lumi+log_option+' --ratio --tag '+outTag+' --label "'+var_label+'"'+sig_option+' '+blind_option+' '+binwidth_option+' --quit'
                     if not args.dryrun:
                         os.system(command)
                     else:
