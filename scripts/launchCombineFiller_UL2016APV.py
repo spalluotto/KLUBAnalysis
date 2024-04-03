@@ -6,8 +6,8 @@ import argparse
 
 # ----- EDIT HERE ----
 run = 'UL16APV'
-date = '27Feb2024_checkSkims'
-whichChannels = [False, True, True, False]   # you may want to run one or more channels
+date = '17Mar2024_categories'
+whichChannels = [True, True, True, True]   # you may want to run one or more channels
 # --------------------
 
 klubdir = '/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis/'

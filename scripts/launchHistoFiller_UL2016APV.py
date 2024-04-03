@@ -7,8 +7,8 @@ import argparse
 # ----- EDIT HERE ----
 skim_name = 'SKIMS_UL2016APV_14Feb2024'   # --- this only serves for checking bad files, but samples should be put in the sampleCfg
 run = 'UL16APV'
-date = '27Feb2024_checkSkims'
-whichChannels = [False, True, True, False]   # you may want to run one or more channels
+date = '17Mar2024_categories'
+whichChannels = [True, True, True, True]   # you may want to run one or more channels
 nJobs = '250'
 
 checkGoodFiles = False
