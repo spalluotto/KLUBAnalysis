@@ -498,7 +498,7 @@ if __name__ == "__main__" :
             "DY"      : col.GetColor("#7A21DD"),
             "TT"      : col.GetColor("#9C9CA1"),
             "W"       : col.GetColor("#964A8B"),
-            "singleH" : col.GetColor("#E42536"),
+            "H" : col.GetColor("#E42536"),
             "other"   : col.GetColor("#F89C20")
     }
 
@@ -507,7 +507,7 @@ if __name__ == "__main__" :
             "DY"      : col.GetColor("#389956"),
             "TT"      : col.GetColor("#dea63c"),
             "W"       : col.GetColor("#3ca4c8"), 
-            "singleH" : col.GetColor("#3ca4c8"),
+            "H" : col.GetColor("#3ca4c8"),
             "other"   : col.GetColor("#d85a56")
    }
 
@@ -566,18 +566,18 @@ if __name__ == "__main__" :
     hDY = getHisto("DY", hBkgs,doOverflow)
     hTT = getHisto("TT", hBkgs,doOverflow)
     hWJets = getHisto("W", hBkgs,doOverflow)
-    hHiggs  = getHisto("singleH", hBkgs,doOverflow)
+    hHiggs  = getHisto("H", hBkgs,doOverflow)
     hothers = getHisto("other", hBkgs,doOverflow)
 
     hBkgList = [hothers, hWJets, hHiggs, hTT, hDY] ## full list for stack  
-    hBkgNameList = ["Others", "W + jets", "single H", "t#bar{t}" , "DY"] # list for legend   
+    hBkgNameList = ["Others", "W + jets", "H", "t#bar{t}" , "DY"] # list for legend   
 
     if doQCD:
         col2 = TColor()
         hQCD    = getHisto ("QCD", hBkgs,doOverflow)
         hQCD.SetName("QCD")
         hBkgList = [hothers, hWJets, hHiggs, hQCD, hDY, hTT]
-        hBkgNameList = ["others", "W + Jets", "single H", "QCD", "DY", "t#bar{t}"]
+        hBkgNameList = ["others", "W + Jets", "H", "QCD", "DY", "t#bar{t}"]
         bkgColors["QCD"] = col2.GetColor("#5790FC") #(TColor(242,149,99)).GetNumber() #gROOT.GetColor("#F29563")
         bkgLineColors["QCD"] = col2.GetColor("#DC885A")
 
@@ -876,10 +876,10 @@ if __name__ == "__main__" :
     if not args.name:
         if "baseline" in args.sel:
             selName = "baseline"
-        elif "1b1j" in args.sel:
-            selName = "1b1j"
-        elif "2b0j" in args.sel:
-            selName = "2b0j"
+        elif "res1b" in args.sel:
+            selName = "res1b"
+        elif "res2b" in args.sel:
+            selName = "res2b"
         elif "boostedM_pnet" in args.sel or 'boostedL_pnet' in args.sel:
             selName = "boosted pnet"
         elif "boosted_semi" in args.sel:
