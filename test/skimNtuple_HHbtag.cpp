@@ -3331,6 +3331,7 @@ int main (int argc, char** argv)
 	  theSmallTree.m_trigSF_met_down  = isMC ? trigSF_met_down  : 1.0;
 	  theSmallTree.m_trigSF_stau_up	  = isMC ? trigSF_stau_up   : 1.0;
 	  theSmallTree.m_trigSF_stau_down = isMC ? trigSF_stau_down : 1.0;
+
 	  theSmallTree.m_totalWeight = (isMC? theSmallTree.m_MC_weight * theSmallTree.m_PUReweight * theSmallTree.m_L1pref_weight *
 									trigSF * theSmallTree.m_IdFakeSF_deep_2d: 1.0);
 

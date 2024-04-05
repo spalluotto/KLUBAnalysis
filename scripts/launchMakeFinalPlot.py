@@ -25,8 +25,6 @@ do_signal = True   # False means that I want to add the option no-sig through wh
 log = True #
 
 no_bin_width = True # True Means that I do not want to scale graphs by the bin width
-
-
 blind = False
 if blind:
     blind_range = [0.0,1.0]
