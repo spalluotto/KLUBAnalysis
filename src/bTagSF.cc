@@ -9,10 +9,16 @@ using namespace std;
 
 #define DEBUG false
 
-bTagSF::bTagSF(std::string SFfilename, std::string effFileName, std::string effHistoTag, std::string year, std::string WPset):
-  m_calib("DeepCSV", SFfilename.c_str()), 
-  m_year(year)
-{	
+bTagSF::bTagSF(std::string SFfilename, std::string effFileName, std::string effHistoTag, std::string year, std::string WPset, bool isMC):
+  m_calib("DeepCSV", SFfilename.c_str()), m_year(year), m_isMC(isMC)
+{
+  if (m_isMC) {
+    m_initialize(SFfilename, effFileName, effHistoTag, year, WPset);
+  }
+}
+
+void bTagSF::m_initialize(std::string SFfilename, std::string effFileName, std::string effHistoTag, std::string year, std::string WPset)
+{
   // Fill m_readers varray with year dependent names for reshaping uncertainties
   m_readers[0] = BTagCalibrationReader(BTagEntry::OP_LOOSE,  "central", {"up", "down"});
   m_readers[1] = BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up", "down"});
@@ -51,18 +57,18 @@ bTagSF::bTagSF(std::string SFfilename, std::string effFileName, std::string effH
   TString WPnames[3] = {"L", "M", "T"};
 
   for (int iWP = 0; iWP < 3; iWP++)
-  {
-    for (int flav = 0; flav < 3; flav++)
     {
-      for (int channel = 0; channel < 4; channel++)
-      {
-	TString name = Form("eff_%s_%s_%s", flavs[flav].Data(), WPnames[iWP].Data(), chnames[channel].Data());
-	//cout << "Tmps name " << name << endl;
-	m_hEff [iWP][flav][channel] = (TH1F*) m_fileEff->Get(name.Data());
-	//cout << " --> " << m_hEff [iWP][flav][channel] -> GetName() << endl;
-      }
+      for (int flav = 0; flav < 3; flav++)
+	{
+	  for (int channel = 0; channel < 4; channel++)
+	    {
+	      TString name = Form("eff_%s_%s_%s", flavs[flav].Data(), WPnames[iWP].Data(), chnames[channel].Data());
+	      //cout << "Tmps name " << name << endl;
+	      m_hEff [iWP][flav][channel] = (TH1F*) m_fileEff->Get(name.Data());
+	      //cout << " --> " << m_hEff [iWP][flav][channel] -> GetName() << endl;
+	    }
+	}
     }
-  }
 
   SetWPset(WPset);
 }
@@ -115,10 +121,10 @@ void bTagSF::SetWPset(std::string WPset)
     SetWPset(0.0508, 0.2598, 0.6502);
 
   else
-  {
-    cout << "bTagSF :: WARNING! SF set string " << WPset << " not recognized, going to use values from 80X_DeepCSV_V1" << endl;
-    SetWPset(0.2217, 0.6321, 0.8953);
-  }
+    {
+      cout << "bTagSF :: WARNING! SF set string " << WPset << " not recognized, going to use values from 80X_DeepCSV_V1" << endl;
+      SetWPset(0.2217, 0.6321, 0.8953);
+    }
 
   printf("bTagSF :: info : WP set is %s i.e.;%.3f %.3f %.3f\n", WPset.c_str(), _WPtag[0], _WPtag[1], _WPtag[2]);
 }
@@ -144,17 +150,17 @@ float bTagSF::getSF (WP wpt, SFsyst syst, int jetFlavor, float pt, float eta, fl
   if (mypt > 1000.) mypt = 1000.;
 
   if (abs(jetFlavor) == 5)
-  {
-    flav = BTagEntry::FLAV_B;
-  }
+    {
+      flav = BTagEntry::FLAV_B;
+    }
   else if (abs(jetFlavor) == 4)
-  {
-    flav = BTagEntry::FLAV_C;
-  }
+    {
+      flav = BTagEntry::FLAV_C;
+    }
   else
-  {
-    flav = BTagEntry::FLAV_UDSG;
-  }
+    {
+      flav = BTagEntry::FLAV_UDSG;
+    }
 
   if (DEBUG) cout << "   ~~ getSF(): requesting SF for WP=" << wpt << "," << myWPIndex << " SFsyst=" << syst << "," << mySystIndex << " jetFlavor=" << jetFlavor <<"("<<flav<<")"<< " pt=" << pt << " eta=" << eta << endl;
 
@@ -175,17 +181,17 @@ float bTagSF::getSFshifted (std::string systName, int jetFlavor, float pt, float
   if (mypt > 1000.) mypt = 1000.;
 
   if (abs(jetFlavor) == 5)
-  {
-    flav = BTagEntry::FLAV_B;
-  }
+    {
+      flav = BTagEntry::FLAV_B;
+    }
   else if (abs(jetFlavor) == 4)
-  {
-    flav = BTagEntry::FLAV_C;
-  }
+    {
+      flav = BTagEntry::FLAV_C;
+    }
   else
-  {
-    flav = BTagEntry::FLAV_UDSG;
-  }
+    {
+      flav = BTagEntry::FLAV_UDSG;
+    }
 
   if (DEBUG) cout << "   ~~ requesting SF for systName= " << systName << " BTagEntry::FLAV=" << flav << " pt=" << pt << " eta=" << eta << endl;
 
@@ -194,17 +200,17 @@ float bTagSF::getSFshifted (std::string systName, int jetFlavor, float pt, float
   // For c-flavored jets, only "cferr1/2" uncertainties are applied.
   // For other cases (e.g. b-jet with cferr uncrtainty): use the central value of the SF.
   if (flav != BTagEntry::FLAV_C && systName.find("cferr") != std::string::npos)
-  {
-    SF = m_readers[3].eval_auto_bounds("central", flav, eta, pt, discr);
-  }
+    {
+      SF = m_readers[3].eval_auto_bounds("central", flav, eta, pt, discr);
+    }
   else if (flav == BTagEntry::FLAV_C && systName.find("cferr") == std::string::npos)
-  {
-    SF = m_readers[3].eval_auto_bounds("central", flav, eta, pt, discr);
-  }
+    {
+      SF = m_readers[3].eval_auto_bounds("central", flav, eta, pt, discr);
+    }
   else
-  {
-    SF = m_readers[3].eval_auto_bounds(systName, flav, eta, pt, discr);
-  }
+    {
+      SF = m_readers[3].eval_auto_bounds(systName, flav, eta, pt, discr);
+    }
 
   if (DEBUG) cout << "   ~~ returning " << SF << endl;
 
@@ -241,10 +247,10 @@ float bTagSF::getEff (WP wpt, int jetFlavor, int channel, float pt, float eta)
 
   // protection againts wrongly measured efficiencies (low stat) --> reduce pT bin
   while (eff < 0.00000000001 && binx > 0)
-  {
-    binx-- ;
-    eff = h->GetBinContent (binx, biny);
-  }
+    {
+      binx-- ;
+      eff = h->GetBinContent (binx, biny);
+    }
 
   return eff;
 }
@@ -254,6 +260,9 @@ float bTagSF::getEff (WP wpt, int jetFlavor, int channel, float pt, float eta)
 // noticed that all jets are taken into account via P_Data and P_MC
 vector<float> bTagSF::getEvtWeight (const std::vector<std::pair<float,int>>& jets_and_btag, bigTree &theBigTree, std::map<int,double> jets_and_smearFactor, int channel, SFsyst systWP)
 {
+  if (!m_isMC) {
+    return {{1., 1., 1., 1.}};
+  }
   
   vector<double> P_MC   (m_nWP, 1.); // 0 = L, 1 = M, 2 = T
   vector<double> P_Data (m_nWP, 1.); // 0 = L, 1 = M, 2 = T
@@ -262,71 +271,71 @@ vector<float> bTagSF::getEvtWeight (const std::vector<std::pair<float,int>>& jet
   TLorentzVector vJet (0,0,0,0);
 
   for (unsigned int ijet = 0; ijet < jets_and_btag.size(); ijet++)
+    {
+      if (DEBUG) cout << "DEB: ijet " << ijet << " , size = " << jets_and_btag.size() << endl;
+
+      int idx = jets_and_btag[ijet].second;
+      float discr = jets_and_btag[ijet].first;
+      vJet.SetPxPyPzE (theBigTree.jets_px->at(idx), theBigTree.jets_py->at(idx),
+		       theBigTree.jets_pz->at(idx), theBigTree.jets_e->at(idx));
+      vJet = vJet * jets_and_smearFactor[idx];
+
+      int flav = theBigTree.jets_HadronFlavour->at(idx);
+      if (systWP == central)
 	{
-	  if (DEBUG) cout << "DEB: ijet " << ijet << " , size = " << jets_and_btag.size() << endl;
-
-	  int idx = jets_and_btag[ijet].second;
-	  float discr = jets_and_btag[ijet].first;
-	  vJet.SetPxPyPzE (theBigTree.jets_px->at(idx), theBigTree.jets_py->at(idx),
-					   theBigTree.jets_pz->at(idx), theBigTree.jets_e->at(idx));
-	  vJet = vJet * jets_and_smearFactor[idx];
-
-	  int flav = theBigTree.jets_HadronFlavour->at(idx);
-	  if (systWP == central)
-		{
-		  SFreshaping *= getSF(reshaping,  systWP, flav, vJet.Pt(), vJet.Eta(), discr);
-		  if (DEBUG) cout << "  >> DEB: SFs " << SFreshaping << endl;
-		}
-    
-	  for (unsigned iwp=0; iwp<m_nWP; iwp++)
-		{
-		  double SF = getSF(static_cast<WP>(iwp), systWP, flav, vJet.Pt(), vJet.Eta());
-		  double effBTag = getEff(static_cast<WP>(iwp), flav, channel, vJet.Pt(), vJet.Eta()) ;
-		  bool tagged = discr > _WPtag[iwp];
-		  if (DEBUG) {
-			cout << "  >> DEB: SFs " << SF << endl;
-			cout << "  >> DEB: EFFs " << effBTag << endl;
-			cout << "  >> DEB: tagged " << tagged << endl;
-		  }
-
-		  double tmpMC   = P_MC[iwp];
-		  double tmpData = P_Data[iwp];
-		
-		  if (tagged)
-			{
-			  tmpMC *= effBTag;
-			  tmpData *= effBTag*SF;
-			}
-		  else
-			{
-			  tmpMC *= (1. - effBTag);
-			  tmpData *= (1. - (effBTag*SF));
-			}
-		
-		  P_MC[iwp] = tmpMC;
-		  P_Data[iwp] = tmpData;
-
-		  if (P_Data[iwp] / P_MC[iwp] < 0.05) {
-			cout << "effBTag: " << effBTag << endl;
-			cout << "SF: " << SF << endl;
-			cout << "tmpMC: " << tmpMC << endl;
-			cout << "tmpData: " << tmpData << endl;
-		  }
-		}
+	  SFreshaping *= getSF(reshaping,  systWP, flav, vJet.Pt(), vJet.Eta(), discr);
+	  if (DEBUG) cout << "  >> DEB: SFs " << SFreshaping << endl;
 	}
+    
+      for (unsigned iwp=0; iwp<m_nWP; iwp++)
+	{
+	  double SF = getSF(static_cast<WP>(iwp), systWP, flav, vJet.Pt(), vJet.Eta());
+	  double effBTag = getEff(static_cast<WP>(iwp), flav, channel, vJet.Pt(), vJet.Eta()) ;
+	  bool tagged = discr > _WPtag[iwp];
+	  if (DEBUG) {
+	    cout << "  >> DEB: SFs " << SF << endl;
+	    cout << "  >> DEB: EFFs " << effBTag << endl;
+	    cout << "  >> DEB: tagged " << tagged << endl;
+	  }
+
+	  double tmpMC   = P_MC[iwp];
+	  double tmpData = P_Data[iwp];
+	  
+	  if (tagged)
+	    {
+	      tmpMC *= effBTag;
+	      tmpData *= effBTag*SF;
+	    }
+	  else
+	    {
+	      tmpMC *= (1. - effBTag);
+	      tmpData *= (1. - (effBTag*SF));
+	    }
+	  
+	  P_MC[iwp] = tmpMC;
+	  P_Data[iwp] = tmpData;
+
+	  if (P_Data[iwp] / P_MC[iwp] < 0.05) {
+	    cout << "effBTag: " << effBTag << endl;
+	    cout << "SF: " << SF << endl;
+	    cout << "tmpMC: " << tmpMC << endl;
+	    cout << "tmpData: " << tmpData << endl;
+	  }
+	}
+    }
 
   // return value
   vector<float> weight(m_nWP+1);
   for (int iwp = 0; iwp<m_nWP; iwp++) {
-	weight[iwp] = P_Data[iwp] / P_MC[iwp];
+    weight[iwp] = P_Data[iwp] / P_MC[iwp];
   }
   weight[m_nWP] = SFreshaping;
 
   if (SFreshaping < 0.05)
-	{
-	  cout << "------ [Warning] Small B_Tag reshape SF!" << endl;
-	  cout << "SF reshaping: " << SFreshaping << endl;
-	}
+    {
+      cout << "------ [Warning] Small B_Tag reshape SF!" << endl;
+      cout << "SF reshaping: " << SFreshaping << endl;
+    }
 
   return weight;
 }
@@ -356,6 +365,10 @@ std::vector<float> bTagSF::getEvtWeightShifted (const std::vector<std::pair<floa
   // Values of shifted SFs all initialized to 1
   std::vector<float> SFs (systNames.size(), 1.);
 
+  if (!m_isMC) {
+return SFs;
+  }
+
   // Loop on jets
   TLorentzVector vJet (0,0,0,0);
   for (unsigned int ijet = 0; ijet < jets_and_btag.size(); ijet++)
@@ -366,7 +379,7 @@ std::vector<float> bTagSF::getEvtWeightShifted (const std::vector<std::pair<floa
     int idx = jets_and_btag[ijet].second;
     float discr = jets_and_btag[ijet].first;
     vJet.SetPxPyPzE(theBigTree.jets_px->at(idx), theBigTree.jets_py->at(idx),
-					theBigTree.jets_pz->at(idx), theBigTree.jets_e->at(idx));
+theBigTree.jets_pz->at(idx), theBigTree.jets_e->at(idx));
     vJet = vJet * jets_and_smearFactor[idx];
     int flav = theBigTree.jets_HadronFlavour->at(idx);
 
