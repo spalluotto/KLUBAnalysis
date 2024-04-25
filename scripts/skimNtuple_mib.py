@@ -291,7 +291,7 @@ if __name__ == "__main__":
         condorFile.write ('Error       = condor_job_$(ProcId).error\n')
         #condorFile.write ('Requirements = ((machine != "hercules.hcms.it")&&(machine != "pccms08.hcms.it")&&(machine != "pccms01.hcms.it")&&(machine != "pccms02.hcms.it")&&(machine != "pccms03.hcms.it")&&(machine != "pccms04.hcms.it"))\n')
         #condorFile.write ('Requirements = ((machine == "pccms11.hcms.it")||(machine == "pccms13.hcms.it")||(machine == "pccms14.hcms.it"))\n')
-        condorFile.write ('Requirements = ((machine == "clipper.hcms.it")||(machine == "pccms12.hcms.it"))\n')
+        condorFile.write ('Requirements = ((machine == "clipper.hcms.it")||(machine == "pccms12.hcms.it")||(machine == "pccms11.hcms.it")||(machine == "pccms13.hcms.it")||(machine == "pccms01.hcms.it"))\n')
         condorFile.write ('queue 1\n')
         condorFile.close ()
 

@@ -8,10 +8,10 @@ import subprocess
 #ParticleNet_wp = 'medium'
 ParticleNet_wp = 'low'
 run = 'UL16APV'
-date = '17Mar2024_categories'
+date = '23Apr2024'
 
-out_tag = '_noScaleBinWidth'
-whichChannels = [False, False, True, True] 
+out_tag = ''
+whichChannels = [True, True, True, True] 
 
 selections = ['res1b','res2b','boosted_semi', 'boostedL_pnet', 'baseline', 'baseline_boosted']
 # -------------------------
@@ -25,7 +25,8 @@ do_signal = True   # False means that I want to add the option no-sig through wh
 log = True #
 
 no_bin_width = True # True Means that I do not want to scale graphs by the bin width
-blind = False
+blind = True
+
 if blind:
     blind_range = [0.0,1.0]
 

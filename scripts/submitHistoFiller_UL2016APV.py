@@ -75,7 +75,7 @@ for nj in range(0, args.njobs):
     condorFile.write ('Log         = condor_filler_$(ProcId).log\n')
     condorFile.write ('Output      = condor_filler_$(ProcId).out\n')
     condorFile.write ('Error       = condor_filler_$(ProcId).error\n')
-    condorFile.write ('Requirements = ((machine != "hercules.hcms.it")&&(machine != "pccms08.hcms.it")&&(machine != "pccms01.hcms.it")&&(machine != "pccms02.hcms.it")&&(machine != "pccms03.hcms.it")&&(machine != "pccms04.hcms.it"))\n')
+    condorFile.write ('Requirements = ((machine == "pccms11.hcms.it")||(machine == "pccms12.hcms.it")||(machine == "pccms13.hcms.it"))\n')
     condorFile.write ('queue 1\n')
     condorFile.close ()
 
