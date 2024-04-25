@@ -6,8 +6,8 @@ import glob
 #--------------------------
 date           = '04Apr2024'
 
-execute_bkg    = False
-execute_sig    = True
+execute_bkg    = True
+execute_sig    = False
 execute_data   = False
 #--------------------------
 
@@ -166,8 +166,8 @@ names = {
     "WminusHToTauTau_M125"  : "WminusHToTauTau",
     "ZHToTauTau_M125"       : "ZHToTauTau",
 
-    "ZH_HToBB_ZToLL" : "ZH_HToBB_ZToLL",
-    "ZH_HToBB_ZToQQ" : "ZH_HToBB_ZToQQ",
+    "ZH_HToBB_ZToLL_M-125" : "ZH_HToBB_ZToLL",
+    "ZH_HToBB_ZToQQ_M-125" : "ZH_HToBB_ZToQQ",
 
     "ttHToNonbb_M125"  : "ttHToNonbb",
     "ttHTobb_M125"     : "ttHTobb",
@@ -193,7 +193,8 @@ names = {
     "TTWH" : "TTWH",
     "TTZH" : "TTZH",
 
-    "GluGluToHHTo2B2Tau" : "GluGluToHHTo2B2Tau"
+    "GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_SM" : "GluGluToHHTo2B2Tau"
+
 }
 
 
@@ -342,6 +343,32 @@ if execute_bkg:
 # SIGNALS MAP 
 sig_map = {}
 sig_map = {
+    # # --- GluGlu -> Graviton -> HH -> bb tautau ---
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-250"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-260"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-270"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-280"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-300"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-320"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-350"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-400"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-450"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-500"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-550"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-600"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-650"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-700"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-750"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-800"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-850"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-900"     :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-1000"    :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-1250"    :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-1500"    :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-1750"    :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-2000"    :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-2500"    :  "-n 20     -x 1.     -a True",
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-3000"    :  "-n 20     -x 1.     -a True"
 
 
     # --- GluGlu -> Graviton -> HH -> bb tautau ---
@@ -398,7 +425,6 @@ sig_map = {
     "GluGluToRadionToHHTo2B2Tau_M-2000"    :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-2500"    :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-3000"    :  "-n 20     -x 1.     -a True"
-
 
 
 
