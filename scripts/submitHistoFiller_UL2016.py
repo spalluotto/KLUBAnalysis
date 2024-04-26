@@ -1,27 +1,5 @@
 #!/usr/bin/env python
 
-###### LAUNCH COMMAND EXAMPLE:
-
-# - TauTau -
-# python scripts/submitHistoFiller_UL2016.py --cfg config/mainCfg_TauTau_UL2016.cfg --tag analysis_TauTau_UL2016_5Apr2022 --n 100
-# python scripts/submitHistoFiller_UL2016.py --cfg config/mainCfg_TauTau_UL2016.cfg --tag analysis_TauTau_UL2016_8Apr2022_correctPostVFP --n 100
-
-# - MuTau -
-# python scripts/submitHistoFiller_UL2016.py --cfg config/mainCfg_MuTau_UL2016.cfg --tag analysis_MuTau_UL2016_5Apr2022 --n 100
-# python scripts/submitHistoFiller_UL2016.py --cfg config/mainCfg_MuTau_UL2016.cfg --tag analysis_MuTau_UL2016_8Apr2022_correctPostVFP --n 100
-
-# - ETau -
-# python scripts/submitHistoFiller_UL2016.py --cfg config/mainCfg_ETau_UL2016.cfg --tag analysis_ETau_UL2016_5Apr2022 --n 100
-# python scripts/submitHistoFiller_UL2016.py --cfg config/mainCfg_ETau_UL2016.cfg --tag analysis_ETau_UL2016_8Apr2022_correctPostVFP --n 100
-
-# - MuMu -
-# python scripts/submitHistoFiller_UL2016.py --cfg config/mainCfg_MuMu_UL2016.cfg --tag analysis_MuMu_2016_6June2020 --n 150
-
-# - TauTau tauIDSF -
-# python scripts/submitHistoFiller_UL2016.py --cfg config/mainCfg_TauTau_UL2016_tauIDSF.cfg --tag analysis_TauTau_tauIDSF_12May2020_Legacy2016 --n 90
-
-################
-
 import os
 import sys
 import argparse
@@ -42,10 +20,7 @@ if not args.cfg:
 outDir = datetime.datetime.now().strftime('%Y.%m.%d_%H.%M.%S')
 if args.tag:
     outDir = args.tag
-#outDir = "JEC_jobs_pt25/"+outDir
 
-# pathname = os.path.dirname(sys.argv[0])        
-# here     = os.path.abspath(pathname)
 here = os.getcwd()
 
 program = 'testAnalysisHelper.exe'
@@ -64,7 +39,7 @@ for nj in range(0, args.njobs):
     scriptFile.write ('cd %s\n' % here)
     scriptFile.write ('eval `scram r -sh`\n')
     scriptFile.write ('source scripts/setup.sh\n')
-    command = program + ' ' + args.cfg + ' ' + str(nj) + ' ' + str(args.njobs) + ' 2>&1 | tee ' + outDir + '/' + logName
+    command = program + ' ' + args.cfg + ' ' + str(nj) + ' ' + str(args.njobs) + ' ' + outDir + ' 2>&1 | tee ' + outDir + '/' + logName
     scriptFile.write(command)
     scriptFile.close()
     os.system ('chmod u+rwx ' + outDir + '/' + scriptName)
@@ -75,12 +50,10 @@ for nj in range(0, args.njobs):
     condorFile.write ('Log         = condor_filler_$(ProcId).log\n')
     condorFile.write ('Output      = condor_filler_$(ProcId).out\n')
     condorFile.write ('Error       = condor_filler_$(ProcId).error\n')
-    condorFile.write ('Requirements = ((machine != "hercules.hcms.it")&&(machine != "pcmaster01.hcms.it")&&(machine != "catalina.hcms.it"))\n')
+    condorFile.write ('Requirements = ((machine == "pccms11.hcms.it")||(machine == "pccms12.hcms.it")||(machine == "pccms13.hcms.it"))\n')
     condorFile.write ('queue 1\n')
     condorFile.close ()
 
-    #launchcommand = ('/usr/bin/qsub -q  longcms ' + outDir + '/' + scriptName)
-    #launchcommand = ('/usr/bin/qsub -q  longcms ' + outDir + '/' + scriptName)
     launchcommand = ('condor_submit '+ outDir + '/condorLauncher_' + str (nj) + '.sh')
 
     print launchcommand
