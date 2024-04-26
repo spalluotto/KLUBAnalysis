@@ -1,27 +1,5 @@
 #!/usr/bin/env python
 
-###### LAUNCH COMMAND EXAMPLE:
-
-# - TauTau -
-# python scripts/submitHistoFiller_UL2016APV.py --cfg config/mainCfg_TauTau_UL2016APV.cfg --tag analysis_TauTau_UL2016APV_5Apr2022 --n 100
-# python scripts/submitHistoFiller_UL2016APV.py --cfg config/mainCfg_TauTau_UL2016APV.cfg --tag analysis_TauTau_UL2016APV_8Apr2022_correctPostVFP --n 100
-
-# - MuTau -
-# python scripts/submitHistoFiller_UL2016APV.py --cfg config/mainCfg_MuTau_UL2016APV.cfg --tag analysis_MuTau_UL2016APV_5Apr2022 --n 100
-# python scripts/submitHistoFiller_UL2016APV.py --cfg config/mainCfg_MuTau_UL2016APV.cfg --tag analysis_MuTau_UL2016APV_8Apr2022_correctPostVFP --n 100
-
-# - ETau -
-# python scripts/submitHistoFiller_UL2016APV.py --cfg config/mainCfg_ETau_UL2016APV.cfg --tag analysis_ETau_UL2016APV_5Apr2022 --n 100
-# python scripts/submitHistoFiller_UL2016APV.py --cfg config/mainCfg_ETau_UL2016APV.cfg --tag analysis_ETau_UL2016APV_8Apr2022_correctPostVFP --n 100
-
-# - MuMu -
-# python scripts/submitHistoFiller_UL2016APV.py --cfg config/mainCfg_MuMu_UL2016APV.cfg --tag analysis_MuMu_2016APV_6June2020 --n 150
-
-# - TauTau tauIDSF -
-# python scripts/submitHistoFiller_UL2016APV.py --cfg config/mainCfg_TauTau_UL2016APV_tauIDSF.cfg --tag analysis_TauTau_tauIDSF_12May2020_Legacy2016APV --n 90
-
-################
-
 import os
 import sys
 import argparse
@@ -38,14 +16,9 @@ if not args.cfg:
     print "** Please provide a cfg name: --cfg <relative path from KLUBanalysis/ or absolute path>"
     sys.exit()
 
-# datetime.datetime.now()
 outDir = datetime.datetime.now().strftime('%Y.%m.%d_%H.%M.%S')
 if args.tag:
     outDir = args.tag
-#outDir = "JEC_jobs_pt25/"+outDir
-
-# pathname = os.path.dirname(sys.argv[0])        
-# here     = os.path.abspath(pathname)
 here = os.getcwd()
 
 program = 'testAnalysisHelper.exe'
