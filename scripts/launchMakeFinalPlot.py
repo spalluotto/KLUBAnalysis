@@ -17,7 +17,6 @@ selections = ['res1b','res2b','boosted_semi', 'boostedL_pnet', 'baseline', 'base
 
 # settings
 ymin_legend = '0.7'
-lumi = '19.5'
 #regions = ['SR', 'SStight', 'SSrlx', 'OSinviso', 'SSinviso']
 regions = ['SR']
 do_signal = True   # False means that I want to add the option no-sig through which I disable plotting signal
@@ -64,13 +63,21 @@ else:
 
 
 
+# --
+if 'UL16APV'==run:
+    lumi = '19.5'
+elif 'UL16' == run:
+    lumi = '16.8'
+else:
+    sys.exit(0)
+
+
+
 # directories
 klubdir = '/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis/'
-if 'UL16APV' in run:
-    script = 'scripts/makeFinalPlots_UL2016APV.py'
-else:
-    print("RUN ?")
-    sys.exit(0)
+
+script = 'scripts/makeFinalPlots_UL16APV.py' 
+
 outdir = klubdir+'/plots/'
 indir = klubdir
 
@@ -107,7 +114,7 @@ for it,ch in enumerate(channelsMap):
                     var_label = variab[1]
                     outTag = tag + out_tag
 
-                    command = 'python '+script+' --indir '+tag+' --outdir '+outdir+' --var '+var_name+' --reg '+region+' --sel '+selection+' --channel '+ch+' --lymin '+ymin_legend+' --lumi '+lumi+log_option+' --ratio --tag '+outTag+' --label "'+var_label+'"'+sig_option+' '+blind_option+' '+binwidth_option+' --quit'
+                    command = 'python '+script+' --year '+run+' --indir '+tag+' --outdir '+outdir+' --var '+var_name+' --reg '+region+' --sel '+selection+' --channel '+ch+' --lymin '+ymin_legend+' --lumi '+lumi+log_option+' --ratio --tag '+outTag+' --label "'+var_label+'"'+sig_option+' '+blind_option+' '+binwidth_option+' --quit'
                     if not args.dryrun:
                         os.system(command)
                     else:
