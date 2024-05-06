@@ -7,13 +7,19 @@ import subprocess
 # ------ EDIT --------
 #ParticleNet_wp = 'medium'
 ParticleNet_wp = 'low'
-run = 'UL16'
-date = '25Apr2024'
+run = 'UL16APV'
+date = '29Apr2024'
 
 out_tag = ''
-whichChannels = [True, True, True, False] 
+whichChannels = [True, True, False, False] 
 
-selections = ['res1b','res2b','boosted_semi', 'boostedL_pnet', 'baseline', 'baseline_boosted']
+selections = ['res1b','res2b','boostedL_pnet', 'baseline', 'baseline_boosted']
+selDY = ['baseline_boostedDY', 'boostedL_pnetDY']
+selTT = ['baseline_boostedTT', 'boostedL_pnetTT']
+if whichChannels[3]:
+    selections += selDY
+elif whichChannels[0] or whichChannels[1]:
+    selections += selTT
 # -------------------------
 
 # settings
@@ -24,7 +30,7 @@ do_signal = True   # False means that I want to add the option no-sig through wh
 log = True #
 
 no_bin_width = True # True Means that I do not want to scale graphs by the bin width
-blind = True
+blind = False
 
 if blind:
     blind_range = [0.0,1.0]
@@ -34,10 +40,16 @@ parser.add_argument('-n', '--dryrun', action='store_true', help='dry run mode')
 args = parser.parse_args()
 
 
-# dictionary selection : [variables]
-resolved_vars =     [  ("bjet1_pt",  "p_{T}(b_{1}) [GeV]")  , ("bjet2_pt", "p_{T}(b_{2}) [GeV]"), ("bjet1_eta","#eta(b_{1})"), ("bjet2_eta","#eta(b_{2})"), ("bH_mass","m_{bb} [GeV]"), ("bH_pt","p_{T,bb} [GeV]"), ("dau1_pt","p_{T}(lep_{1}) [GeV]"), ("dau2_pt","p_{T}(lep_{2}) [GeV]"), ("dau1_eta","#eta(lep_{1})"), ("dau2_eta","#eta(lep_{2})"), ("tauH_SVFIT_mass","m_{#tau#tau}(SVFit) [GeV]"), ("tauH_SVFIT_pt","p_{T,#tau#tau}(SVFit) [GeV]") ,("tauH_mass","m_{#tau#tau} (vis) [GeV]"), ("tauH_pt","p_{T,#tau#tau} (vis) [GeV]"), ('DNNoutSM_kl_1', 'DNN_{out}^{SM} k_{#lambda}=1')]
 
-boosted_vars =  [('fatjet_softdropMass','m_{bb}^{SD} [GeV]'), ('fatjet_pt','p_{T, bb} [GeV]'), ('fatjet_eta','#eta(bb)'), ('fatjet_phi','#phi(bb)'), ('fatjet_particleNetMDJetTags_score','score_{pnet}(bb)'), ('fatjet_particleNetMDJetTags_mass','m_{bb}^{pnet}'), ('HHbregrsvfit_pt','p_{T,HH} (pnet regression) [GeV]'), ('HHbregrsvfit_eta','#eta_{HH}(pnet regression)'), ('HHbregrsvfit_phi','#phi_{HH}(pnet regression)'), ('HHbregrsvfit_m','m_{HH} (pnet regression) [GeV]'), ('DNNoutSM_kl_1', 'DNN_{out}^{SM} k_{#lambda}=1')]
+# channel mapping of the considered channels
+channelsMap = ['MuTau', 'ETau', 'TauTau', 'MuMu']
+
+
+
+# dictionary selection : [variables]
+resolved_vars =     [  ("bjet1_pt",  "p_{T}(b_{1}) [GeV]")  , ("bjet2_pt", "p_{T}(b_{2}) [GeV]"), ("bjet1_eta","#eta(b_{1})"), ("bjet2_eta","#eta(b_{2})"), ("bH_mass","m_{bb} [GeV]"), ("bH_pt","p_{T,bb} [GeV]"), ("dau1_pt","p_{T}(lep_{1}) [GeV]"), ("dau2_pt","p_{T}(lep_{2}) [GeV]"), ("dau1_eta","#eta(lep_{1})"), ("dau2_eta","#eta(lep_{2})"), ("tauH_SVFIT_mass","m_{#tau#tau}(SVFit) [GeV]"), ("tauH_SVFIT_pt","p_{T,#tau#tau}(SVFit) [GeV]") ,("tauH_mass","m_{#tau#tau} (vis) [GeV]"), ("tauH_pt","p_{T,#tau#tau} (vis) [GeV]")]
+
+boosted_vars =  [('fatjet_softdropMass','m_{bb}^{SD} [GeV]'), ('fatjet_pt','p_{T, bb} [GeV]'), ('fatjet_eta','#eta(bb)'), ('fatjet_phi','#phi(bb)'), ('fatjet_particleNetMDJetTags_score','score_{pnet}(bb)'), ('fatjet_particleNetMDJetTags_mass','m_{bb}^{pnet}'),("tauH_mass","m_{#tau#tau} (vis) [GeV]"), ('bH_mass', 'm_{bb} [GeV]'), ("tauH_SVFIT_mass","m_{#tau#tau}(SVFit) [GeV]")]
 
 
 if 'medium' in ParticleNet_wp:
@@ -48,6 +60,7 @@ if 'medium' in ParticleNet_wp:
         "boostedM_pnet"      : boosted_vars,
         "baseline"            : resolved_vars,
         "baseline_boosted"    : boosted_vars
+        
     }
 elif 'low' in  ParticleNet_wp:
     dict_sel_var = {
@@ -56,7 +69,11 @@ elif 'low' in  ParticleNet_wp:
         "boosted_semi" : boosted_vars,
         "boostedL_pnet"      : boosted_vars,
         "baseline"            : resolved_vars,
-        "baseline_boosted"    : boosted_vars
+        "baseline_boosted"    : boosted_vars,
+        "baseline_boostedTT" : boosted_vars,
+        "boostedL_pnetTT" : boosted_vars,
+        "baseline_boostedDY" : boosted_vars,
+        "boostedL_pnetDY" : boosted_vars
     }
 else:
     print("ParticleNet working point?")
@@ -86,8 +103,6 @@ print("Current Directory:   ", os.getcwd())
 os.chdir(klubdir)
 print 'after ', os.getcwd()
 
-# channel mapping of the considered channels
-channelsMap = ['MuTau', 'ETau', 'TauTau', 'MuMu']
 
 
 # Loop through channels and execute commands
