@@ -13,6 +13,12 @@ date = ''
 out_tag = ''
 whichChannels = [False, False, True, True] 
 selections = ['res1b','res2b','boosted_semi', 'boostedL_pnet', 'baseline', 'baseline_boosted']
+selDY = ['baseline_boostedDY', 'boostedL_pnetDY']
+selTT = ['baseline_boostedTT', 'boostedL_pnetTT']
+if whichChannels[3]:
+    selections += selDY
+elif whichChannels[0] or whichChannels[1]:
+    selections += selTT
 # -------------------------
 
 # settings
@@ -23,7 +29,7 @@ do_signal = True   # False means that I want to add the option no-sig through wh
 log = True #
 
 no_bin_width = True # True Means that I do not want to scale graphs by the bin width
-blind = True
+blind = False
 
 if blind:
     blind_range = [0.0,1.0]
@@ -31,6 +37,12 @@ if blind:
 parser = argparse.ArgumentParser(description='Command line parser of plotting options')
 parser.add_argument('-n', '--dryrun', action='store_true', help='dry run mode')
 args = parser.parse_args()
+
+
+
+# channel mapping of the considered channels
+channelsMap = ['MuTau', 'ETau', 'TauTau', 'MuMu']
+
 
 
 # dictionary selection : [variables]
@@ -47,6 +59,7 @@ if 'medium' in ParticleNet_wp:
         "boostedM_pnet"      : boosted_vars,
         "baseline"            : resolved_vars,
         "baseline_boosted"    : boosted_vars
+        
     }
 elif 'low' in  ParticleNet_wp:
     dict_sel_var = {
@@ -55,7 +68,11 @@ elif 'low' in  ParticleNet_wp:
         "boosted_semi" : boosted_vars,
         "boostedL_pnet"      : boosted_vars,
         "baseline"            : resolved_vars,
-        "baseline_boosted"    : boosted_vars
+        "baseline_boosted"    : boosted_vars,
+        "baseline_boostedTT" : boosted_vars,
+        "boostedL_pnetTT" : boosted_vars,
+        "baseline_boostedDY" : boosted_vars,
+        "boostedL_pnetDY" : boosted_vars
     }
 else:
     print("ParticleNet working point?")
@@ -85,8 +102,6 @@ print("Current Directory:   ", os.getcwd())
 os.chdir(klubdir)
 print 'after ', os.getcwd()
 
-# channel mapping of the considered channels
-channelsMap = ['MuTau', 'ETau', 'TauTau', 'MuMu']
 
 
 # Loop through channels and execute commands
