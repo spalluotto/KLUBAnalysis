@@ -4535,19 +4535,34 @@ int main (int argc, char** argv)
 			    
 		  std::map<std::string, std::vector<float>> result = ParticleNet_SF(tlv_fj.Pt(), PERIOD);
 		  // Set scale factors for different keys
-		  setScaleFactor(result, "HP",
+		  if (isHHsignal){
+		    setScaleFactor(result, "HP",
 						 theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF,
 						 theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF_up,
 						 theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF_down);
-		  setScaleFactor(result, "MP",
+		    setScaleFactor(result, "MP",
 						 theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF,
 						 theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF_up,
 						 theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF_down);
-		  setScaleFactor(result, "LP",
+		    setScaleFactor(result, "LP",
 						 theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF,
 						 theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF_up,
 						 theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF_down);
 
+		  }
+		  else{
+		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF = 1.0
+		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF_up = 1.0
+		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF_down = 1.0
+
+		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF = 1.0
+		    theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF_up = 1.0
+		    theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF_down = 1.0
+
+		    theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF = 1.0
+		    theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF_up = 1.0
+		    theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF_down = 1.0
+		  }
 		  // saving infos for subjets
 		  if (theBigTree.ak8jets_nsubjets->at(fjIdx) >= 2) 
 			{
