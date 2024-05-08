@@ -4551,17 +4551,17 @@ int main (int argc, char** argv)
 
 		  }
 		  else{
-		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF = 1.0
-		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF_up = 1.0
-		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF_down = 1.0
+		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF = 1.0;
+		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF_up = 1.0;
+		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF_down = 1.0;
 
-		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF = 1.0
-		    theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF_up = 1.0
-		    theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF_down = 1.0
+		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF = 1.0;
+		    theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF_up = 1.0;
+		    theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF_down = 1.0;
 
-		    theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF = 1.0
-		    theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF_up = 1.0
-		    theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF_down = 1.0
+		    theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF = 1.0;
+		    theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF_up = 1.0;
+		    theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF_down = 1.0;
 		  }
 		  // saving infos for subjets
 		  if (theBigTree.ak8jets_nsubjets->at(fjIdx) >= 2) 
