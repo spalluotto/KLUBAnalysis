@@ -289,7 +289,6 @@ bkg_map = {
     "TTZH"                            : "-n 20  -x 0.001136",
 
     "GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_SM" : "-n 10   -x 0.01618"
-
 }
 
 
@@ -425,8 +424,6 @@ sig_map = {
     "GluGluToRadionToHHTo2B2Tau_M-2000"    :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-2500"    :  "-n 20     -x 1.     -a True",
     "GluGluToRadionToHHTo2B2Tau_M-3000"    :  "-n 20     -x 1.     -a True"
-
-
 
 
     # # --- signals with cross sections ---
