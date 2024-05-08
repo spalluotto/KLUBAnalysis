@@ -158,12 +158,12 @@ std::map<std::string, std::vector<float>> ParticleNet_SF(float pT_, string perio
 // usage : e.g.  
 //      std::map<std::string, std::vector<float>> result = ParticleNet_SF(tlv_fj.Pt(), PERIOD);
 //      setScaleFactor(result, "HP", variableForSF, variableForUp, variableForDown);
-void setScaleFactor(std::map<std::string, std::vector<float>>& result_, const std::string& key, float& scaleFactorVariable, float& scaleFactorErrUp, float& scaleFactorErrDown) {
+void setScaleFactor(std::map<std::string, std::vector<float>>& result_, const std::string& key, float& scaleFactorVariable, float& scaleFactorUp, float& scaleFactorDown) {
   if (result_.find(key) != result_.end()) {
     std::vector<float>& scaleFactors = result_[key];
     scaleFactorVariable = scaleFactors[0];
-    scaleFactorErrUp = scaleFactors[1];
-    scaleFactorErrDown = scaleFactors[2];
+    scaleFactorUp = scaleFactors[0] + scaleFactors[1];
+    scaleFactorDown = scaleFactors[0] +  scaleFactors[2];
   } else {
     std::cerr << "Scale factors for " << key << " not found in the result." << std::endl;
   }
