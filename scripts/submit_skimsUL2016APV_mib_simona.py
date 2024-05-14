@@ -6,9 +6,9 @@ import glob
 #--------------------------
 date           = '08May2024'
 
-execute_bkg    = False
-execute_sig    = True
-execute_data   = False
+execute_bkg    = True
+execute_sig    = False
+execute_data   = True
 #--------------------------
 
 
@@ -279,7 +279,7 @@ bkg_map = {
     "TTZToLLNuNu_M-10"                : "-n 20  -x 0.2529",
     "TTWW"                            : "-n 20  -x 0.006979",
     "TTZZ"                            : "-n 20  -x 0.001386",
-    "TTWZ"                            : "-n 20  -x 0.002441"
+    "TTWZ"                            : "-n 20  -x 0.002441",
 
     "ZH_HToBB_ZToLL_M-125"             : "-n 50    -x 0.880    -y 0.058816576 ",
     "ZH_HToBB_ZToQQ_M-125"             : "-n 50    -x 0.880    -y 0.407161664",
@@ -367,7 +367,7 @@ sig_map = {
     "GluGluToBulkGravitonToHHTo2B2Tau_M-1750"    :  "-n 20     -x 1.     -a True",
     "GluGluToBulkGravitonToHHTo2B2Tau_M-2000"    :  "-n 20     -x 1.     -a True",
     "GluGluToBulkGravitonToHHTo2B2Tau_M-2500"    :  "-n 20     -x 1.     -a True",
-    "GluGluToBulkGravitonToHHTo2B2Tau_M-3000"    :  "-n 20     -x 1.     -a True"
+    "GluGluToBulkGravitonToHHTo2B2Tau_M-3000"    :  "-n 20     -x 1.     -a True",
 
 
 
