@@ -1434,6 +1434,9 @@ int main (int argc, char** argv)
 		if (nmu == 1 && nmu10 == 0) {
 		  pairType = 0 ; // mu tau
 		}
+		else if (nele > 0){
+		  pairType = 5
+		}
 		else {
 		  pairType = 3 ; // mu mu
 		}
@@ -1663,6 +1666,10 @@ int main (int argc, char** argv)
 		// two muons in evt (looser cuts), vetoing events with 3rd lepton
 		vMUON.Set(tlv_firstLepton.Px()+tlv_secondLepton.Px(),
 				  tlv_firstLepton.Py()+tlv_secondLepton.Py());
+	  }
+	  else if(pairType==5) {
+		// 1 muon in evt vetoing events with 3rd lepton
+	        vMUON.Set(tlv_firstLepton.Px(), tlv_firstLepton.Py());
 	  }
 	  TVector2 vMETnoMu = vMET + vMUON;
 
