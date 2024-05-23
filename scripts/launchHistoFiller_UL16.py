@@ -6,7 +6,7 @@ import argparse
 
 # ----- EDIT HERE ----
 run = 'UL16APV'
-date = ''
+date = '22May2024'
 whichChannels = [True, True, True, True]   # you may want to run one or more channels
 nJobs = '250'
 
