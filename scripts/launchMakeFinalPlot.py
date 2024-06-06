@@ -11,15 +11,23 @@ run = 'UL16APV'
 date = ''
 
 out_tag = ''
-whichChannels = [False, False, True, True] 
-selections = ['res1b','res2b','boosted_semi', 'boostedL_pnet', 'baseline', 'baseline_boosted']
+whichChannels = [True, False, False, False] 
+selections = ['res1b','res2b','boostedL_pnet', 'baseline', 'baseline_boosted']
 selDY = ['baseline_boostedDY', 'boostedL_pnetDY']
 selTT = ['baseline_boostedTT', 'boostedL_pnetTT']
-if whichChannels[3]:
+newSel = ['baseline_boosted_massCut', 'boostedL_pnet_massCut']
+
+selections += newSel
+
+if whichChannels[3]: # if MuMu
     selections += selDY
-elif whichChannels[0] or whichChannels[1]:
+elif whichChannels[0] or whichChannels[1]: # if ETau or MuTau
     selections += selTT
+
 # -------------------------
+
+
+print("\n  SELECTIONS ------> ", selections)
 
 # settings
 ymin_legend = '0.7'
@@ -49,6 +57,7 @@ channelsMap = ['MuTau', 'ETau', 'TauTau', 'MuMu']
 resolved_vars =     [  ("bjet1_pt",  "p_{T}(b_{1}) [GeV]")  , ("bjet2_pt", "p_{T}(b_{2}) [GeV]"), ("bjet1_eta","#eta(b_{1})"), ("bjet2_eta","#eta(b_{2})"), ("bH_mass","m_{bb} [GeV]"), ("bH_pt","p_{T,bb} [GeV]"), ("dau1_pt","p_{T}(lep_{1}) [GeV]"), ("dau2_pt","p_{T}(lep_{2}) [GeV]"), ("dau1_eta","#eta(lep_{1})"), ("dau2_eta","#eta(lep_{2})"), ("tauH_SVFIT_mass","m_{#tau#tau}(SVFit) [GeV]"), ("tauH_SVFIT_pt","p_{T,#tau#tau}(SVFit) [GeV]") ,("tauH_mass","m_{#tau#tau} (vis) [GeV]"), ("tauH_pt","p_{T,#tau#tau} (vis) [GeV]")]
 
 boosted_vars =  [('fatjet_softdropMass','m_{bb}^{SD} [GeV]'), ('fatjet_pt','p_{T, bb} [GeV]'), ('fatjet_eta','#eta(bb)'), ('fatjet_phi','#phi(bb)'), ('fatjet_particleNetMDJetTags_score','score_{pnet}(bb)'), ('fatjet_particleNetMDJetTags_mass','m_{bb}^{pnet}'),("tauH_mass","m_{#tau#tau} (vis) [GeV]"), ('bH_mass', 'm_{bb} [GeV]'), ("tauH_SVFIT_mass","m_{#tau#tau}(SVFit) [GeV]")]
+boosted_vars += resolved_vars
 
 
 if 'medium' in ParticleNet_wp:
@@ -58,8 +67,9 @@ if 'medium' in ParticleNet_wp:
         "boosted_semi" : boosted_vars,
         "boostedM_pnet"      : boosted_vars,
         "baseline"            : resolved_vars,
-        "baseline_boosted"    : boosted_vars
-        
+        "baseline_boosted"    : boosted_vars,
+        "baseline_boosted_massCut" : boosted_vars,
+        "boostedM_pnet_massCut" : boosted_vars
     }
 elif 'low' in  ParticleNet_wp:
     dict_sel_var = {
@@ -72,7 +82,9 @@ elif 'low' in  ParticleNet_wp:
         "baseline_boostedTT" : boosted_vars,
         "boostedL_pnetTT" : boosted_vars,
         "baseline_boostedDY" : boosted_vars,
-        "boostedL_pnetDY" : boosted_vars
+        "boostedL_pnetDY" : boosted_vars,
+        "baseline_boosted_massCut" : boosted_vars,
+        "boostedL_pnet_massCut": boosted_vars
     }
 else:
     print("ParticleNet working point?")
@@ -83,8 +95,11 @@ else:
 # --
 if 'UL16APV'==run:
     lumi = '19.5'
+    script = 'scripts/makeFinalPlots_UL16APV.py' 
+
 elif 'UL16' == run:
     lumi = '16.8'
+    script = 'scripts/makeFinalPlots_UL16.py' 
 else:
     sys.exit(0)
 
@@ -93,7 +108,6 @@ else:
 # directories
 klubdir = '/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis/'
 
-script = 'scripts/makeFinalPlots_UL16APV.py' 
 
 outdir = klubdir+'/plots/'
 indir = klubdir
@@ -106,8 +120,8 @@ print 'after ', os.getcwd()
 
 # Loop through channels and execute commands
 for it,ch in enumerate(channelsMap):
-    print("\n CHANNEL ", ch)
     if whichChannels[it]:
+        print("\n CHANNEL ", ch)
         for region in regions:
             print("REGION : ", region)
             for selection,variables in dict_sel_var.items():
