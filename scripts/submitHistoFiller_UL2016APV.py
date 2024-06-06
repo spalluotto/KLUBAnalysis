@@ -37,6 +37,9 @@ for nj in range(0, args.njobs):
     scriptFile.write ('cd %s\n' % here)
     scriptFile.write ('eval `scram r -sh`\n')
     scriptFile.write ('source scripts/setup.sh\n')
+
+    scriptFile.write('eosfusebind -g\n')
+
     command = program + ' ' + args.cfg + ' ' + str(nj) + ' ' + str(args.njobs) + ' ' + outDir + ' 2>&1 | tee ' + outDir + '/' + logName
     scriptFile.write(command)
     scriptFile.close()
@@ -49,6 +52,15 @@ for nj in range(0, args.njobs):
     condorFile.write ('Output      = condor_filler_$(ProcId).out\n')
     condorFile.write ('Error       = condor_filler_$(ProcId).error\n')
     condorFile.write ('Requirements = ((machine == "pccms11.hcms.it")||(machine == "pccms12.hcms.it")||(machine == "pccms13.hcms.it"))\n')
+
+    # Add Kerberos credential forwarding
+    condorFile.write('+ProjectName = "cms"\n')
+    condorFile.write('+RunAsOwner = True\n')
+    condorFile.write('+UseKerberos = True\n')
+    condorFile.write('Environment = "KRB5CCNAME=$(kerberos_cred)"\n')
+    condorFile.write('kerberos_cred = /gwpool/users/spalluotto/krb5cc\n')
+    condorFile.write('transfer_input_files = $(kerberos_cred)\n')
+
     condorFile.write ('queue 1\n')
     condorFile.close ()
 
