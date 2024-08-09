@@ -3,7 +3,6 @@
 import os,sys
 import optparse
 import fileinput
-import commands
 import time
 import glob
 import subprocess
@@ -103,18 +102,19 @@ if __name__ == "__main__":
         scriptFile.write ('touch ' + opt.output + '/done\n')
         scriptFile.write ('echo "Hadding finished" \n')
         scriptFile.close ()
-        os.system ('chmod u+rwx ' + opt.output + '/hadder.sh')
-        command = ('/opt/exp_soft/cms/t3/t3submit -q cms \'' +  opt.output + '/hadder.sh\'')
-        os.system (command)
-        sys.exit (0)
 
+        subprocess.run(['chmod', 'u+rwx', opt.output + '/hadder.sh'])
+        command = '/opt/exp_soft/cms/t3/t3submit -q cms \'' +  opt.output + '/hadder.sh\''
+        subprocess.run(command, shell=True)
+        sys.exit(0)
+        
     # verify the result of the process
     # ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
 
     if (opt.resub != 'none') :
         if (opt.input == 'none') :
-            print 'input folder to be checked missing\n'
-            print '(this is the folder that contains the jobs to be submitted)'
+            print('input folder to be checked missing\n')
+            print('(this is the folder that contains the jobs to be submitted)')
             sys.exit (1)
 
         if opt.input[-1] == '/' : opt.input = opt.input[:-1]
@@ -126,45 +126,45 @@ if __name__ == "__main__":
         # check the existence of the done file
         for num in jobs :
             if not os.path.exists (opt.input + '/done_' + num) :
-                if opt.verb : print num, ' : missing done file'
+                if opt.verb : print(num, ' : missing done file')
                 missing.append (num)
 
         # check the log file
         for num in jobs :
             # get the log file name
             filename = opt.input + '/skimJob_' + num + '.sh'
-#            print os.path.exists (filename) 
+#            print( os.path.exists (filename) )
             with open (filename, 'r') as myfile :
                 data = [word for word in myfile.readlines () if 'log' in word]
             rootfile = data[0].split ()[2]
             if not os.path.exists (rootfile) :
-                if opt.verb : print num, 'missing root file', rootfile
+                if opt.verb : print(num, 'missing root file', rootfile)
                 missing.append (num)
                 continue
             if not isGoodFile (rootfile) :
-                if opt.verb : print num, 'root file corrupted', rootfile
+                if opt.verb : print(num, 'root file corrupted', rootfile)
                 missing.append (num)
                 continue
             logfile = data[0].split ()[-1]
             if not os.path.exists (logfile) :
-                if opt.verb : print num, 'missing log file'
+                if opt.verb : print(num, 'missing log file')
                 missing.append (num)
                 continue
             with open (logfile, 'r') as logfile :
                 problems = [word for word in logfile.readlines () if 'Error' in word and 'TCling' not in word]
                 if len (problems) != 0 :
-                    if opt.verb : print num, 'found error ', problems[0]
+                    if opt.verb : print(num, 'found error ', problems[0])
                     missing.append (num)
-        print 'the following jobs did not end successfully:'
-        print missing   
+        print('the following jobs did not end successfully:')
+        print(missing   )
         for num in missing :
             command = '`cat ' + opt.input + '/submit.sh | grep skimJob_' + num + '.sh | tr "\'" " "`'
-            if opt.verb : print command
+            if opt.verb : print(command)
         if (opt.resub == 'run') :
             for num in missing :
                 command = '`cat ' + opt.input + '/submit.sh | grep skimJob_' + num + '.sh | tr "\'" " "`'
                 time.sleep (int (num) % 5)
-                os.system (command)
+                subprocess.run(command, shell=True)
         sys.exit (0)
 
     # submit the jobs
@@ -173,18 +173,18 @@ if __name__ == "__main__":
     skimmer = 'skimNtuple_HHbtag.exe'
 
     if opt.config == 'none' :
-        print 'config file missing, exiting'
+        print('config file missing, exiting')
         sys.exit (1)
 
     if opt.input[-1] == '/' : opt.input = opt.input[:-1]
     if opt.output == 'none' : opt.output = opt.input + '_SKIM'
    
     if not os.path.exists (opt.input) :
-        print 'input folder', opt.input, 'not existing, exiting'
+        print('input folder', opt.input, 'not existing, exiting')
         sys.exit (1)
 
     if not opt.force and os.path.exists (opt.output) :
-        print 'output folder', opt.output, 'existing, exiting'
+        print('output folder', opt.output, 'existing, exiting')
         sys.exit (1)
     elif os.path.exists (opt.output) :
         os.system ('rm -rf ' + opt.output + '/*')
@@ -194,14 +194,14 @@ if __name__ == "__main__":
     #inputfiles = glob.glob (opt.input + '/*.root')    
     inputfiles = parseInputFileList (opt.input)
     if opt.njobs > len (inputfiles) : opt.njobs = len (inputfiles)
-    nfiles = (len (inputfiles) + len (inputfiles) % opt.njobs) / opt.njobs
-    inputlists = [inputfiles[x:x+nfiles] for x in xrange (0, len (inputfiles), nfiles)]
+    nfiles = (len (inputfiles) + len (inputfiles) % opt.njobs) // opt.njobs
+    inputlists = [inputfiles[x:x+nfiles] for x in range (0, len (inputfiles), nfiles)]
 
     tagname = "/" + opt.tag if opt.tag else ''
     jobsDir = currFolder + tagname + '/SKIM_' + basename (opt.input)
     jobsDir = jobsDir.rstrip (".txt")
     if float(opt.klreweight) > -990 and opt.BSMname == 'none':
-        print '!WARNING! You requested manual HH reweighting, but did not set a proper BSMname! Exiting!'
+        print('!WARNING! You requested manual HH reweighting, but did not set a proper BSMname! Exiting!')
         sys.exit (0)
     elif opt.EFTrew != 'none':
         jobsDir = jobsDir + '_' + opt.EFTrew
