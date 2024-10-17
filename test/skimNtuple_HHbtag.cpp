@@ -1248,10 +1248,6 @@ int main (int argc, char** argv)
 	    } // if isQuarkb
 	  } // loop on gen particles
 	  
-	  theSmallTree.m_nHiggs = higgsVectors.size();
-	  theSmallTree.m_nZBosons = zBosonVectors.size();
-	  
-
 	  ///////////////////////////////////////////////////////////
 	  // END of gen related stuff -- compute tot number of events
 	  int genHHDecMode = (isHHsignal ? theSmallTree.m_genDecMode1 + theSmallTree.m_genDecMode2 - 8 : 0);
@@ -5334,9 +5330,6 @@ int main (int argc, char** argv)
 		    }
 		  }
 
-		  theSmallTree.m_fatjet_isMatchedToHiggs = matchedToHiggs;
-		  theSmallTree.m_fatjet_isMatchedToZ = matchedToZ;
-
 		  // determine sample type
 		  std::string sample_type = "";
 		  if (matchedToHiggs || matchedToZ){
@@ -5353,12 +5346,13 @@ int main (int argc, char** argv)
 		  if (sample_type != ""){
 		    auto PNetAK8SF = PNetSFInterface(PERIOD);
 		    std::vector<float> PNetSFmap = PNetAK8SF.getSFvec(tlv_fj.Pt(), sample_type);
-		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF      = PNetSFmap[0];
-		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF_up   = PNetSFmap[1];
-		    theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF_down = PNetSFmap[2];
-		    theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF      = PNetSFmap[3];
-		    theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF_up   = PNetSFmap[4];
-		    theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF_down = PNetSFmap[5];
+		    // other WPs commented to save memory
+		    //theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF      = PNetSFmap[0];
+		    //theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF_up   = PNetSFmap[1];
+		    //theSmallTree.m_fatjet_particleNetMDJetTags_HP_SF_down = PNetSFmap[2];
+		    //theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF      = PNetSFmap[3];
+		    //theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF_up   = PNetSFmap[4];
+		    //theSmallTree.m_fatjet_particleNetMDJetTags_MP_SF_down = PNetSFmap[5];
 		    theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF      = PNetSFmap[6];
 		    theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF_up   = PNetSFmap[7];
 		    theSmallTree.m_fatjet_particleNetMDJetTags_LP_SF_down = PNetSFmap[8];
