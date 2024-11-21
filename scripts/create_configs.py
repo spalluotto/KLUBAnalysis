@@ -136,10 +136,11 @@ class Params:
 
         self.base_selections = ["baseline", "baseline_boosted"]
         _selections = ["res1b", "res2b", "boostedL_pnet"]
-        self.selections = {"ETau": _selections,
+        self.selections = {"ETau": _selections + ["ttbarCR"],
                            "MuTau": _selections + ["ttbarCR"],
-                           "TauTau": _selections + ["ttbarCR"],
-                           "MuMu": _selections + ["dyCR", "dyCR_res1b", "dyCR_res2b"]}
+                           "TauTau": _selections ,
+                           "MuMu": _selections + ["dyCR"]}
+        #"MuMu": _selections + ["dyCR", "dyCR_res1b", "dyCR_res2b"]}
 
         self.regions = {
             "ETau":
@@ -200,39 +201,40 @@ class Params:
 
         self.event_systematics = lambda channel : (
             '\n'.join((
-                "IdFakeSF_deep_2d = " + ', '.join((
-                    # "tauid_2d_stat0_up:idFakeSF_tauid_2d_stat0_up",
-                    # "tauid_2d_stat0_down:idFakeSF_tauid_2d_stat0_down",
-                    # "tauid_2d_stat1_up:idFakeSF_tauid_2d_stat1_up",
-                    # "tauid_2d_stat1_down:idFakeSF_tauid_2d_stat1_down",
-                    "tauid_2d_systcorrdmeras_up:idFakeSF_tauid_2d_systcorrdmeras_up",
-                    "tauid_2d_systcorrdmeras_down:idFakeSF_tauid_2d_systcorrdmeras_down",
-                    "tauid_2d_systcorrdmuncorreras_up:idFakeSF_tauid_2d_systcorrdmuncorreras_up",
-                    "tauid_2d_systcorrdmuncorreras_down:idFakeSF_tauid_2d_systcorrdmuncorreras_down",
-                    # "tauid_2d_systuncorrdmeras_up:idFakeSF_tauid_2d_systuncorrdmeras_up",
-                    # "tauid_2d_systuncorrdmeras_down:idFakeSF_tauid_2d_systuncorrdmeras_down",
-                    "tauid_2d_systcorrerasgt140_up:idFakeSF_tauid_2d_systcorrerasgt140_up",
-                    "tauid_2d_systcorrerasgt140_down:idFakeSF_tauid_2d_systcorrerasgt140_down",
-                    # "tauid_2d_statgt140_up:idFakeSF_tauid_2d_statgt140_up",
-                    # "tauid_2d_statgt140_down:idFakeSF_tauid_2d_statgt140_down",
-                    # "tauid_2d_extrapgt140_up:idFakeSF_tauid_2d_extrapgt140_up",
-                    # "tauid_2d_extrapgt140_down:idFakeSF_tauid_2d_extrapgt140_down",
+                "dauSFs = " + ', '.join((
+                    #"IdFakeSF_deep_2d = " + ', '.join((  # ------> it does not exist in the TTree
+                    # "tauid_2d_stat0_up:dauSFs_tauid_2d_stat0_up",
+                    # "tauid_2d_stat0_down:dauSFs_tauid_2d_stat0_down",
+                    # "tauid_2d_stat1_up:dauSFs_tauid_2d_stat1_up",
+                    # "tauid_2d_stat1_down:dauSFs_tauid_2d_stat1_down",
+                    "tauid_2d_systcorrdmeras_up:dauSFs_tauid_2d_systcorrdmeras_up",
+                    "tauid_2d_systcorrdmeras_down:dauSFs_tauid_2d_systcorrdmeras_down",
+                    "tauid_2d_systcorrdmuncorreras_up:dauSFs_tauid_2d_systcorrdmuncorreras_up",
+                    "tauid_2d_systcorrdmuncorreras_down:dauSFs_tauid_2d_systcorrdmuncorreras_down",
+                    # "tauid_2d_systuncorrdmeras_up:dauSFs_tauid_2d_systuncorrdmeras_up",
+                    # "tauid_2d_systuncorrdmeras_down:dauSFs_tauid_2d_systuncorrdmeras_down",
+                    "tauid_2d_systcorrerasgt140_up:dauSFs_tauid_2d_systcorrerasgt140_up",
+                    "tauid_2d_systcorrerasgt140_down:dauSFs_tauid_2d_systcorrerasgt140_down",
+                    # "tauid_2d_statgt140_up:dauSFs_tauid_2d_statgt140_up",
+                    # "tauid_2d_statgt140_down:dauSFs_tauid_2d_statgt140_down",
+                    # "tauid_2d_extrapgt140_up:dauSFs_tauid_2d_extrapgt140_up",
+                    # "tauid_2d_extrapgt140_down:dauSFs_tauid_2d_extrapgt140_down",
 
-                    "etauFR_barrelUp:idFakeSF_etauFR_barrel_up",
-                    "etauFR_barrelDown:idFakeSF_etauFR_barrel_down",
-                    "etauFR_endcapUp:idFakeSF_etauFR_endcap_up",
-                    "etauFR_endcapDown:idFakeSF_etauFR_endcap_down",
+                    "etauFR_barrelUp:dauSFs_etauFR_barrel_up",
+                    "etauFR_barrelDown:dauSFs_etauFR_barrel_down",
+                    "etauFR_endcapUp:dauSFs_etauFR_endcap_up",
+                    "etauFR_endcapDown:dauSFs_etauFR_endcap_down",
  
-                    "mutauFR_etaLt0p4Up:idFakeSF_mutauFR_etaLt0p4_up",
-                    "mutauFR_etaLt0p4Down:idFakeSF_mutauFR_etaLt0p4_down",
-                    "mutauFR_eta0p4to0p8Up:idFakeSF_mutauFR_eta0p4to0p8_up",
-                    "mutauFR_eta0p4to0p8Down:idFakeSF_mutauFR_eta0p4to0p8_down",
-                    "mutauFR_eta0p8to1p2Up:idFakeSF_mutauFR_eta0p8to1p2_up",
-                    "mutauFR_eta0p8to1p2Down:idFakeSF_mutauFR_eta0p8to1p2_down",
-                    "mutauFR_eta1p2to1p7Up:idFakeSF_mutauFR_eta1p2to1p7_up",
-                    "mutauFR_eta1p2to1p7Down:idFakeSF_mutauFR_eta1p2to1p7_down",
-                    "mutauFR_etaGt1p7Up:idFakeSF_mutauFR_etaGt1p7_up",
-                    "mutauFR_etaGt1p7Down:idFakeSF_mutauFR_etaGt1p7_down",
+                    "mutauFR_etaLt0p4Up:dauSFs_mutauFR_etaLt0p4_up",
+                    "mutauFR_etaLt0p4Down:dauSFs_mutauFR_etaLt0p4_down",
+                    "mutauFR_eta0p4to0p8Up:dauSFs_mutauFR_eta0p4to0p8_up",
+                    "mutauFR_eta0p4to0p8Down:dauSFs_mutauFR_eta0p4to0p8_down",
+                    "mutauFR_eta0p8to1p2Up:dauSFs_mutauFR_eta0p8to1p2_up",
+                    "mutauFR_eta0p8to1p2Down:dauSFs_mutauFR_eta0p8to1p2_down",
+                    "mutauFR_eta1p2to1p7Up:dauSFs_mutauFR_eta1p2to1p7_up",
+                    "mutauFR_eta1p2to1p7Down:dauSFs_mutauFR_eta1p2to1p7_down",
+                    "mutauFR_etaGt1p7Up:dauSFs_mutauFR_etaGt1p7_up",
+                    "mutauFR_etaGt1p7Down:dauSFs_mutauFR_etaGt1p7_down",
                 )),
                 "trigSF = " + self._define_trigger_sf_systematics(channel),
                 "PUjetID_SF = " + ', '.join((
@@ -368,7 +370,7 @@ class Params:
         	"HHsvfit_pt"                        : [30, 0, 300],
         	"HHsvfit_deltaPhi"                  : [25, 0, 3.14159],
         	"HH_deltaR"                         : [35, 0, 7],
-            "fatjet_softdropMass"               : [50, 0, 300],
+            "fatjet_softdropMass"               : [15, 0, 300],
             "fatjet_pt"                         : [15, 250, 700],
             "fatjet_eta"                        : [7, -2.5, 2.5 ],
             "fatjet_phi"                        : [7, -3.14159, 3.14159],
@@ -522,7 +524,7 @@ def write_limit_selection_config(outfile, channel, year, pars, vars_mode, metsf,
         "res2b = baseline, btagMM, isBoosted != 1, massCut",
         "boostedL_pnet = baseline_boosted, pNetBTagL, massCutTau",
         ))
-    if channel == "MuTau" or channel == "TauTau":
+    if channel == "MuTau" or channel == "ETau":
         category_definitions += '\n' + "ttbarCR = baseline, btagMM, isBoosted != 1, massCutTT"
     elif channel == "MuMu":
         category_definitions += '\n' + "dyCR = baseline, isBoosted != 1, massCutDY"
@@ -536,7 +538,8 @@ def write_limit_selection_config(outfile, channel, year, pars, vars_mode, metsf,
     content = '\n'.join((
         "[selections]",
         "baseline = " + baseline + " && nbjetscand > 1",
-        "baseline_boosted = " + baseline + " && isBoosted == 1",
+        "baseline_boosted = !(("+ baseline + ")&&(bjet1_bID_deepFlavor > {wpm} && bjet2_bID_deepFlavor > {wpm}) && isBoosted != 1 && (tauH_mass > 20 && bH_mass > 40)) ".format(wpm=deepjet["medium"]) + " && isBoosted == 1", # non res2b and boosted (latest definition)
+        "baseline_noB = " + baseline,
         "",
         ("btagM  = (bjet1_bID_deepFlavor > {wpm} && bjet2_bID_deepFlavor < {wpm}) || ".format(wpm=deepjet["medium"]) +
          "(bjet1_bID_deepFlavor < {wpm} && bjet2_bID_deepFlavor > {wpm})".format(wpm=deepjet["medium"])),
@@ -564,12 +567,12 @@ def write_limit_selection_config(outfile, channel, year, pars, vars_mode, metsf,
         ""))
 
     if metsf == "NoSF":
-        content += '\n'.join(("baseline = MC_weight, PUReweight, L1pref_weight, trigSFnoMET, IdFakeSF_deep_2d, PUjetID_SF, bTagweightReshape",
-                              "baseline_boosted = MC_weight, PUReweight, L1pref_weight, trigSFnoMET, IdFakeSF_deep_2d, PUjetID_SF",
+        content += '\n'.join(("baseline = MC_weight, PUReweight, L1pref_weight, trigSFnoMET, dauSFs, PUjetID_SF, bTagweightReshape",
+                              "baseline_boosted = MC_weight, PUReweight, L1pref_weight, trigSFnoMET, dauSFs, PUjetID_SF",
                               ""))
     else:
-        content += '\n'.join(("baseline = MC_weight, PUReweight, L1pref_weight, trigSF, IdFakeSF_deep_2d, PUjetID_SF, bTagweightReshape",
-                              "baseline_boosted = MC_weight, PUReweight, L1pref_weight, trigSF, IdFakeSF_deep_2d, PUjetID_SF",
+        content += '\n'.join(("baseline = MC_weight, PUReweight, L1pref_weight, trigSF, dauSFs, PUjetID_SF, bTagweightReshape",
+                              "baseline_boosted = MC_weight, PUReweight, L1pref_weight, trigSF, dauSFs, PUjetID_SF",
                               ""))
 
     content += '\n'.join((
@@ -578,8 +581,8 @@ def write_limit_selection_config(outfile, channel, year, pars, vars_mode, metsf,
         pars.event_systematics(channel) if for_limits else '',
         "",
         binning,
-        "HH_mass = 245. , 255. , 265. , 275. , 285. , 315. , 325. , 375. , 425. , 475. , 525. , 575. , 625. , 675. , 725. , 775. , 825. , 875. , 925. , 1075. , 1325. , 1675. , 1825. , 2175. , 2725. , 3275.",
-        "HHKin_mass = 245. , 255. , 265. , 275. , 285. , 315. , 325. , 375. , 425. , 475. , 525. , 575. , 625. , 675. , 725. , 775. , 825. , 875. , 925. , 1075. , 1325. , 1675. , 1825. , 2175. , 2725. , 3275.",
+        #"HH_mass = 245. , 255. , 265. , 275. , 285. , 315. , 325. , 375. , 425. , 475. , 525. , 575. , 625. , 675. , 725. , 775. , 825. , 875. , 925. , 1075. , 1325. , 1675. , 1825. , 2175. , 2725. , 3275.",
+        #"HHKin_mass = 245. , 255. , 265. , 275. , 285. , 315. , 325. , 375. , 425. , 475. , 525. , 575. , 625. , 675. , 725. , 775. , 825. , 875. , 925. , 1075. , 1325. , 1675. , 1825. , 2175. , 2725. , 3275.",
     ))
 
     with open(outfile('selection'), 'w') as afile:
@@ -599,6 +602,9 @@ def define_dnn_variables(year, spin, mass, pars, with_systs):
 
 def define_nondnn_variables():
     """Define non-DNN variables to be added to the configuration files."""
+    return ["bH_mass","bH_pt","tauH_mass","tauH_pt","tauH_SVFIT_pt","HH_mass", "HH_pt","fatjet_softdropMass", "fatjet_pt", "fatjet_eta", "fatjet_phi"]
+    # ---- full list ----
+    """
     return ["nbjetscand", "njets",
             "dau1_pt", "dau1_eta", "dau1_phi", "dau1_dxy", "dau1_dz",
             "dau2_pt", "dau2_iso", "dau2_eta", "dau2_phi", "dau2_dxy", "dau2_dz",
@@ -615,6 +621,7 @@ def define_nondnn_variables():
             "HH_mass", "HH_pt", "HHKin_mass", "HH_deltaPhi", "HH_deltaR",
             "fatjet_softdropMass", "fatjet_pt", "fatjet_eta", "fatjet_phi",
             "HHbregrsvfit_m", "HHbregrsvfit_pt", "HHbregrsvfit_eta"]
+    """
 
 def create_dir(d):
     if not os.path.exists(d):

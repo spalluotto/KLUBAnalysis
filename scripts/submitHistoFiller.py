@@ -44,9 +44,9 @@ def launch_jobs(args):
             command = ' '.join((exe, main_cfg, '${1}', str(args.njobs), tagdir, str(int(args.use_friend))))
             
         s.write('\n'.join(('#!/bin/bash',
-                            'export X509_USER_PROXY=~/.t3/proxy.cert',
+                           #'export X509_USER_PROXY=~/.t3/proxy.cert',
                             'export EXTRA_CLING_ARGS=-O2',
-                            '. /opt/exp_soft/cms/t3/eos-login -username {} -wn'.format(args.eos),
+                            #'. /opt/exp_soft/cms/t3/eos-login -username {} -wn'.format(args.eos),
                             'source /cvmfs/cms.cern.ch/cmsset_default.sh',
                             'cd {}'.format(os.getcwd()),
                             # 'export SCRAM_ARCH=slc6_amd64_gcc491',
@@ -77,16 +77,16 @@ def launch_jobs(args):
                               'log = {}/$(Process).log'.format(condlog)))
 
     content += '\n'.join(('', '',
-                          'T3Queue = {}'.format(args.queue),
+                          #'T3Queue = {}'.format(args.queue),
                           'WNTag=el7',
-                          '+SingularityCmd = ""',
+                          '+SingularityCmd = "/cvmfs/cms.cern.ch/common/cmssw-cc7"',
                           '',
                           'request_cpus   = 1',
                           'request_memory = 4GB',
                           'request_disk   = 512MB',
-                          'max_retries = 1',
+                          #'max_retries = 1',
                           '',
-                          'include : /opt/exp_soft/cms/t3/t3queue |',
+                          #'include : /opt/exp_soft/cms/t3/t3queue |',
                           '', ''))
 
     if args.with_dnn:
