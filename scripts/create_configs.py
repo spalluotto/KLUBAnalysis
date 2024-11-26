@@ -134,14 +134,22 @@ class Params:
                           "GGHH_SM"),
             }
 
+        """    
         self.base_selections = ["baseline", "baseline_boosted"]
         _selections = ["res1b", "res2b", "boostedL_pnet"]
         self.selections = {"ETau": _selections + ["ttbarCR"],
                            "MuTau": _selections + ["ttbarCR"],
                            "TauTau": _selections ,
                            "MuMu": _selections + ["dyCR"]}
-        #"MuMu": _selections + ["dyCR", "dyCR_res1b", "dyCR_res2b"]}
-
+        """
+        self.base_selections = []
+        _selections = []
+        self.selections = {"ETau"  : ["baseline_boosted_TT", "boostedL_pnet_TT"],
+                           "MuTau" : ["baseline_boosted_TT", "boostedL_pnet_TT"],
+                           "MuMu"  : ["baseline_boosted_DY", "boostedL_pnet_DY"],
+                           "TauTau" : []
+                           }
+        
         self.regions = {
             "ETau":
             {"SR": "isOS != 0 && dau1_eleMVAiso == 1 && dau2_deepTauVsJet >= 5",
@@ -202,7 +210,7 @@ class Params:
         self.event_systematics = lambda channel : (
             '\n'.join((
                 "dauSFs = " + ', '.join((
-                    #"IdFakeSF_deep_2d = " + ', '.join((  # ------> it does not exist in the TTree
+                    #"IdFakeSF_deep_2d = " + ', '.join((                        # ------> it does not exist in the TTree
                     # "tauid_2d_stat0_up:dauSFs_tauid_2d_stat0_up",
                     # "tauid_2d_stat0_down:dauSFs_tauid_2d_stat0_down",
                     # "tauid_2d_stat1_up:dauSFs_tauid_2d_stat1_up",
@@ -272,7 +280,7 @@ class Params:
         m_chn = {"ETau": "etau", "MuTau": "mutau", "TauTau": "tautau"}
         m_cat = {"res1b": "resolved1b", "res2b": "resolved2b", "boostedL_pnet": "boosted",
                  "ttbarCR": r"\bar{t}t CR",
-                 "dyCR": "baseline DY CR", "dyCR_res1b": "res1b DY CR", "dyCR_res2b": "res2b DY CR"}
+                 "dyCR": "baseline DY CR", "dyCR_res1b": "res1b DY CR", "dyCR_res2b": "res2b DY CR" }
         m_year = {"UL16": "2016", "UL16APV": "2016APV", "UL17": "2017", "UL18": "2018"}
 
         bins = "\n[binning]\n\n"
@@ -521,15 +529,17 @@ def write_limit_selection_config(outfile, channel, year, pars, vars_mode, metsf,
 
     category_definitions = '\n'.join((
         "res1b = baseline, btagM , isBoosted != 1, massCut",
-        "res2b = baseline, btagMM, isBoosted != 1, massCut",
+        "res2b = baseline, btagMM, massCut",
         "boostedL_pnet = baseline_boosted, pNetBTagL, massCutTau",
         ))
     if channel == "MuTau" or channel == "ETau":
         category_definitions += '\n' + "ttbarCR = baseline, btagMM, isBoosted != 1, massCutTT"
+        category_definitions += '\n' + "baseline_boosted_TT = baseline_boosted, massCutTT"
+        category_definitions += '\n' + "boostedL_pnet_TT = baseline_boosted_TT, pNetBTagL"
     elif channel == "MuMu":
         category_definitions += '\n' + "dyCR = baseline, isBoosted != 1, massCutDY"
-        category_definitions += '\n' + "dyCR_res1b = baseline, btagM, isBoosted != 1, massCutDY"
-        category_definitions += '\n' + "dyCR_res2b = baseline, btagMM, isBoosted != 1, massCutDY"
+        category_definitions += '\n' + "baseline_boosted_DY = baseline_boosted, massCutDY"
+        category_definitions += '\n' + "boostedL_pnet_DY = baseline_boosted_DY, pNetBTagL"
 
     if metsf:
         baseline = "!isLeptrigger && isMETtrigger && !isSingleTautrigger && pairType == {} && nleps == 0".format(chn_idx)
@@ -538,7 +548,8 @@ def write_limit_selection_config(outfile, channel, year, pars, vars_mode, metsf,
     content = '\n'.join((
         "[selections]",
         "baseline = " + baseline + " && nbjetscand > 1",
-        "baseline_boosted = !(("+ baseline + ")&&(bjet1_bID_deepFlavor > {wpm} && bjet2_bID_deepFlavor > {wpm}) && isBoosted != 1 && (tauH_mass > 20 && bH_mass > 40)) ".format(wpm=deepjet["medium"]) + " && isBoosted == 1", # non res2b and boosted (latest definition)
+        # not ( baseline and btagMM and massCut) and baseline and isBoosted --> new definition cat3
+        "baseline_boosted = !(( ("+ baseline + ") && nbjetscand > 1 ) && (bjet1_bID_deepFlavor > {wpm} && bjet2_bID_deepFlavor > {wpm}) && (tauH_mass > 20 && bH_mass > 40) ) && (".format(wpm=deepjet["medium"]) + baseline + ") && isBoosted == 1 ",
         "baseline_noB = " + baseline,
         "",
         ("btagM  = (bjet1_bID_deepFlavor > {wpm} && bjet2_bID_deepFlavor < {wpm}) || ".format(wpm=deepjet["medium"]) +
@@ -602,7 +613,7 @@ def define_dnn_variables(year, spin, mass, pars, with_systs):
 
 def define_nondnn_variables():
     """Define non-DNN variables to be added to the configuration files."""
-    return ["bH_mass","bH_pt","tauH_mass","tauH_pt","tauH_SVFIT_pt","HH_mass", "HH_pt","fatjet_softdropMass", "fatjet_pt", "fatjet_eta", "fatjet_phi"]
+    return ["fatjet_softdropMass", "fatjet_pt", "fatjet_eta", "fatjet_phi"]
     # ---- full list ----
     """
     return ["nbjetscand", "njets",

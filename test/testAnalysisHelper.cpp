@@ -3,6 +3,7 @@
 #include <string>
 
 // c++ -lm -o test testAnalysisHelper.cpp AnalysisHelper.cc CfgParser.cc Sample.cc Selection.cc Weight.cc TTreeFormulaGroup.cc --std=c++11 `root-config --glibs --cflags` -lTreePlayer
+// testAnalysisHelper.exe mainCfg.cfg job_idx n_jobs outFolder useTreeFriendFlag
 int main(int argc, char** argv)
 {
   if (argc != 6) {

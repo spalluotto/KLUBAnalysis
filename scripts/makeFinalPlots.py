@@ -2,6 +2,9 @@
 
 _all_ = [ 'makeFinalPlots' ]
 
+basepath_in = '/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis/'
+basepath_out = '/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis/plots/'
+
 import os
 import argparse
 import multiprocessing
@@ -27,7 +30,7 @@ class Params:
     def __init__(self, channel="TauTau", category="boostedL_pnet", region="SR", year="2018", rebin=1):
         self.years     = {"2016", "2016APV", "2017", "2018"}
         self.cat_res   = {"baseline", "res1b", "res2b", "ttbarCR", "dyCR", "dyCR_res1b", "dyCR_res2b"}
-        self.cat_boost = {"baseline_boosted", "boostedL_pnet"}
+        self.cat_boost = {"baseline_boosted", "boostedL_pnet", "baseline_boosted_TT", "boostedL_pnet_TT", "baseline_boosted_DY", "boostedL_pnet_DY"}
         self.channels  = {"ETau", "MuTau", "TauTau", "MuMu"}
         self.regions   = {"SR", "SStight", "OSinviso", "SSinviso"}
 
@@ -150,6 +153,11 @@ class PlotterFactory:
 			# "HHbregrsvfit_eta"	   : (r"$\eta_{HH}^{PNet}$",			  (40, 40, 2, 4000)),
 			"HH_mass"			   : (r"$m_{HH}\:\:[GeV]$",			  (1, 1, 1, 150)),
 			"HHKin_mass"		   : (r"$m^{Kin}_{HH}\:\:[GeV]$",			  (1, 1, 1, 150)),
+                        "fatjet_softdropMass"      : (r"m^{SD}_{bb}",          (15, 15, 0, 300)),
+                        "fatjet_eta"               : (r"$eta (bb)$", (7, 7, -2.5, 2.5)),
+                        "fatjet_phi"               : (r"$phi (bb)$", (7, 7, -3.14159, 3.14159)),
+                        "fatjet_pt"                : (r"p_{T} (bb)", (15, 15, 250, 700)),
+
         }
 
         self.systematics = {"tes_DM0", "tes_DM1", "tes_DM10", "tes_DM11"}
@@ -277,9 +285,6 @@ class PlotterFactory:
          
 
 def dnn_parallel(mass, spin, tag, chn, cat, pars):
-    basepath_in = "/data_CMS/cms/alves/HHresonant_hist/"
-    basepath_out = "/eos/home-b/bfontana/www/HH_Plots/"
-
     pdnn_params = DNNParams(mass, spin)
     infile = os.path.join(basepath_in, tag, chn, "Spin"+spin+"_Mass"+mass, 'combined_outLimits.root')
     outdir = os.path.join(basepath_out, tag, chn, cat)
@@ -289,9 +294,6 @@ def dnn_parallel(mass, spin, tag, chn, cat, pars):
     factory.produce(factory.data_mc_signal_worker, pars=pars, pdnn=pdnn_params)
 
 def makeFinalPlots(tag, year, channels, categories, region, rebin, pdnn, singlethreaded=False):
-    basepath_in = "/data_CMS/cms/alves/HHresonant_hist/" # "/data_CMS/cms/alves/HHresonant_hist/"
-    basepath_out = "./Temp/" # "/eos/home-b/bfontana/www/HH_Plots/"
-
     for chn in channels:
         for cat in categories:
             outdir = os.path.join(basepath_out, tag, chn, cat)
@@ -344,7 +346,7 @@ if __name__ == '__main__':
                         choices=['ETau', 'MuTau', 'TauTau', 'MuMu'], help='Channels')
     parser.add_argument('--categories', type=str, required=True, nargs='+', help='Categories',
                         default=("res1b", "res2b", "boostedL_pnet"),
-                        choices=["baseline", "res1b", "res2b", "boostedL_pnet", "dyCR_res1b", "dyCR_res2b", "ttbarCR",])
+                        choices=["baseline", "res1b", "res2b", "boostedL_pnet", "dyCR_res1b", "dyCR_res2b", "ttbarCR","boostedL_pnet_TT","boostedL_pnet_DY", "baseline_boosted_TT"])
     parser.add_argument('--rebin', type=int, required=False, help="Rebin factor, leading to less bins.", default=1)
     parser.add_argument('--singlethreaded', action='store_true', help='Disable multithreading; useful for debugging.')
     parser.add_argument('--pdnn', action='store_true', help='Plot DNN variables')

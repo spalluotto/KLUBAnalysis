@@ -51,7 +51,8 @@ def launch_jobs(args):
                             'cd {}'.format(os.getcwd()),
                             # 'export SCRAM_ARCH=slc6_amd64_gcc491',
                             'eval `scram r -sh`',
-                            'source scripts/setup.sh',
+                           "export KRB5CCNAME=/gwpool/users/spalluotto/krb5cc_`id -u spalluotto`",
+                           'source scripts/setup.sh',
                             command + '\n')))
         os.system('chmod u+rwx ' + os.path.join(tagdir, scriptname))
      
@@ -60,9 +61,9 @@ def launch_jobs(args):
 
     content = '\n'.join(('Universe = vanilla',
                          'Executable = {}'.format(scriptpath),
-                         'input = /dev/null',
-                         'getenv = true',
-                         'should_transfer_files = YES',
+                         #'input = /dev/null',
+                         #'getenv = true',
+                         #'should_transfer_files = YES',
                          '',
                          '+JobFlavour = "longlunch"',
                          '+JobBatchName = "{}-{}-{}"'.format(args.tag, args.channel, args.year),
@@ -78,12 +79,14 @@ def launch_jobs(args):
 
     content += '\n'.join(('', '',
                           #'T3Queue = {}'.format(args.queue),
-                          'WNTag=el7',
-                          '+SingularityCmd = "/cvmfs/cms.cern.ch/common/cmssw-cc7"',
                           '',
+                          'MY.WantOS = "el7"',
                           'request_cpus   = 1',
                           'request_memory = 4GB',
                           'request_disk   = 512MB',
+                          '+UseKerberos = True',
+                          'Environment = "KRB5CCNAME=$(kerberos_cred)"',
+                          "kerberos_cred = /gwpool/users/spalluotto/krb5cc_11222",
                           #'max_retries = 1',
                           '',
                           #'include : /opt/exp_soft/cms/t3/t3queue |',
