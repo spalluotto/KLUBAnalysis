@@ -113,7 +113,7 @@ should_transfer_files = NO
 output = {logs_dir}/$(Process).out
 error = {logs_dir}/$(Process).err
 log = {logs_dir}/$(Process).log
-Requirements = ((machine == \"clipper.hcms.it\") || (machine == \"pccms12.hcms.it\") || (machine == \"pccms13.hcms.it\") || (machine == \"pccms14.hcms.it\"))
+Requirements = ((machine == \"pccms12.hcms.it\") || (machine == \"pccms13.hcms.it\") || (machine == \"pccms14.hcms.it\"))
 """
         if args.with_dnn:
             condor_content += """

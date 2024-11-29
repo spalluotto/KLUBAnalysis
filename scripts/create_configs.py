@@ -134,21 +134,18 @@ class Params:
                           "GGHH_SM"),
             }
 
-        """    
-        self.base_selections = ["baseline", "baseline_boosted"]
+        # ---- SELECTIONS ----
+        self.base_selections = ['baseline', 'baseline_nobTagReshape']
+        self.selections = {"ETau": [], "MuTau" : [], "TauTau" : [], "MuMu" : []}
+        
+        """
         _selections = ["res1b", "res2b", "boostedL_pnet"]
         self.selections = {"ETau": _selections + ["ttbarCR"],
                            "MuTau": _selections + ["ttbarCR"],
                            "TauTau": _selections ,
                            "MuMu": _selections + ["dyCR"]}
         """
-        self.base_selections = []
-        _selections = []
-        self.selections = {"ETau"  : ["baseline_boosted_TT", "boostedL_pnet_TT"],
-                           "MuTau" : ["baseline_boosted_TT", "boostedL_pnet_TT"],
-                           "MuMu"  : ["baseline_boosted_DY", "boostedL_pnet_DY"],
-                           "TauTau" : []
-                           }
+        # ---------------------
         
         self.regions = {
             "ETau":
@@ -533,11 +530,11 @@ def write_limit_selection_config(outfile, channel, year, pars, vars_mode, metsf,
         "boostedL_pnet = baseline_boosted, pNetBTagL, massCutTau",
         ))
     if channel == "MuTau" or channel == "ETau":
-        category_definitions += '\n' + "ttbarCR = baseline, btagMM, isBoosted != 1, massCutTT"
+        category_definitions += '\n' + "ttbarCR = baseline, btagMM, massCutTT"
         category_definitions += '\n' + "baseline_boosted_TT = baseline_boosted, massCutTT"
         category_definitions += '\n' + "boostedL_pnet_TT = baseline_boosted_TT, pNetBTagL"
     elif channel == "MuMu":
-        category_definitions += '\n' + "dyCR = baseline, isBoosted != 1, massCutDY"
+        category_definitions += '\n' + "dyCR = baseline, btagMM, massCutDY"
         category_definitions += '\n' + "baseline_boosted_DY = baseline_boosted, massCutDY"
         category_definitions += '\n' + "boostedL_pnet_DY = baseline_boosted_DY, pNetBTagL"
 
@@ -548,9 +545,9 @@ def write_limit_selection_config(outfile, channel, year, pars, vars_mode, metsf,
     content = '\n'.join((
         "[selections]",
         "baseline = " + baseline + " && nbjetscand > 1",
+        "baseline_nobTagReshape = " + baseline + " && nbjetscand > 1", 
         # not ( baseline and btagMM and massCut) and baseline and isBoosted --> new definition cat3
         "baseline_boosted = !(( ("+ baseline + ") && nbjetscand > 1 ) && (bjet1_bID_deepFlavor > {wpm} && bjet2_bID_deepFlavor > {wpm}) && (tauH_mass > 20 && bH_mass > 40) ) && (".format(wpm=deepjet["medium"]) + baseline + ") && isBoosted == 1 ",
-        "baseline_noB = " + baseline,
         "",
         ("btagM  = (bjet1_bID_deepFlavor > {wpm} && bjet2_bID_deepFlavor < {wpm}) || ".format(wpm=deepjet["medium"]) +
          "(bjet1_bID_deepFlavor < {wpm} && bjet2_bID_deepFlavor > {wpm})".format(wpm=deepjet["medium"])),
@@ -583,6 +580,7 @@ def write_limit_selection_config(outfile, channel, year, pars, vars_mode, metsf,
                               ""))
     else:
         content += '\n'.join(("baseline = MC_weight, PUReweight, L1pref_weight, trigSF, dauSFs, PUjetID_SF, bTagweightReshape",
+                              "baseline_nobTagReshape = MC_weight, PUReweight, L1pref_weight, trigSF, dauSFs, PUjetID_SF",
                               "baseline_boosted = MC_weight, PUReweight, L1pref_weight, trigSF, dauSFs, PUjetID_SF",
                               ""))
 
@@ -613,7 +611,8 @@ def define_dnn_variables(year, spin, mass, pars, with_systs):
 
 def define_nondnn_variables():
     """Define non-DNN variables to be added to the configuration files."""
-    return ["fatjet_softdropMass", "fatjet_pt", "fatjet_eta", "fatjet_phi"]
+    return ["bjet1_eta","bjet2_eta","fatjet_eta"]
+    #return ["fatjet_softdropMass", "fatjet_pt", "fatjet_eta", "fatjet_phi"]
     # ---- full list ----
     """
     return ["nbjetscand", "njets",
