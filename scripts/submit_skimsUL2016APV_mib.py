@@ -4,7 +4,7 @@ import glob
 
 
 #--------------------------
-date           = '29Nov2024_bkgCor'
+date           = '04Dec2024_bkgCor'
 execute_bkg    = False
 execute_sig    = True
 execute_data   = False
@@ -642,19 +642,11 @@ if execute_data:
 
 
 
-# write commands to a shell script that we will run in singularity        
-shell_script_file = os.path.join(f"{klubDir}/scripts", "submit_mib_tmp.sh")
 
 if not os.path.exists(outDir):
     os.makedirs(outDir)
 if not os.path.exists(skimDir):
     os.makedirs(skimDir)
-
-with open(shell_script_file, 'w') as script_file:
-    script_file.write("#!/bin/bash\n\n")
-    script_file.write(f"cd {klubDir}\n")
-    script_file.write("source /cvmfs/cms.cern.ch/cmsset_default.sh\n")
-    script_file.write(f"source {klubDir}/scripts/setup.sh\n\n")
 
 
 #---------------
@@ -666,13 +658,11 @@ if execute_bkg:
     with open('%s'%logFile, 'w') as logF:
         logF.write("Submitting - backgrounds - \nOUTDIR = %s"%outDir)
     
-    with open(shell_script_file, 'w') as script_file:
-        for label in bkg_map:
-            command = f"{baseCommand} {bkg_map[label]} --pu {puDir}\n"
-            print('bkg command:  ', command)
-            script_file.write(command)
-        os.chmod(shell_script_file, 0o755)
-
+    for label in bkg_map:
+        command = f"{baseCommand} {bkg_map[label]} --pu {puDir}\n"
+        print('bkg command:  ', command)
+        os.system(command)
+        
 #---------------
 # SUBMIT SIGNALS
 
@@ -681,13 +671,11 @@ if execute_sig:
     print('OUTDIR = ', outDir)
     with open('%s'%logFile, 'w') as logF:
         logF.write("Submitting - signals - \nOUTDIR = %s"%outDir)
-    with open(shell_script_file, 'w') as script_file:
-        for label in sig_map:
-            command = f"{baseCommand} {sig_map[label]} --pu {puDir}\n"
-            print('sig command:  ', command)
-            script_file.write(command)
-        os.chmod(shell_script_file, 0o755)
-
+    for label in sig_map:
+        command = f"\n{baseCommand} {sig_map[label]} --pu {puDir}\n"
+        print('\nsig command:  ', command)
+        os.system(command)
+        
 #---------------
 # SUBMIT DATA
 
@@ -696,13 +684,11 @@ if execute_data:
     print('OUTDIR = ', outDir)
     with open('%s'%logFile, 'w') as logF:
         logF.write("Submitting - data - \nOUTDIR = %s"%outDir)
-    with open(shell_script_file, 'w') as script_file:
-        for label in data_map:
-            command = f"{baseCommand} {data_map[label]}"
-            print('data command:  ', command)
-            script_file.write(command)
-        os.chmod(shell_script_file, 0o755)
-
+    for label in data_map:
+        command = f"\n{baseCommand} {data_map[label]}\n"
+        print('\ndata command:  ', command)
+        os.system(command)
+        
 ###################
 
 

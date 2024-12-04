@@ -220,6 +220,7 @@ if __name__ == "__main__":
         condorFile = open ('%s/condorLauncher_%d.sh'% (jobsDir,n), 'w')
         condorFile.write ('Universe = vanilla\n')
         condorFile.write ('Executable  = '+jobsDir + '/skimJob_' + str (n) + '.sh\n')
+        condorFile.write ('+JobBatchName = SKIM_'+tagname+'\n')
         condorFile.write ('Log         = '+jobsDir + '/condor_job_$(ProcId).log\n')
         condorFile.write ('Output      = '+jobsDir + '/condor_job_$(ProcId).out\n')
         condorFile.write ('Error       = '+jobsDir + '/condor_job_$(ProcId).error\n')
