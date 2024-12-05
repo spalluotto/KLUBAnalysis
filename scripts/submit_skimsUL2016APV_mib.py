@@ -662,7 +662,6 @@ if execute_bkg:
         command = f"{baseCommand} {bkg_map[label]} --pu {puDir}\n"
         print('bkg command:  ', command)
         os.system(command)
-        
 #---------------
 # SUBMIT SIGNALS
 
@@ -675,7 +674,6 @@ if execute_sig:
         command = f"\n{baseCommand} {sig_map[label]} --pu {puDir}\n"
         print('\nsig command:  ', command)
         os.system(command)
-        
 #---------------
 # SUBMIT DATA
 
@@ -688,7 +686,6 @@ if execute_data:
         command = f"\n{baseCommand} {data_map[label]}\n"
         print('\ndata command:  ', command)
         os.system(command)
-        
 ###################
 
 
