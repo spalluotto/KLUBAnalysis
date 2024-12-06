@@ -4,10 +4,12 @@ import glob
 
 
 #--------------------------
-date           = '04Dec2024_bkgCor'
+date           = '06Dec2024_bkgCor_test_codicevecchio_skimNuovi'
 execute_bkg    = False
 execute_sig    = True
 execute_data   = False
+
+execute = False
 #--------------------------
 
 
@@ -23,9 +25,15 @@ logFile        = '%s/log_%s.txt'%(outDir,date)
 
 
 # INPUT ---
+"""
 inputDir_bkg    = '%s/inputFiles/Resonant_UL2016APV_Backgrounds'%klubDir
 inputDir_sig    = '%s/inputFiles/Resonant_UL2016APV_Signals'%klubDir
 inputDir_data   = '%s/inputFiles/Resonant_UL2016APV_Data'%klubDir
+"""
+inputDir_bkg     = f'{klubDir}/inputFiles/UL16APV_Backgrounds'
+inputDir_sig     = f'{klubDir}/inputFiles/UL16APV_Signals'
+inputDir_data    = f'{klubDir}/inputFiles/UL16APV_Data'
+
 
 # OUTPUT ---  
 skimDir         = '/gwdata/users/spalluotto/ResonantHHbbtautauAnalysis/%s'%tag
@@ -661,7 +669,8 @@ if execute_bkg:
     for label in bkg_map:
         command = f"{baseCommand} {bkg_map[label]} --pu {puDir}\n"
         print('bkg command:  ', command)
-        os.system(command)
+        if execute:
+            os.system(command)
 #---------------
 # SUBMIT SIGNALS
 
@@ -673,7 +682,8 @@ if execute_sig:
     for label in sig_map:
         command = f"\n{baseCommand} {sig_map[label]} --pu {puDir}\n"
         print('\nsig command:  ', command)
-        os.system(command)
+        if execute:
+            os.system(command)
 #---------------
 # SUBMIT DATA
 
@@ -685,7 +695,8 @@ if execute_data:
     for label in data_map:
         command = f"\n{baseCommand} {data_map[label]}\n"
         print('\ndata command:  ', command)
-        os.system(command)
+        if execute:
+            os.system(command)
 ###################
 
 
