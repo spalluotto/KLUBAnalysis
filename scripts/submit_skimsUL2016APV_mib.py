@@ -4,10 +4,12 @@ import glob
 
 
 #--------------------------
-date           = '29Nov2024_bkgCor'
+date           = '06Dec2024_bkgCor_test'
 execute_bkg    = False
 execute_sig    = True
 execute_data   = False
+
+execute = False
 #--------------------------
 
 
@@ -23,9 +25,10 @@ logFile        = '%s/log_%s.txt'%(outDir,date)
 
 
 # INPUT ---
-inputDir_bkg    = '%s/inputFiles/Resonant_UL2016APV_Backgrounds'%klubDir
-inputDir_sig    = '%s/inputFiles/Resonant_UL2016APV_Signals'%klubDir
-inputDir_data   = '%s/inputFiles/Resonant_UL2016APV_Data'%klubDir
+# new big nutple production with mc pdf , alpha strong etc
+inputDir_bkg    = f'{klubDir}/inputFiles/UL16APV_Backgrounds'
+inputDir_sig    = f'{klubDir}/inputFiles/UL16APV_Signals'
+inputDir_data   = f'{klubDir}/inputFiles/UL16APV_Data'
 
 # OUTPUT ---  
 skimDir         = '/gwdata/users/spalluotto/ResonantHHbbtautauAnalysis/%s'%tag
@@ -642,20 +645,11 @@ if execute_data:
 
 
 
-# write commands to a shell script that we will run in singularity        
-shell_script_file = os.path.join(f"{klubDir}/scripts", "submit_mib_tmp.sh")
 
 if not os.path.exists(outDir):
     os.makedirs(outDir)
 if not os.path.exists(skimDir):
     os.makedirs(skimDir)
-
-with open(shell_script_file, 'w') as script_file:
-    script_file.write("#!/bin/bash\n\n")
-    script_file.write(f"cd {klubDir}\n")
-    script_file.write("source /cvmfs/cms.cern.ch/cmsset_default.sh\n")
-    script_file.write(f"source {klubDir}/scripts/setup.sh\n\n")
-
 
 #---------------
 # SUBMIT BACKGROUNDS
@@ -666,12 +660,11 @@ if execute_bkg:
     with open('%s'%logFile, 'w') as logF:
         logF.write("Submitting - backgrounds - \nOUTDIR = %s"%outDir)
     
-    with open(shell_script_file, 'w') as script_file:
-        for label in bkg_map:
-            command = f"{baseCommand} {bkg_map[label]} --pu {puDir}\n"
-            print('bkg command:  ', command)
-            script_file.write(command)
-        os.chmod(shell_script_file, 0o755)
+    for label in bkg_map:
+        command = f"{baseCommand} {bkg_map[label]} --pu {puDir}\n"
+        print('bkg command:  ', command)
+        if execute:
+            os.system(command)
 
 #---------------
 # SUBMIT SIGNALS
@@ -681,12 +674,11 @@ if execute_sig:
     print('OUTDIR = ', outDir)
     with open('%s'%logFile, 'w') as logF:
         logF.write("Submitting - signals - \nOUTDIR = %s"%outDir)
-    with open(shell_script_file, 'w') as script_file:
-        for label in sig_map:
-            command = f"{baseCommand} {sig_map[label]} --pu {puDir}\n"
-            print('sig command:  ', command)
-            script_file.write(command)
-        os.chmod(shell_script_file, 0o755)
+    for label in sig_map:
+        command = f"{baseCommand} {sig_map[label]} --pu {puDir}\n"
+        print('sig command:  ', command)
+        if execute:
+            os.system(command)
 
 #---------------
 # SUBMIT DATA
@@ -696,12 +688,11 @@ if execute_data:
     print('OUTDIR = ', outDir)
     with open('%s'%logFile, 'w') as logF:
         logF.write("Submitting - data - \nOUTDIR = %s"%outDir)
-    with open(shell_script_file, 'w') as script_file:
-        for label in data_map:
-            command = f"{baseCommand} {data_map[label]}"
-            print('data command:  ', command)
-            script_file.write(command)
-        os.chmod(shell_script_file, 0o755)
+    for label in data_map:
+        command = f"{baseCommand} {data_map[label]}"
+        print('data command:  ', command)
+        if execute:
+            os.system(command)
 
 ###################
 
