@@ -224,9 +224,9 @@ if __name__ == "__main__":
         condorFile.write ('Log         = '+jobsDir + '/condor_job_$(ProcId).log\n')
         condorFile.write ('Output      = '+jobsDir + '/condor_job_$(ProcId).out\n')
         condorFile.write ('Error       = '+jobsDir + '/condor_job_$(ProcId).error\n')
-        condorFile.write ('request_memory = 2920\n')
-        condorFile.write ('Requirements = ((machine == "pccms01.hcms.it") || (machine == "pccms02.hcms.it") || (machine == "pccms03.hcms.it") ||(machine == "hercules02.hcms.it")) \n')
-        #condorFile.write ('Requirements = ((machine == "pccms11.hcms.it") || (machine == "pccms12.hcms.it") || (machine == "pccms13.hcms.it") || (machine == "pccms14.hcms.it") )\n')
+        condorFile.write ('request_memory = 2040\n')
+        #condorFile.write ('Requirements = ((machine == "pccms01.hcms.it") || (machine == "pccms02.hcms.it") || (machine == "pccms03.hcms.it")) \n') # for background
+        condorFile.write ('Requirements = ((machine == "hercules02.hcms.it") || (machine == "pccms12.hcms.it")) \n') #  for signals
         condorFile.write ('queue 1\n')
         condorFile.close ()
 
