@@ -4,12 +4,12 @@ import glob
 
 
 #--------------------------
-date           = '06Dec2024_bkgCor_test'
-execute_bkg    = False
-execute_sig    = True
+date           = '06Dec2024_corBkg'
+execute_bkg    = True
+execute_sig    = False
 execute_data   = False
 
-execute = False
+execute = True
 #--------------------------
 
 
@@ -290,7 +290,7 @@ bkg_map = {
 
 
     # non resonant signal 
-    "GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_SM" : "-n 10   -x 0.01618 --isDYlike"
+    #    "GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_SM" : "-n 10   -x 0.01618 --isDYlike"
 }
 
 
