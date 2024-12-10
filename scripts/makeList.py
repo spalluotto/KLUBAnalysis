@@ -1,8 +1,8 @@
 import os
 import re
 
-tag_in = 'signals_2016APV_27Nov2024_Others'
-tag_out = 'UL16APV_Signals'
+tag_in = 'Backgrounds_2016APV_27Nov2024'
+tag_out = 'UL16APV_Backgrounds'
 
 root_dir = f"/gwteras/cms/store/user/dzuolo/ResonantHHbbtautauNtuples/{tag_in}/"
 output_dir = f"/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis/inputFiles/{tag_out}"
