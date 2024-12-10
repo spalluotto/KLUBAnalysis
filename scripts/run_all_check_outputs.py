@@ -39,22 +39,32 @@ def delete_last_line():
     sys.stdout.write('\x1b[2K')
 
 def run_all_check_outputs(args):
-    base_dir = os.path.join('/data_CMS/cms/', args.user, 'HHresonant_SKIMS/')
-    base_dir = os.path.join(base_dir, 'SKIMS_' + args.data_period + '_' + args.in_tag)
+    if args.user == "bfonta":
+        base_dir = os.path.join('/data_CMS/cms/', args.user, 'HHresonant_SKIMS/')
+        base_dir = os.path.join(base_dir, 'SKIMS_' + args.data_period + '_' + args.in_tag)
+    elif args.user == "spalluotto":
+        base_dir = os.path.join('/gwdata/users/spalluotto/ResonantHHbbtautauAnalysis/', args.in_tag)
 
+    print(base_dir)
     sample_dirs = [x for x in glob.glob(os.path.join(base_dir, '*/'))]
+    print(sample_dirs)
     if len(sample_dirs) == 0:
         print('No folders were found under {}/.'.format(base_dir))
 
-    rem = []
-    for sss in sample_dirs:
-        if "EGamma" in sss:
-            rem.append(sss)
-    for x in rem:
-        sample_dirs.remove(x)
+    # Remove unwanted directories
+    sample_dirs = [sss for sss in sample_dirs if "EGamma" not in sss]
 
-    with Pool(len(sample_dirs)) as pool:
+    if not sample_dirs:  # Double-check after filtering
+        print("No valid folders to process after filtering under {} .".format(base_dir))
+        return
+
+    # Adjust pool size
+    pool_size = max(1, len(sample_dirs))  # At least 1 process
+
+    print("Processing {} folders with a pool size of {}...".format(len(sample_dirs), pool_size))
+    with Pool(pool_size) as pool:
         pool.starmap(run, zip(sample_dirs, itertools.repeat(args.itresub), itertools.repeat(args.dry_run)))
+
 
 def run(sd, itresub, dry_run):
     if itresub:
