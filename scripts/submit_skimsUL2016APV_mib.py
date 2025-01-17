@@ -5,9 +5,9 @@ import glob
 
 #--------------------------
 date           = '06Dec2024_corBkg'
-execute_bkg    = True
+execute_bkg    = False
 execute_sig    = False
-execute_data   = False
+execute_data   = True
 
 execute = True
 #--------------------------
@@ -46,30 +46,30 @@ baseCommand     = 'python %s/scripts/skimNtuple_mib.py    -T %s  -s True  -c %s 
 # -- official names ---
 names = {
     # Data
-    "SingleElectron_Run2016A" : "EGammaA",
-    "SingleElectron_Run2016B" : "EGammaB",
-    "SingleElectron_Run2016C" : "EGammaC",
-    "SingleElectron_Run2016D" : "EGammaD",
-    "SingleElectron_Run2016E" : "EGammaE",
-    "SingleElectron_Run2016F" : "EGammaF",
-    "Tau_Run2016A" : "TauA",
-    "Tau_Run2016B" : "TauB",
-    "Tau_Run2016C" : "TauC",
-    "Tau_Run2016D" : "TauD",
-    "Tau_Run2016E" : "TauE",
-    "Tau_Run2016F" : "TauF",
-    "SingleMuon_Run2016A" : "MuonA",
-    "SingleMuon_Run2016B" : "MuonB",
-    "SingleMuon_Run2016C" : "MuonC",
-    "SingleMuon_Run2016D" : "MuonD",
-    "SingleMuon_Run2016E" : "MuonE",
-    "SingleMuon_Run2016F" : "MuonF",
-    "MET_Run2016A" : "META",
-    "MET_Run2016B" : "METB",
-    "MET_Run2016C" : "METC",
-    "MET_Run2016D" : "METD",
-    "MET_Run2016E" : "METE",
-    "MET_Run2016F" : "METF",
+    "SingleElectron__Run2016A" : "EGammaA",
+    "SingleElectron__Run2016B" : "EGammaB",
+    "SingleElectron__Run2016C" : "EGammaC",
+    "SingleElectron__Run2016D" : "EGammaD",
+    "SingleElectron__Run2016E" : "EGammaE",
+    "SingleElectron__Run2016F" : "EGammaF",
+    "Tau__Run2016A" : "TauA",
+    "Tau__Run2016B" : "TauB",
+    "Tau__Run2016C" : "TauC",
+    "Tau__Run2016D" : "TauD",
+    "Tau__Run2016E" : "TauE",
+    "Tau__Run2016F" : "TauF",
+    "SingleMuon__Run2016A" : "MuonA",
+    "SingleMuon__Run2016B" : "MuonB",
+    "SingleMuon__Run2016C" : "MuonC",
+    "SingleMuon__Run2016D" : "MuonD",
+    "SingleMuon__Run2016E" : "MuonE",
+    "SingleMuon__Run2016F" : "MuonF",
+    "MET__Run2016A" : "META",
+    "MET__Run2016B" : "METB",
+    "MET__Run2016C" : "METC",
+    "MET__Run2016D" : "METD",
+    "MET__Run2016E" : "METE",
+    "MET__Run2016F" : "METF",
 
     # Signal
     "GluGluToRadionToHHTo2B2Tau_M-250" : "Rad250",
@@ -570,32 +570,32 @@ if execute_sig:
 data_map = {}
 data_map = {
     # --- Tau ---
-    "Tau_Run2016B" :  "-n 200    -d True  --datasetType 2",
-    "Tau_Run2016C" :  "-n 200    -d True  --datasetType 2",
-    "Tau_Run2016D" :  "-n 200    -d True  --datasetType 2",
-    "Tau_Run2016E" :  "-n 200    -d True  --datasetType 2",
-    "Tau_Run2016F" :  "-n 200    -d True  --datasetType 2",
+    "Tau__Run2016B" :  "-n 200    -d True  --datasetType 2",
+    "Tau__Run2016C" :  "-n 200    -d True  --datasetType 2",
+    "Tau__Run2016D" :  "-n 200    -d True  --datasetType 2",
+    "Tau__Run2016E" :  "-n 200    -d True  --datasetType 2",
+    "Tau__Run2016F" :  "-n 200    -d True  --datasetType 2",
     
     # --- Mu ---
-    "SingleMuon_Run2016B" :  "-n 200    -d True",
-    "SingleMuon_Run2016C" :  "-n 200    -d True",
-    "SingleMuon_Run2016D" :  "-n 200    -d True",
-    "SingleMuon_Run2016E" :  "-n 200    -d True",
-    "SingleMuon_Run2016F" :  "-n 200    -d True",
+    "SingleMuon__Run2016B" :  "-n 200    -d True",
+    "SingleMuon__Run2016C" :  "-n 200    -d True",
+    "SingleMuon__Run2016D" :  "-n 200    -d True",
+    "SingleMuon__Run2016E" :  "-n 200    -d True",
+    "SingleMuon__Run2016F" :  "-n 200    -d True",
 
     # --- Electron ---
-    "SingleElectron_Run2016B" :  "-n 200    -d True",
-    "SingleElectron_Run2016C" :  "-n 200    -d True",
-    "SingleElectron_Run2016D" :  "-n 200    -d True",
-    "SingleElectron_Run2016E" :  "-n 200    -d True",
-    "SingleElectron_Run2016F" :  "-n 200    -d True",
+    "SingleElectron__Run2016B" :  "-n 200    -d True",
+    "SingleElectron__Run2016C" :  "-n 200    -d True",
+    "SingleElectron__Run2016D" :  "-n 200    -d True",
+    "SingleElectron__Run2016E" :  "-n 200    -d True",
+    "SingleElectron__Run2016F" :  "-n 200    -d True",
 
     # --- MET ---
-    "MET_Run2016B" :  "-n 200    -d True   --datasetType 1",
-    "MET_Run2016C" :  "-n 200    -d True   --datasetType 1",
-    "MET_Run2016D" :  "-n 200    -d True   --datasetType 1",
-    "MET_Run2016E" :  "-n 200    -d True   --datasetType 1",
-    "MET_Run2016F" :  "-n 200    -d True   --datasetType 1"
+    "MET__Run2016B" :  "-n 200    -d True   --datasetType 1",
+    "MET__Run2016C" :  "-n 200    -d True   --datasetType 1",
+    "MET__Run2016D" :  "-n 200    -d True   --datasetType 1",
+    "MET__Run2016E" :  "-n 200    -d True   --datasetType 1",
+    "MET__Run2016F" :  "-n 200    -d True   --datasetType 1"
 }    
 
 
@@ -689,7 +689,7 @@ if execute_data:
     with open('%s'%logFile, 'w') as logF:
         logF.write("Submitting - data - \nOUTDIR = %s"%outDir)
     for label in data_map:
-        command = f"{baseCommand} {data_map[label]}"
+        command = f"{baseCommand} {data_map[label]} --pu {puDir}\n" # but if iiuc the puweight should be considered only if isMC, still the code wants the puFile to be specified
         print('data command:  ', command)
         if execute:
             os.system(command)

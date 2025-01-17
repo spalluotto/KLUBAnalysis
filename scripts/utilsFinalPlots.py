@@ -103,7 +103,7 @@ class Histograms:
         if scale != 1.:
             for key in keys:
                 self._hists[key] *= scale
-                self._hists[key].label += r"GeV (" + str(round(scale,3)) + " pb)"
+                self._hists[key].label += r" ($\times$" + str(round(scale,3)) +")"
 
         if rebin != 1.:
             for key in keys:
@@ -220,6 +220,7 @@ class Plotter:
         chn_map = {"ETau": r"$bb\;e\tau$", "TauTau":r"$bb\;\tau\tau$",
                    "MuMu": r"$bb\;\mu\mu$", "MuTau": r"$bb\;\mu\tau$"}
         cat_map = {"baseline": "baseline",
+                   "baseline_nobTagReshape":"baseline no bTag reshape",
                    "res1b": "res1b", "res2b": "res2b", "boosted": "boosted", "boostedL_pnet": "boosted",
                    "dyCR": "DY CR", "dyCR_res1b": "res1b DY CR", "dyCR_res2b": "res2b DY CR",
                    "ttbarCR": r"$t\bar{t}$ CR"}
