@@ -4,10 +4,12 @@ import glob
 
 
 #--------------------------
-date           = '29Nov2024_bkgCor'
+date           = '21Jan2025_dataBug'
 execute_bkg    = False
-execute_sig    = True
-execute_data   = False
+execute_sig    = False
+execute_data   = True
+
+execute = True
 #--------------------------
 
 
@@ -23,9 +25,9 @@ logFile        = '%s/log_%s.txt'%(outDir,date)
 
 
 # INPUT ---
-inputDir_bkg    = '%s/inputFiles/Resonant_UL2016APV_Backgrounds'%klubDir
-inputDir_sig    = '%s/inputFiles/Resonant_UL2016APV_Signals'%klubDir
-inputDir_data   = '%s/inputFiles/Resonant_UL2016APV_Data'%klubDir
+inputDir_bkg    = f'{klubDir}/inputFiles/Resonant_UL2016APV_Backgrounds'
+inputDir_sig    = f'{klubDir}/inputFiles/Resonant_UL2016APV_Signals'
+inputDir_data   = f'{klubDir}/inputFiles/Resonant_UL2016APV_Data'
 
 # OUTPUT ---  
 skimDir         = '/gwdata/users/spalluotto/ResonantHHbbtautauAnalysis/%s'%tag
@@ -43,30 +45,30 @@ baseCommand     = 'python %s/scripts/skimNtuple_mib.py    -T %s  -s True  -c %s 
 # -- official names ---
 names = {
     # Data
-    "SingleElectron_Run2016A" : "EGammaA",
-    "SingleElectron_Run2016B" : "EGammaB",
-    "SingleElectron_Run2016C" : "EGammaC",
-    "SingleElectron_Run2016D" : "EGammaD",
-    "SingleElectron_Run2016E" : "EGammaE",
-    "SingleElectron_Run2016F" : "EGammaF",
-    "Tau_Run2016A" : "TauA",
+    "SingleElectron__Run2016A" : "EGammaA",
+    "SingleElectron__Run2016B" : "EGammaB",
+    "SingleElectron__Run2016C" : "EGammaC",
+    "SingleElectron__Run2016D" : "EGammaD",
+    "SingleElectron__Run2016E" : "EGammaE",
+    "SingleElectron__Run2016F" : "EGammaF",
+    "Tau__Run2016A" : "TauA",
     "Tau_Run2016B" : "TauB",
-    "Tau_Run2016C" : "TauC",
-    "Tau_Run2016D" : "TauD",
-    "Tau_Run2016E" : "TauE",
-    "Tau_Run2016F" : "TauF",
-    "SingleMuon_Run2016A" : "MuonA",
-    "SingleMuon_Run2016B" : "MuonB",
-    "SingleMuon_Run2016C" : "MuonC",
-    "SingleMuon_Run2016D" : "MuonD",
-    "SingleMuon_Run2016E" : "MuonE",
-    "SingleMuon_Run2016F" : "MuonF",
-    "MET_Run2016A" : "META",
-    "MET_Run2016B" : "METB",
-    "MET_Run2016C" : "METC",
-    "MET_Run2016D" : "METD",
-    "MET_Run2016E" : "METE",
-    "MET_Run2016F" : "METF",
+    "Tau__Run2016C" : "TauC",
+    "Tau__Run2016D" : "TauD",
+    "Tau__Run2016E" : "TauE",
+    "Tau__Run2016F" : "TauF",
+    "SingleMuon__Run2016A" : "MuonA",
+    "SingleMuon__Run2016B" : "MuonB",
+    "SingleMuon__Run2016C" : "MuonC",
+    "SingleMuon__Run2016D" : "MuonD",
+    "SingleMuon__Run2016E" : "MuonE",
+    "SingleMuon__Run2016F" : "MuonF",
+    "MET__Run2016A" : "META",
+    "MET__Run2016B" : "METB",
+    "MET__Run2016C" : "METC",
+    "MET__Run2016D" : "METD",
+    "MET__Run2016E" : "METE",
+    "MET__Run2016F" : "METF",
 
     # Signal
     "GluGluToRadionToHHTo2B2Tau_M-250" : "Rad250",
@@ -287,7 +289,7 @@ bkg_map = {
 
 
     # non resonant signal 
-    "GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_SM" : "-n 10   -x 0.01618 --isDYlike"
+    #    "GluGluToHHTo2B2Tau_TuneCP5_PSWeights_node_SM" : "-n 10   -x 0.01618 --isDYlike"
 }
 
 
@@ -568,31 +570,31 @@ data_map = {}
 data_map = {
     # --- Tau ---
     "Tau_Run2016B" :  "-n 200    -d True  --datasetType 2",
-    "Tau_Run2016C" :  "-n 200    -d True  --datasetType 2",
-    "Tau_Run2016D" :  "-n 200    -d True  --datasetType 2",
-    "Tau_Run2016E" :  "-n 200    -d True  --datasetType 2",
-    "Tau_Run2016F" :  "-n 200    -d True  --datasetType 2",
+    # "Tau__Run2016C" :  "-n 200    -d True  --datasetType 2",
+    # "Tau__Run2016D" :  "-n 200    -d True  --datasetType 2",
+    # "Tau__Run2016E" :  "-n 200    -d True  --datasetType 2",
+    # "Tau__Run2016F" :  "-n 200    -d True  --datasetType 2",
     
-    # --- Mu ---
-    "SingleMuon_Run2016B" :  "-n 200    -d True",
-    "SingleMuon_Run2016C" :  "-n 200    -d True",
-    "SingleMuon_Run2016D" :  "-n 200    -d True",
-    "SingleMuon_Run2016E" :  "-n 200    -d True",
-    "SingleMuon_Run2016F" :  "-n 200    -d True",
+    # # --- Mu ---
+    # "SingleMuon__Run2016B" :  "-n 200    -d True",
+    # "SingleMuon__Run2016C" :  "-n 200    -d True",
+    # "SingleMuon__Run2016D" :  "-n 200    -d True",
+    # "SingleMuon__Run2016E" :  "-n 200    -d True",
+    # "SingleMuon__Run2016F" :  "-n 200    -d True",
 
-    # --- Electron ---
-    "SingleElectron_Run2016B" :  "-n 200    -d True",
-    "SingleElectron_Run2016C" :  "-n 200    -d True",
-    "SingleElectron_Run2016D" :  "-n 200    -d True",
-    "SingleElectron_Run2016E" :  "-n 200    -d True",
-    "SingleElectron_Run2016F" :  "-n 200    -d True",
+    # # --- Electron ---
+    # "SingleElectron__Run2016B" :  "-n 200    -d True",
+    # "SingleElectron__Run2016C" :  "-n 200    -d True",
+    # "SingleElectron__Run2016D" :  "-n 200    -d True",
+    # "SingleElectron__Run2016E" :  "-n 200    -d True",
+    # "SingleElectron__Run2016F" :  "-n 200    -d True",
 
-    # --- MET ---
-    "MET_Run2016B" :  "-n 200    -d True   --datasetType 1",
-    "MET_Run2016C" :  "-n 200    -d True   --datasetType 1",
-    "MET_Run2016D" :  "-n 200    -d True   --datasetType 1",
-    "MET_Run2016E" :  "-n 200    -d True   --datasetType 1",
-    "MET_Run2016F" :  "-n 200    -d True   --datasetType 1"
+    # # --- MET ---
+    # "MET__Run2016B" :  "-n 200    -d True   --datasetType 1",
+    # "MET__Run2016C" :  "-n 200    -d True   --datasetType 1",
+    # "MET__Run2016D" :  "-n 200    -d True   --datasetType 1",
+    # "MET__Run2016E" :  "-n 200    -d True   --datasetType 1",
+    # "MET__Run2016F" :  "-n 200    -d True   --datasetType 1"
 }    
 
 
@@ -642,20 +644,11 @@ if execute_data:
 
 
 
-# write commands to a shell script that we will run in singularity        
-shell_script_file = os.path.join(f"{klubDir}/scripts", "submit_mib_tmp.sh")
 
 if not os.path.exists(outDir):
     os.makedirs(outDir)
 if not os.path.exists(skimDir):
     os.makedirs(skimDir)
-
-with open(shell_script_file, 'w') as script_file:
-    script_file.write("#!/bin/bash\n\n")
-    script_file.write(f"cd {klubDir}\n")
-    script_file.write("source /cvmfs/cms.cern.ch/cmsset_default.sh\n")
-    script_file.write(f"source {klubDir}/scripts/setup.sh\n\n")
-
 
 #---------------
 # SUBMIT BACKGROUNDS
@@ -666,12 +659,11 @@ if execute_bkg:
     with open('%s'%logFile, 'w') as logF:
         logF.write("Submitting - backgrounds - \nOUTDIR = %s"%outDir)
     
-    with open(shell_script_file, 'w') as script_file:
-        for label in bkg_map:
-            command = f"{baseCommand} {bkg_map[label]} --pu {puDir}\n"
-            print('bkg command:  ', command)
-            script_file.write(command)
-        os.chmod(shell_script_file, 0o755)
+    for label in bkg_map:
+        command = f"{baseCommand} {bkg_map[label]} --pu {puDir}\n"
+        print('bkg command:  ', command)
+        if execute:
+            os.system(command)
 
 #---------------
 # SUBMIT SIGNALS
@@ -681,12 +673,11 @@ if execute_sig:
     print('OUTDIR = ', outDir)
     with open('%s'%logFile, 'w') as logF:
         logF.write("Submitting - signals - \nOUTDIR = %s"%outDir)
-    with open(shell_script_file, 'w') as script_file:
-        for label in sig_map:
-            command = f"{baseCommand} {sig_map[label]} --pu {puDir}\n"
-            print('sig command:  ', command)
-            script_file.write(command)
-        os.chmod(shell_script_file, 0o755)
+    for label in sig_map:
+        command = f"{baseCommand} {sig_map[label]} --pu {puDir}\n"
+        print('sig command:  ', command)
+        if execute:
+            os.system(command)
 
 #---------------
 # SUBMIT DATA
@@ -696,12 +687,11 @@ if execute_data:
     print('OUTDIR = ', outDir)
     with open('%s'%logFile, 'w') as logF:
         logF.write("Submitting - data - \nOUTDIR = %s"%outDir)
-    with open(shell_script_file, 'w') as script_file:
-        for label in data_map:
-            command = f"{baseCommand} {data_map[label]}"
-            print('data command:  ', command)
-            script_file.write(command)
-        os.chmod(shell_script_file, 0o755)
+    for label in data_map:
+        command = f"{baseCommand} {data_map[label]} --pu {puDir}\n" # but if iiuc the puweight should be considered only if isMC, still the code wants the puFile to be specified
+        print('data command:  ', command)
+        if execute:
+            os.system(command)
 
 ###################
 
