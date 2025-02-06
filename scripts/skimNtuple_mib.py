@@ -214,16 +214,20 @@ if __name__ == "__main__":
         os.system ('chmod u+rwx %s/skimJob_%d.sh'% (jobsDir,n))
         os.system ('chmod u+rwx %s/insingularity_%d.sh'% (jobsDir,n))
 
-        print("file %s/skimJob_%d.sh% (jobsDir,n)")
+        print("file %s/skimJob_%d.sh"%(jobsDir,n))
 
         
         condorFile = open ('%s/condorLauncher_%d.sh'% (jobsDir,n), 'w')
         condorFile.write ('Universe = vanilla\n')
+        condorFile.write ('JobBatchName = '+tagname+'\n')
         condorFile.write ('Executable  = '+jobsDir + '/skimJob_' + str (n) + '.sh\n')
         condorFile.write ('Log         = '+jobsDir + '/condor_job_$(ProcId).log\n')
         condorFile.write ('Output      = '+jobsDir + '/condor_job_$(ProcId).out\n')
         condorFile.write ('Error       = '+jobsDir + '/condor_job_$(ProcId).error\n')
-        condorFile.write ('Requirements = ((machine == "pccms11.hcms.it") || (machine == "pccms12.hcms.it") || (machine == "pccms13.hcms.it") || (machine == "pccms14.hcms.it") )\n')
+        condorFile.write ('request_memory = 2040\n')
+        condorFile.write ('Requirements = ((machine == "pccms01.hcms.it") || (machine == "pccms02.hcms.it") || (machine == "pccms03.hcms.it")|| (machine == "pccms11.hcms.it") || (machine == "pccms12.hcms.it") || (machine == "pccms13.hcms.it")  || (machine == "clipper.hcms.it") || (machine == "hercules02.hcms.it")  ) \n') # for background
+        #condorFile.write ('request_memory = 2040\n')
+        #condorFile.write ('Requirements = ((machine == "hercules02.hcms.it") || (machine == "pccms12.hcms.it")) \n') #  for signals
         condorFile.write ('queue 1\n')
         condorFile.close ()
 
