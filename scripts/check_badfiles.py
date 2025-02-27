@@ -2,12 +2,11 @@ import os
 from sample_name_mapping import *
 
 # questo vuole python3
-
-tag = 'SKIMS_UL2016APV_04Feb2025_Backgrounds'
-
+tag  = 'SKIMS_UL2016APV_04Feb2025_Backgrounds'
 root_directory = "/gwdata/users/spalluotto/ResonantHHbbtautauAnalysis/{}".format(tag)
 condor_directory = "/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis/{}".format(tag)
 
+outfile = 'resubmit_badfiles2.sh'
 
 def check_badfiles_and_generate_script(root_dir, condor_dir, sample_name=None):
     """
@@ -30,7 +29,7 @@ def check_badfiles_and_generate_script(root_dir, condor_dir, sample_name=None):
     reverse_mapping = {v: k for k, v in names.items()}
 
     # Output script file
-    output_script_path = os.path.join(os.getcwd(), "resubmit_badfiles.sh")
+    output_script_path = os.path.join(os.getcwd(), outfile)
     with open(output_script_path, "w") as script_file:
         script_file.write("#!/bin/bash\n\n")  # Add shebang for bash script
         

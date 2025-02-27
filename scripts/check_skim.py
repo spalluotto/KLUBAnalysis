@@ -6,11 +6,9 @@ import ROOT
 verbose = False
 overwrite_flag = True # if you want to overwrite already existing goodfiles
 
-
-
 # Base path of the directory containing the samples
 dir_path = "/gwdata/users/spalluotto/ResonantHHbbtautauAnalysis/"
-tag = 'SKIMS_UL2016APV_04Feb2025_Backgrounds/'
+tag = 'SKIMS_UL2016APV_25Feb2025_Tau'
 base_path = "{}/{}".format(dir_path, tag)
 
 # Function to check the last line of a log file

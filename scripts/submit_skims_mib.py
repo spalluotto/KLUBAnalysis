@@ -1,36 +1,50 @@
 import os
 import sys
 import glob
-
+import argparse
 
 #--------------------------
-#    IMPORTANT :     remember to do kerb
-date           = '07Feb2025_Data'
+date           = '26Feb2025_MET'
 
-year = '2016postVFP'
-# year           = '2016preVFP'
+year           = '2016preVFP'
+#year           = '2016postVFP'
 
 execute_bkg    = False
 execute_sig    = False
 execute_data   = True
 
 execute = True
+
+# options ["", "_jerUp", "_jerDown"]
+jer_var = ''
 #--------------------------
 
 
+
+date += jer_var
+
 # --- safety first ---
-response = input(f"Processing {year}. OK? (yes/no): ").strip().lower()
+response = input(f"\n\nProcessing {year}. OK? (yes/no): ").strip().lower()
 if response != "yes":
     print("Process interrupted.")
     sys.exit()
-print("Continuing with the process...")
+
+
+jer_resp = input(f"\n\n\nJER variation {jer_var}. OK? (yes/no)").strip().lower()
+if response != "yes":
+    print("Process interrupted.")
+    sys.exit()
+# ----------------------
 
 
 
+
+
+klubDir        = '/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis'
 
 # ----- year dependent settings ---------
 if year == '2016preVFP':
-    configFile = '%s/config/skim_UL16APV.cfg'%klubDir
+    configFile = '%s/config/skim_UL16APV%s.cfg'%(klubDir,jer_var)
     tag            = 'SKIMS_UL2016APV_%s'%date
 
     inputDir_bkg    = f'{klubDir}/inputFiles/UL16APV_Backgrounds'
@@ -41,7 +55,7 @@ if year == '2016preVFP':
 
     
 elif year == '2016postVFP':
-    configFile = '%s/config/skim_UL16.cfg'%klubDir
+    configFile = '%s/config/skim_UL16%s.cfg'%(klubDir,jer_var)
     tag            = 'SKIMS_UL2016_%s'%date
 
     inputDir_bkg    = f'{klubDir}/inputFiles/UL16_Backgrounds'
@@ -54,9 +68,10 @@ else:
 # ---------------------------------------
 
 
-# folders ------- 
-klubDir        = '/gwpool/users/spalluotto/HH_bbtautau/CMSSW_11_1_9/src/KLUBAnalysis'
+
+
 skimDir         = '/gwdata/users/spalluotto/ResonantHHbbtautauAnalysis/%s'%tag
+
 
 # LOG ---  
 outDir         = '%s/%s'%(klubDir, tag)
@@ -199,6 +214,7 @@ names = {
     "ST_tW_top_5f_inclusiveDecays"             : "ST_tW_top",
     "ST_t-channel_antitop_5f_InclusiveDecays"  : "ST_t-channel_antitop",
     "ST_t-channel_top_5f_InclusiveDecays"      : "ST_t-channel_top",
+    #"ST_s-channel_4f_hadronicDecays"           : "ST_s-channel",
 
     "GluGluHToTauTau_M125"  : "GluGluHToTauTau",
     "VBFHToTauTau_M125"     : "VBFHToTauTau",
@@ -249,12 +265,12 @@ bkg_map = {}
 bkg_map = {
     # --- DY ---
     # ---------->   -g:  loop on genjets to determine the number of b hadrons   --DY: if it is a DY sample
-    # "DYJetsToLL_LHEFilterPtZ-0To50_MatchEWPDG20"      : "-n 200 -x 1409.22      -g True  --isDYlike",
-    # "DYJetsToLL_LHEFilterPtZ-50To100_MatchEWPDG20"    : "-n 200 -x 377.12       -g True  --isDYlike",
-    # "DYJetsToLL_LHEFilterPtZ-100To250_MatchEWPDG20"   : "-n 150 -x 92.24        -g True  --isDYlike",
-    # "DYJetsToLL_LHEFilterPtZ-250To400_MatchEWPDG20"   : "-n 50  -x 3.512        -g True  --isDYlike",
-    # "DYJetsToLL_LHEFilterPtZ-400To650_MatchEWPDG20"   : "-n 20  -x 0.4826       -g True  --isDYlike",
-    # "DYJetsToLL_LHEFilterPtZ-650ToInf_MatchEWPDG20"   : "-n 10  -x 0.04487      -g True  --isDYlike",
+    "DYJetsToLL_LHEFilterPtZ-0To50_MatchEWPDG20"      : "-n 200 -x 1409.22      -g True  --isDYlike",
+    "DYJetsToLL_LHEFilterPtZ-50To100_MatchEWPDG20"    : "-n 200 -x 377.12       -g True  --isDYlike",
+    "DYJetsToLL_LHEFilterPtZ-100To250_MatchEWPDG20"   : "-n 150 -x 92.24        -g True  --isDYlike",
+    "DYJetsToLL_LHEFilterPtZ-250To400_MatchEWPDG20"   : "-n 50  -x 3.512        -g True  --isDYlike",
+    "DYJetsToLL_LHEFilterPtZ-400To650_MatchEWPDG20"   : "-n 20  -x 0.4826       -g True  --isDYlike",
+    "DYJetsToLL_LHEFilterPtZ-650ToInf_MatchEWPDG20"   : "-n 10  -x 0.04487      -g True  --isDYlike",
 
     "DYJetsToLL_0J"                                   : "-n 300 -x 4867.28      -g True  --isDYlike",
     "DYJetsToLL_1J"                                   : "-n 300 -x 902.95       -g True  --isDYlike",  
@@ -264,9 +280,9 @@ bkg_map = {
 
     # --- TT ---
     # -b: type of TT gen level decay pruning for stitch
-    "TTToHadronic"                    : "-n 100  -x 359.44  --isTTlike",
-    "TTTo2L2Nu"                       : "-n 200  -x 84.01   --isTTlike",
-    "TTToSemiLeptonic"                : "-n 200  -x 347.55  --isTTlike",
+    "TTToHadronic"                    : "-n 100  -x 359.43895071  --isTTlike",
+    "TTTo2L2Nu"                       : "-n 200  -x 84.01275071   --isTTlike",
+    "TTToSemiLeptonic"                : "-n 200  -x 347.54829858  --isTTlike",
 
     
     # --- single Higgs ---
@@ -279,23 +295,23 @@ bkg_map = {
 
     "ttHToNonbb_M125"                 : "-n 50  -x 0.5071   -y 0.3598  --ttHToNonBB True  --isTTlike",
     "ttHTobb_M125"                    : "-n 50  -x 0.5071   -y 0.577   --isTTlike", # but this will be most likely signal like, still fine to put hyp here
-    "ttHToTauTau_M125"                : "-n 50  -x 0.5071   -y 0.0632  --isTTlike",
+    "ttHToTauTau_M125"                : "-n 50  -x 0.5071   -y 0.0632  --isTTlike",      # this should probably be -y 0.06272
 
-    "ZH_HToBB_ZToLL_M-125"             : "-n 50    -x 0.880    -y 0.0588154112 --isDYlike",
+    "ZH_HToBB_ZToLL_M-125"             : "-n 50    -x 0.880    -y 0.058816576  --isDYlike",
     "ZH_HToBB_ZToQQ_M-125"             : "-n 50    -x 0.880    -y 0.407161664  --isDYlike",
 
 
     # --- Wjets ---
     # -z: HT cut for stitching on inclusive      -Z: HT low cut for stitching on inclusive
     "WJetsToLNu"                      : "-n 50  -y 1.213784 -x 48917.48 -z 70   --isDYlike ",  # for 0 < HT < 70
-    "WJetsToLNu_HT-70To100"           : "-n 50  -y 1.213784 -x 1362    --isDYlike" ,
-    "WJetsToLNu_HT-100To200"          : "-n 50  -y 1.213784 -x 1345    --isDYlike" ,
-    "WJetsToLNu_HT-200To400"          : "-n 50  -y 1.213784 -x 359.7   --isDYlike",
-    "WJetsToLNu_HT-400To600"          : "-n 50  -y 1.213784 -x 48.91   --isDYlike",
-    "WJetsToLNu_HT-600To800"          : "-n 50  -y 1.213784 -x 12.05   --isDYlike",
-    "WJetsToLNu_HT-800To1200"         : "-n 50  -y 1.213784 -x 5.501   --isDYlike",
-    "WJetsToLNu_HT-1200To2500"        : "-n 50  -y 1.213784 -x 1.329   --isDYlike",
-    "WJetsToLNu_HT-2500ToInf"         : "-n 50  -y 1.213784 -x 0.03216 --isDYlike",
+    "WJetsToLNu_HT-70To100"           : "-n 50  -y 1.213784 -x 1362             --isDYlike" ,
+    "WJetsToLNu_HT-100To200"          : "-n 50  -y 1.213784 -x 1345             --isDYlike" ,
+    "WJetsToLNu_HT-200To400"          : "-n 50  -y 1.213784 -x 359.7            --isDYlike",
+    "WJetsToLNu_HT-400To600"          : "-n 50  -y 1.213784 -x 48.91            --isDYlike",
+    "WJetsToLNu_HT-600To800"          : "-n 50  -y 1.213784 -x 12.05            --isDYlike",
+    "WJetsToLNu_HT-800To1200"         : "-n 50  -y 1.213784 -x 5.501            --isDYlike",
+    "WJetsToLNu_HT-1200To2500"        : "-n 50  -y 1.213784 -x 1.329            --isDYlike",
+    "WJetsToLNu_HT-2500ToInf"         : "-n 50  -y 1.213784 -x 0.03216          --isDYlike",
 
     # --- ELECTROWEAK ---
     "EWKWPlus2Jets_WToLNu_M-50"       : "-n 50  -x 25.62   --isDYlike",
@@ -307,7 +323,7 @@ bkg_map = {
     "ST_tW_top_5f_inclusiveDecays"            : "-n 50  -x 35.85  --isTTlike",
     "ST_t-channel_antitop_5f_InclusiveDecays" : "-n 50  -x 80.95  --isTTlike",
     "ST_t-channel_top_5f_InclusiveDecays"     : "-n 50  -x 136.02 --isTTlike",
-
+    
     # --- Multiboson ---
     "WW"                              : "-n 20  -x 118.7 --isDYlike",
     "WZ"                              : "-n 20  -x 47.13 --isDYlike",
@@ -331,7 +347,7 @@ bkg_map = {
     "TTZH"                            : "-n 20  -x 0.001136  --isTTlike",
 
 
-    # non resonant signal 
+    # -- non resonant signal 
     "GluGluToHHTo2B2Tau" : "-n 10   -x 0.01618 --isDYlike"
 }
 
@@ -612,23 +628,23 @@ if execute_sig:
 data_map = {}
 if year == '2016preVFP':
     data_map = {
-        "Tau__Run2016B" :  "-n 100    -d True  --datasetType 2",
-        "Tau__Run2016C" :  "-n 100    -d True  --datasetType 2",
-        "Tau__Run2016D" :  "-n 100    -d True  --datasetType 2",
-        "Tau__Run2016E" :  "-n 100    -d True  --datasetType 2",
-        "Tau__Run2016F" :  "-n 100    -d True  --datasetType 2",
+        # "Tau__Run2016B" :  "-n 100    -d True  --datasetType 2",
+        # "Tau__Run2016C" :  "-n 100    -d True  --datasetType 2",
+        # "Tau__Run2016D" :  "-n 100    -d True  --datasetType 2",
+        # "Tau__Run2016E" :  "-n 100    -d True  --datasetType 2",
+        # "Tau__Run2016F" :  "-n 100    -d True  --datasetType 2",
         
-        "SingleMuon__Run2016B" :  "-n 100    -d True",
-        "SingleMuon__Run2016C" :  "-n 100    -d True",
-        "SingleMuon__Run2016D" :  "-n 100    -d True",
-        "SingleMuon__Run2016E" :  "-n 100    -d True",
-        "SingleMuon__Run2016F" :  "-n 100    -d True",
+        # "SingleMuon__Run2016B" :  "-n 100    -d True",
+        # "SingleMuon__Run2016C" :  "-n 100    -d True",
+        # "SingleMuon__Run2016D" :  "-n 100    -d True",
+        # "SingleMuon__Run2016E" :  "-n 100    -d True",
+        # "SingleMuon__Run2016F" :  "-n 100    -d True",
         
-        "SingleElectron__Run2016B" :  "-n 100    -d True",
-        "SingleElectron__Run2016C" :  "-n 100    -d True",
-        "SingleElectron__Run2016D" :  "-n 100    -d True",
-        "SingleElectron__Run2016E" :  "-n 100    -d True",
-        "SingleElectron__Run2016F" :  "-n 100    -d True",
+        # "SingleElectron__Run2016B" :  "-n 100    -d True",
+        # "SingleElectron__Run2016C" :  "-n 100    -d True",
+        # "SingleElectron__Run2016D" :  "-n 100    -d True",
+        # "SingleElectron__Run2016E" :  "-n 100    -d True",
+        # "SingleElectron__Run2016F" :  "-n 100    -d True",
         
         "MET__Run2016B" :  "-n 100    -d True   --datasetType 1",
         "MET__Run2016C" :  "-n 100    -d True   --datasetType 1",
@@ -701,16 +717,21 @@ if execute_data:
 
 
 
+if execute:
+    if os.path.exists(skimDir):
+        print("Error: %s already exists"%skimDir, file=sys.stderr)
+        sys.exit(1)
+    if not os.path.exists(skimDir):
+        os.makedirs(skimDir)
+
+    if os.path.exists(outDir):
+        print("Error: %s already exists"%outDir, file=sys.stderr)
+        sys.exit(1)
+    if not os.path.exists(outDir):
+        os.makedirs(outDir)
 
 
-
-
-
-if not os.path.exists(outDir):
-    os.makedirs(outDir)
-if not os.path.exists(skimDir):
-    os.makedirs(skimDir)
-
+    
 #---------------
 # SUBMIT BACKGROUNDS
 

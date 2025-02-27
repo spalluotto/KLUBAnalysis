@@ -1,7 +1,7 @@
 import os
 import re
 
-tag_in = 'data_2016APV_17Jan2025'
+tag_in = 'data_2016APV_24Feb2025_MET'
 tag_out = 'UL16APV_Data'
 
 root_dir = f"/gwteras/cms/store/user/dzuolo/ResonantHHbbtautauNtuples/{tag_in}/"
