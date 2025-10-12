@@ -11,12 +11,23 @@ import hist
 import pickle
 import numpy as np
 
-import matplotlib; import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 import matplotlib.colors as colors
+from matplotlib.colors import ListedColormap
 import mplhep as hep
 plt.style.use(hep.style.ROOT)
 
+
 from functools import wraps
+
+
+cms_palette = ListedColormap([
+    "#3f90da", "#ffa90e", "#bd1f01", "#94a4a2",
+    "#832db6", "#a96b59", "#e76300", "#b9ac70",
+    "#717581", "#92dadd"
+])
 
 class Histograms:
     def __init__(self, infile):
@@ -229,11 +240,12 @@ class Plotter:
                    "SSinviso": "SS, anti-iso"}
         hep.cms.lumitext(r"{} $fb^{{-1}}$ (13 TeV)".format(lumi),
                          fontsize=self.fontscales[1]*self.fontsize, ax=self.axes[0][0])
-        self.axes[0][0].text(0.03, 0.95, chn_map[channel], transform=self.axes[0][0].transAxes)
-        self.axes[0][0].text(0.03, 0.91, cat_map[cat], transform=self.axes[0][0].transAxes)
-        self.axes[0][0].text(0.03, 0.87, reg_map[region], transform=self.axes[0][0].transAxes)
+        self.axes[0][0].text(0.03, 0.92, chn_map[channel], transform=self.axes[0][0].transAxes, fontsize=self.fontscales[1]*self.fontsize*1.2)
+        self.axes[0][0].text(0.03, 0.87, cat_map[cat], transform=self.axes[0][0].transAxes, fontsize=self.fontscales[1]*self.fontsize*1.2)
+        self.axes[0][0].text(0.03, 0.82, reg_map[region], transform=self.axes[0][0].transAxes, fontsize=self.fontscales[1]*self.fontsize*1.2)
         
         self.colors = plt.cm.tab20.colors
+        #self.colors = cms_palette.colors
         self.iter_colors = iter(self.colors)
 
     def _debug(self, msg):
@@ -401,9 +413,10 @@ class Plotter:
                 if len(self.axes)>1 and ax==self.axes[1] and self.was_ratio_run < 2:
                     continue
 
-                leg = a.legend(fontsize=0.7*self.fontscales[1]*self.fontsize,
+                leg = a.legend(fontsize=0.8*self.fontscales[1]*self.fontsize,
                                ncols=ncols, bbox_to_anchor=(0.99,0.99), loc="upper right",
-                               frameon=True, facecolor='white', edgecolor='black', framealpha=1.)
+                               frameon=False)
+                               #facecolor='white', edgecolor='black', framealpha=1.)
                 leg.get_frame().set_boxstyle('Square', pad=0.0)
         
     @_select_axis
